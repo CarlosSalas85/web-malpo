@@ -12,34 +12,46 @@ const Navbar = () => {
   return (
     <nav className="nav-transparente">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4 sm:justify-center">
-        <img
-          src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
-          className="logo-malpo-blanco"
-          alt="Logo malpo blanco"
-        />
+        <div className="hidden md:flex md:items-center">
+          <img
+            src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
+            className="logo-malpo-blanco"
+            alt="Logo malpo blanco"
+          />
+        </div>
 
-        <button
-          onClick={toggleNavbar}
-          type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white p-2 text-gray-500 hover:border-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden dark:text-gray-400 dark:hover:border-gray-700 dark:focus:ring-gray-600"
-          aria-expanded={isOpen ? "true" : "false"}
-        >
-          <svg
-            className="h-5 w-5 text-white" // Añadimos la clase text-white para establecer el color del icono
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
+        <div className="flex w-full items-center justify-between md:w-auto">
+          <button
+            onClick={toggleNavbar}
+            type="button"
+            className="inline-flex items-center justify-center rounded-lg border border-white p-2 text-gray-500 hover:border-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden dark:text-gray-400 dark:hover:border-gray-700 dark:focus:ring-gray-600"
+            aria-expanded={isOpen ? "true" : "false"}
           >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
-        </button>
+            <svg
+              className="mr-2 h-5 w-5 text-white" // Añadimos la clase text-white para establecer el color del icono y margen a la derecha
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+            <span className="text-white">Menú</span>{" "}
+            {/* Agregamos el texto "Menú" */}
+          </button>
+
+          <img
+            src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
+            className="logo-malpo-blanco md:hidden" // Ocultamos el logo en dispositivos mayores a mobile
+            alt="Logo malpo blanco"
+          />
+        </div>
 
         <div
           className={`${
@@ -54,27 +66,37 @@ const Navbar = () => {
                 className="block px-3 py-2 hover:text-gray-800"
                 aria-current="page"
               >
-                Home
+                Inicio
               </a>
             </li>
             <li>
               <a href="#" className="block px-3 py-2 hover:text-gray-800">
-                About
+                Proyectos
               </a>
             </li>
             <li>
               <a href="#" className="block px-3 py-2 hover:text-gray-800">
-                Services
+                Invertir
               </a>
             </li>
             <li>
               <a href="#" className="block px-3 py-2 hover:text-gray-800">
-                Pricing
+                Cómo comprar
               </a>
             </li>
             <li>
               <a href="#" className="block px-3 py-2 hover:text-gray-800">
-                Contact
+                Clientes
+              </a>
+            </li>
+            <li>
+              <a href="#" className="block px-3 py-2 hover:text-gray-800">
+                Nosotros
+              </a>
+            </li>
+            <li>
+              <a href="#" className="block px-3 py-2 hover:text-gray-800">
+                Blog
               </a>
             </li>
           </ul>
