@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import "./style.css";
+import "./styleNav.css";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,43 +59,46 @@ const Navbar = () => {
           } w-full text-white md:block md:w-auto`}
           id="navbar-default"
         >
-          <ul className="mt-4 flex flex-col p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:p-0 rtl:space-x-reverse">
+          <ul className="mt-4 flex flex-col p-4 font-medium md:mt-0 md:flex-row md:space-x-4 md:p-0 rtl:space-x-reverse">
             <li>
               <a
-                href="#"
-                className="block px-3 py-2 hover:text-gray-800"
+                href="/"
+                className="block px-3 py-2 hover:text-gray-400"
                 aria-current="page"
               >
                 Inicio
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-800">
+              <a
+                href="/proyectos"
+                className="block px-3 py-2 hover:text-gray-400"
+              >
                 Proyectos
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-800">
+              <a href="#" className="block px-3 py-2 hover:text-gray-400">
                 Invertir
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-800">
+              <a href="#" className="block px-3 py-2 hover:text-gray-400">
                 Cómo comprar
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-800">
+              <a href="#" className="block px-3 py-2 hover:text-gray-400">
                 Clientes
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-800">
+              <a href="#" className="block px-3 py-2 hover:text-gray-400">
                 Nosotros
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-800">
+              <a href="#" className="block px-3 py-2 hover:text-gray-400">
                 Blog
               </a>
             </li>

@@ -1,8 +1,8 @@
-import { Inter } from "next/font/google";
+import Head from "next/head";
 import "./globals.css";
-import Navbar from "./componets/nav/nav";
 
-const inter = Inter({ subsets: ["latin"] });
+import Navbar from "./componets/nav/nav";
+import Footer from "./componets/footer/footer";
 
 export const metadata = {
   title: "Malpo",
@@ -11,11 +11,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        {children}      
-      </body>
-    </html>
+    <>
+      <html lang="en">
+        <Head>         
+        </Head>
+        <body className="lato-regular">
+          <Navbar />
+          {children}
+          <Footer />
+        </body>
+      </html>
+    </>
   );
 }

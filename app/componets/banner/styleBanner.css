@@ -1,0 +1,13 @@
+.imagen-fondo {
+    background-image: url(../../../public/home/banner.jpg);    
+  }
+  
+  .img-icono {
+    height: 48px;
+    width: 48px;
+  }
+  
+  .card-fondo-tranparente {
+    backdrop-filter: blur(8px) brightness(100%);
+    background-color: #00000080; 
+  }

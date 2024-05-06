@@ -2,3 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --malpo-paleta-de-colores-blanco: rgba(255, 255, 255, 1);
+  --malpo-paleta-de-colores-gris-desactivado: rgba(102, 102, 102, 1);
+  --malpo-paleta-de-colores-gris-malpo: rgba(40, 41, 37, 1);
+  --malpo-paleta-de-colores-ocre-malpo: rgba(199, 100, 42, 1);
+  --malpo-paleta-de-colores-rojo-malpo: rgba(151, 19, 42, 1);
+  --malpo-paleta-de-colores-verde-malpo: rgba(5, 150, 115, 1);
+}
+
+.fondo-malpo-gris {
+  background-color: var(--malpo-paleta-de-colores-gris-malpo);
+}
+
+.fondo-malpo-rojo {
+  background-color: var(--malpo-paleta-de-colores-rojo-malpo);
+}
+
+.lato-regular {
+  font-family: "Lato", Helvetica;
+  font-weight: 400;
+  font-style: normal;
+}

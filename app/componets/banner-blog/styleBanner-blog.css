@@ -1,0 +1,14 @@
+.card-largo-blog {
+    height: auto;
+    width: 300px;
+  }
+
+  .card-largo-ver-todo-blog{
+    height: auto;
+    width: 150px;
+  }
+
+  .fecha-transparente {  
+    backdrop-filter: blur(8px) brightness(100%);
+    background-color: #00000080; 
+  }

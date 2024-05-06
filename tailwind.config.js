@@ -12,6 +12,9 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        rojoMalpo: 'rgba(151, 19, 42, 1)', // Reemplaza '#FFA500' con el valor hexadecimal de tu color personalizado
+      },
     },
   },
   plugins: [],
