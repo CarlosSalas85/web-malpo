@@ -71,24 +71,24 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="/proyectos"
+                href="/proyectos/todos"
                 className="block px-3 py-2 hover:text-gray-400"
               >
                 Proyectos
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-400">
+              <a href="/invertir/todos" className="block px-3 py-2 hover:text-gray-400">
                 Invertir
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-400">
+              <a href="/como-comprar" className="block px-3 py-2 hover:text-gray-400">
                 Cómo comprar
               </a>
             </li>
             <li>
-              <a href="#" className="block px-3 py-2 hover:text-gray-400">
+              <a href="/clientes" className="block px-3 py-2 hover:text-gray-400">
                 Clientes
               </a>
             </li>

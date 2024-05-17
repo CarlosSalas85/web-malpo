@@ -14,6 +14,8 @@ module.exports = {
       },
       colors: {
         rojoMalpo: 'rgba(151, 19, 42, 1)', // Reemplaza '#FFA500' con el valor hexadecimal de tu color personalizado
+        grisMalpo: 'rgba(40, 41, 37, 1)', // Reemplaza '#FFA500' con el valor hexadecimal de tu color personalizado
+        verdeMalpo: 'rgba(5, 150, 115, 1)', // Reemplaza '#FFA500' con el valor hexadecimal de tu color personalizado
       },
     },
   },

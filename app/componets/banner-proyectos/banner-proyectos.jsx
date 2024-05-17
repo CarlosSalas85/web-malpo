@@ -2,9 +2,12 @@ import "./banner-proyectos.css";
 
 const CustomButton = (props) => {
   return (
-    <button className="w-full rounded-lg border border-white bg-transparent px-4 py-2 text-white hover:border-gray-400 hover:text-gray-400 mr-2 mb-2">
+    <a
+      href={`/proyectos/${props.filtro}`}
+      className="mb-2 mr-2 w-full rounded-lg border border-white bg-transparent px-4 py-2 text-white hover:border-gray-400 hover:text-gray-400"
+    >
       {props.texto}
-    </button>
+    </a>
   );
 };
 
@@ -21,9 +24,9 @@ const Banner = (props) => {
           {buttons.map((index) => (
             <div
               key={index}
-              className={`flex w-1/3 sm:justify-center sm:w-1/6 lg:w-auto`}
+              className={`flex w-1/3 sm:w-1/6 sm:justify-center lg:w-auto`}
             >
-              <CustomButton texto={props.titulo} />
+              <CustomButton texto={props.titulo} filtro={props.filtro} />
             </div>
           ))}
         </div>

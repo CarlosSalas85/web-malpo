@@ -2,7 +2,7 @@ import "./styleFooter.css";
 
 const Footer = () => {
   return (
-    <footer className="fondo-malpo-gris px-4 py-8 text-white">
+    <footer className="bg-grisMalpo px-4 py-8 text-white">
       <div className="flex flex-col md:flex-row md:justify-center">
         <div className="text-left md:mr-8 md:text-center">
           {" "}
