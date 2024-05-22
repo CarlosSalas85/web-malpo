@@ -29,7 +29,7 @@ const CustomCards = (props) => {
         <div className="relative w-full pl-4 pt-4">
           <div className="w-ful h-1/3">
             <h2 className="text-4xl text-white  hover:text-gray-400">
-              Alto Manque fgdffdfdfd
+              Alto Manque
             </h2>
           </div>
           {/* Segunda fila */}
