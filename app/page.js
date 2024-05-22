@@ -7,6 +7,8 @@ import Card from "@/app/componets/card/card";
 //import "@/app/styleHome.css"; // Si tienes un archivo CSS externo para estilos adicionales
 
 const Home = () => {
+
+  //PROYECTO CON RAMA LBASCUNAN
   return (
     <>
       <Banner />
