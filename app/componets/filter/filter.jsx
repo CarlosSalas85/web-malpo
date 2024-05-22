@@ -67,17 +67,7 @@ const CustomSelect = ({ options }) => {
   );
 };
 
-const options = [
-  { value: "0", label: "TODOS" },
-  { value: "1", label: "VENTA EN VERDE" },
-  { value: "2", label: "VENTA EN BLANCO" },
-];
 
-const optionsCiudad = [
-  { value: "0", label: "TODOS" },
-  { value: "1", label: "Talca" },
-  { value: "2", label: "Linares" },
-];
 
 const FilterButton = ({ type, activeFilter, handleClick }) => {
   return (
@@ -94,15 +84,79 @@ const FilterButton = ({ type, activeFilter, handleClick }) => {
   );
 };
 
-const Filter = () => {
-  const [activeFilterTipo, setActiveFilterTipo] = useState("Todas");
-  const [activeFilterSubsidio, setActiveFilterSubsidio] = useState("Todas");
+// const data = await Ctrl_filtros();
+// const filtros = data.datos;
+
+// // Mapeo de los filtros en arrays separados
+// const contenidoFiltros = {
+//   tiposProyecto: filtros.tiposProyecto.map(tipo => ({
+//     id: tipo.idTipo,
+//     nombre: tipo.nombreTipo
+//   })),
+//   tiposSubsidio: filtros.tiposSubsidio.map(subsidio => ({
+//     id: subsidio.idSubsidio,
+//     nombre: subsidio.nombreSubsidio
+//   })),
+//   dormitorios: filtros.dormitorios.map(dormitorio => ({
+//     id: dormitorio.idDormitorios,
+//     cantidad: dormitorio.cantidadDormitorios
+//   })),
+//   banos: filtros.banos.map(bano => ({
+//     id: bano.idBanos,
+//     cantidad: bano.cantidadBanos
+//   })),
+//   etapasProyecto: filtros.etapasProyecto.map(etapa => ({
+//     id: etapa.idEtapa,
+//     nombre: etapa.nombreEtapa
+//   })),
+//   ciudadesProyecto: filtros.ciudadesProyecto.map(ciudad => ({
+//     id: ciudad.idComuna,
+//     cantidadfiltros: ciudad.cantidadfiltros,
+//     nombre: ciudad.comunaNombre
+//   })),
+// };
+
+
+
+// console.log("Filtros:",contenidoFiltros);
+
+
+const Filter = ({filtros}) => {
+  console.log("Los filtros en Filter son:",filtros);
+  const [activeFilterTipo, setActiveFilterTipo] = useState("TODOS");
+  const [activeFilterSubsidio, setActiveFilterSubsidio] = useState("TODOS");
   const [activeFilterDormitorios, setActiveFilterDormitorios] =
-    useState("Todas");
-  const [activeFilterBanos, setActiveFilterBanos] = useState("Todas");
+    useState("TODOS");
+  const [activeFilterBanos, setActiveFilterBanos] = useState("TODOS");
   const [mostrarSession, setMostrarSession] = useState(false);
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    var ids = {
+      estadoInversion:0,
+      tipoProyectoId: activeFilterTipo,
+      subsidioId: activeFilterSubsidio,
+      dormitorioId: activeFilterDormitorios,
+      banoId: activeFilterBanos,
+      etapaId: options.value,
+      ciudadId: optionsCiudad.value,
+    };
+
+    console.log("El valor de ids es:", ids);
+    // console.log(ids);
+    // Ctrl_aplicar_filtros(ids)
+    //   .then((response) => {
+    //     // Actualizar el componente Proximos Proyectos con los nuevos datos
+    //     setCurrentPage(1); // Suponiendo que tienes una variable de estado currentPage
+    //     actualizarProyectos(response.datos);
+    //     // if(datosCargados===true){
+    //     //   console.log("EL VALOR DE response.datos, datosCargados es:",response.datos,datosCargados);
+    //     //   router.push('proyectos?page=1');
+    //     // }
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error aplicando filtros:', error);
+    //   });
+  };
 
   const handleClickTipo = (filter) => {
     setActiveFilterTipo(filter);
@@ -123,6 +177,24 @@ const Filter = () => {
   const toggleSession = () => {
     setMostrarSession(!mostrarSession);
   };
+
+
+  const options = filtros.etapasProyecto.map(etapa => {
+    return {
+      value: etapa.id,
+      label: etapa.nombre
+    };
+  });
+  
+  const optionsCiudad = filtros.ciudadesProyecto.map(etapa => {
+    return {
+      value: etapa.id,
+      label: etapa.nombre
+    };
+  });
+
+
+
 
   return (
     <div className="w-full pl-2 pr-2 md:ml-20 md:mr-4 md:w-2/5">
@@ -197,66 +269,51 @@ const Filter = () => {
         <h2 className="text-2xl">Tipo de proyecto</h2>
 
         <div className="mb-6 mt-3 flex">
-          <FilterButton
-            type="Todas"
-            activeFilter={activeFilterTipo}
-            handleClick={handleClickTipo}
-          />
-          <FilterButton
-            type="Casa"
-            activeFilter={activeFilterTipo}
-            handleClick={handleClickTipo}
-          />
-          <FilterButton
-            type="Dpto"
-            activeFilter={activeFilterTipo}
-            handleClick={handleClickTipo}
-          />
+  
+        {filtros.tiposProyecto.map((tipoProyecto, index) => (
+  <FilterButton key={index}
+    type={tipoProyecto.nombre}
+    activeFilter={activeFilterTipo}
+    handleClick={handleClickTipo}
+  />
+))}
+          
         </div>
 
         <h2 className="text-2xl">Subsidio</h2>
 
         <div className="mb-6 mt-3 flex">
-          <FilterButton
-            type="Todas"
-            activeFilter={activeFilterSubsidio}
-            handleClick={handleClickSubsidio}
-          />
-          <FilterButton
-            type="Ds1"
-            activeFilter={activeFilterSubsidio}
-            handleClick={handleClickSubsidio}
-          />
+        {filtros.tiposSubsidio.map((tipoSubsidio, index) => (
+  <FilterButton key={index}
+    type={tipoSubsidio.nombre}
+    activeFilter={activeFilterSubsidio}
+    handleClick={handleClickSubsidio}
+  />
+))}
         </div>
 
         <h2 className="text-2xl">Dormitorios</h2>
 
         <div className="mb-6 mt-3 flex">
-          <FilterButton
-            type="Todas"
-            activeFilter={activeFilterDormitorios}
-            handleClick={handleClickDormitorios}
-          />
-          <FilterButton
-            type="1"
-            activeFilter={activeFilterDormitorios}
-            handleClick={handleClickDormitorios}
-          />
+        {filtros.dormitorios.map((dormitorio, index) => (
+  <FilterButton key={index}
+    type={dormitorio.cantidad}
+    activeFilter={activeFilterDormitorios}
+    handleClick={handleClickDormitorios}
+  />
+))}
         </div>
 
         <h2 className="text-2xl">Baños</h2>
 
         <div className="mb-6 mt-3 flex">
-          <FilterButton
-            type="Todas"
-            activeFilter={activeFilterBanos}
-            handleClick={handleClickBanos}
-          />
-          <FilterButton
-            type="1"
-            activeFilter={activeFilterBanos}
-            handleClick={handleClickBanos}
-          />
+        {filtros.banos.map((bano, index) => (
+  <FilterButton key={index}
+    type={bano.cantidad}
+    activeFilter={activeFilterBanos}
+    handleClick={handleClickBanos}
+  />
+))}
         </div>
 
         <h2 className="text-2xl">Etapa del proyecto</h2>
