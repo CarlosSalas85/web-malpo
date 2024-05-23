@@ -1,11 +1,14 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import PropTypes from "prop-types";
 import "./styleFiltro.css";
+import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
 
 const CustomSelect = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0].value);
+  
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -130,15 +133,68 @@ const Filter = ({filtros}) => {
   const [activeFilterBanos, setActiveFilterBanos] = useState("TODOS");
   const [mostrarSession, setMostrarSession] = useState(false);
 
+  const [selectedOptionEtapa, setSelectedOptionEtapa] = useState(filtros.etapasProyecto[0].id);
+  const [selectedOptionCiudad, setSelectedOptionCiudad] = useState(filtros.ciudadesProyecto[0].id);
+  const [filteredData, setFilteredData] = useState(null);
+
+  const getFilterId = (activeFilter, filterArray, defaultId = 0) => {
+    if (activeFilter === "TODOS") return defaultId;
+    const filterItem = filterArray.find((item) => item.nombre === activeFilter || item.cantidad === activeFilter);
+    return filterItem ? filterItem.id : defaultId;
+  };
+
+  const applyFilters = async () => {
+    const ids = {
+      estadoInversion: 0,
+      tipoProyectoId: 0,
+      subsidioId:0,
+      dormitorioId: 0,
+      banoId: 0,
+      etapaId: 0,
+      ciudadId: 0,
+    };
+
+    console.log("El valor de ids es:", ids);
+    const response = await Ctrl_aplicar_filtros(ids);
+    setFilteredData(response.datos);
+    // actualizarProyectos(response.datos);
+    console.log("Lo que obtengo desde filteredData es:", filteredData);
+  };
+
+  useEffect(() => {
+    applyFilters();
+  }, []);
+
+  useEffect(() => {
+    if (filteredData === null) {
+      applyFilters();
+    }
+  }, [filteredData]);
+
+
+
   const handleClick = () => {
+
+    const proyecto = filtros.tiposProyecto.find((tipo) => tipo.nombre === activeFilterTipo);
+    const activeFilterTipoId=proyecto.id;
+    const subsidio = filtros.tiposSubsidio.find((subsidio) => subsidio.nombre === activeFilterSubsidio);
+    const activeFilterSubsidioId=subsidio.id;
+    const dormitorio = filtros.dormitorios.find((dormitorio) => dormitorio.cantidad === activeFilterDormitorios);
+    // console.log("dormitorio", dormitorio);
+    const activeFilterDormitorioId=dormitorio.id;
+    const bano = filtros.banos.find((bano) => bano.cantidad === activeFilterBanos);
+    const activeFilterBanoId=subsidio.id;
+
     var ids = {
       estadoInversion:0,
-      tipoProyectoId: activeFilterTipo,
-      subsidioId: activeFilterSubsidio,
-      dormitorioId: activeFilterDormitorios,
-      banoId: activeFilterBanos,
-      etapaId: options.value,
-      ciudadId: optionsCiudad.value,
+      tipoProyectoId: activeFilterTipoId,
+      subsidioId: activeFilterSubsidioId,
+      dormitorioId: activeFilterDormitorioId,
+      banoId: activeFilterBanoId,
+      etapaId: 0,
+      ciudadId:0
+      //etapaId: selectedOptionEtapa,
+      //ciudadId: selectedOptionCiudad,
     };
 
     console.log("El valor de ids es:", ids);
@@ -148,14 +204,6 @@ const Filter = ({filtros}) => {
     //     // Actualizar el componente Proximos Proyectos con los nuevos datos
     //     setCurrentPage(1); // Suponiendo que tienes una variable de estado currentPage
     //     actualizarProyectos(response.datos);
-    //     // if(datosCargados===true){
-    //     //   console.log("EL VALOR DE response.datos, datosCargados es:",response.datos,datosCargados);
-    //     //   router.push('proyectos?page=1');
-    //     // }
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error aplicando filtros:', error);
-    //   });
   };
 
   const handleClickTipo = (filter) => {
@@ -317,7 +365,7 @@ const Filter = ({filtros}) => {
         </div>
 
         <h2 className="text-2xl">Etapa del proyecto</h2>
-        <CustomSelect options={options} />
+        <CustomSelect options={options}/>
 
         <h2 className="text-2xl">Ciudad</h2>
         <CustomSelect options={optionsCiudad} />
@@ -327,3 +375,8 @@ const Filter = ({filtros}) => {
 };
 
 export default Filter;
+
+
+Filter.propTypes = {
+  actualizarProyectos: PropTypes.func.isRequired, // Propiedad de función para actualizar los proyectos en el componente padre
+};

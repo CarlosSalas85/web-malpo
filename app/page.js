@@ -11,30 +11,30 @@ import { Ctrl_regiones } from "@/app/controllers/Ctrl_regiones";
 //import "@/app/styleHome.css"; // Si tienes un archivo CSS externo para estilos adicionales
 
 export default async function Home() {
-   const data = await Ctrl_ciudades();
-  const ciudades = data.datos;
-  console.log("el valor de ciudades es:",ciudades);
-  const contenidoCiudades = ciudades.map((card, index) => ({
-    id: card.idComuna,
-    nombre: card.comunaNombre,
-  }));
+  //  const data = await Ctrl_ciudades();
+  // const ciudades = data.datos;
+  // console.log("el valor de ciudades es:",ciudades);
+  // const contenidoCiudades = ciudades.map((card, index) => ({
+  //   id: card.idComuna,
+  //   nombre: card.comunaNombre,
+  // }));
 
-  const data2 = await Ctrl_regiones();
-  const regiones = data2.datos;
-  const contenidoRegiones = regiones.map((card, index) => ({
-    id: card.idRegion,
-    nombre: card.regionNombre,
-  }));
+  // const data2 = await Ctrl_regiones();
+  // const regiones = data2.datos;
+  // const contenidoRegiones = regiones.map((card, index) => ({
+  //   id: card.idRegion,
+  //   nombre: card.regionNombre,
+  // }));
 
 
   return (
     
     <>
       <Banner />
-     <BannerProyectos texto="Proyectos por ciudad" titulo={contenidoCiudades} filtro="ciudad" />
+     <BannerProyectos texto="Proyectos por ciudad" filtro="ciudad" />
      {/* <BannerProyectos texto="Proyectos por ciudad" titulo="ciudades" filtro="ciudad" /> */}
       <Card texto="Proyectos destacados"/>
-      <BannerProyectos texto="Proyectos por ciudad" titulo={contenidoRegiones} filtro="regiones" />
+      <BannerProyectos texto="Proyectos por region"  filtro="regiones" />
    {/* <BannerProyectos texto="Proyectos por región" titulo="region" filtro="region"/> */}
       <BannerComoComprar />
       <BannerBlog /> 

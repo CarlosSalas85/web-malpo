@@ -2,10 +2,26 @@ import React from "react";
 import Filter from "@/app/componets/filter/filter";
 import ListProyectos from "@/app/componets/filter/list-proyectos";
 import { Ctrl_filtros } from "@/app/controllers/Ctrl_filtros";
+import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
 
 export default async function Page (){
   const data = await Ctrl_filtros();
   const filtros = data.datos;
+  const ids = {
+    estadoInversion: 0,
+    tipoProyectoId: 0,
+    subsidioId:0,
+    dormitorioId: 0,
+    banoId: 0,
+    etapaId: 0,
+    ciudadId: 0,
+  };
+
+
+  const data2 = await Ctrl_aplicar_filtros(ids);
+  const proyectosIniciales = data2.datos;
+
+  // console.log("Proyectos Iniciales",proyectosIniciales);
 
   // Mapeo de los filtros en arrays separados
   const contenidoFiltros = {
@@ -56,7 +72,7 @@ export default async function Page (){
           {/* Sección 1/3 */}
           <Filter filtros={contenidoFiltros}/>
           {/* Sección 2/3 */}
-          <ListProyectos pagina="filtros" ciudad="ciudad"/>
+          <ListProyectos pagina="filtros" ciudad="ciudad" proyectos={proyectosIniciales}/>
         </div>
 
         <div className="mx-auto mb-4 mt-10 w-11/12 md:w-10/12">
