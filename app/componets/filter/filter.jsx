@@ -146,6 +146,7 @@ const Filter = ({filtros}) => {
   const applyFilters = async () => {
     const ids = {
       estadoInversion: 0,
+
       tipoProyectoId: 0,
       subsidioId:0,
       dormitorioId: 0,

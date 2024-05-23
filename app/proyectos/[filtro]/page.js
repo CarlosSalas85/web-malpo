@@ -72,7 +72,8 @@ export default async function Page (){
           {/* Sección 1/3 */}
           <Filter filtros={contenidoFiltros}/>
           {/* Sección 2/3 */}
-          <ListProyectos pagina="filtros" ciudad="ciudad" proyectos={proyectosIniciales}/>
+          <ListProyectos pagina="filtros" ciudad="ciudad" estadoInversion="0"/>
+          {/* <ListProyectos pagina="filtros" ciudad="ciudad" proyectos={proyectosIniciales}/> */}
         </div>
 
         <div className="mx-auto mb-4 mt-10 w-11/12 md:w-10/12">

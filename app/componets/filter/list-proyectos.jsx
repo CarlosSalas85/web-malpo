@@ -1,16 +1,32 @@
+'use client';
 import CustomCards from "../../componets/card-proyecto/card-proyecto-uno";
+import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
 
-const List = (props) => {
-  // console.log("ESTOY en List:",props.proyectos);
-  const nombreProyectoEncoded = encodeURIComponent("doña-ignacia");
+
+
+export default async function List(props){
   // Función auxiliar para reemplazar espacios en blanco por guiones bajos y codificar la URL
 const replaceSpaces = (str) => {
   return encodeURIComponent(str.replace(/\s/g, '-'));
 };
 
+const ids = {
+  estadoInversion: props.estadoInversion,
+  tipoProyectoId: 0,
+  subsidioId: 0,
+  dormitorioId: 0,
+  banoId: 0,
+  etapaId: 0,
+  ciudadId: 0,
+};
+
+const data = await Ctrl_aplicar_filtros(ids);
+const proyectosIniciales = data.datos;
+
+
   return (
     <div className="flex w-full flex-wrap md:ml-4 md:mr-20 md:w-3/5">
-        {props.proyectos.map((proyecto, index) => (
+        {proyectosIniciales.map((proyecto, index) => (
         <div className="flex w-full justify-center pb-6 xl:w-1/2" key={index}>
           <CustomCards // Don't forget to add a unique key for each item in the map function
             idProyecto={1} // Consider using proyecto.id or something unique from your data
@@ -24,6 +40,7 @@ const replaceSpaces = (str) => {
             colorEtapa= {proyecto.colorEtapa}
             precioUfMinimo={proyecto.ufMinimo}
             imagen={proyecto.imagenMiniatura}
+            nombreSubsidio={proyecto.nombreSubsidio}
           />
           </div>
         ))}
@@ -54,4 +71,4 @@ const replaceSpaces = (str) => {
   );
 };
 
-export default List;
+
