@@ -1,10 +1,12 @@
 "use client";
+import React from "react";
 import { useState } from "react";
 
 import BannerImage from "@/app/componets/banner/banner-imagen";
-import BannerProyectos from "@/app/componets/banner-proyectos/banner-proyectos";
 import NavComoComprar from "@/app/componets/banner-como-comprar/nav-como-comprar";
 import ButtonComoComprar from "@/app/componets/banner-como-comprar/button-como-comprar";
+
+import BannerRegiones from "@/app/function/banner-regiones-cliente";
 
 const Modal = ({ onClose, children }) => {
   return (
@@ -101,11 +103,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <BannerProyectos
-        texto="Proyectos por región"
-        titulo="región"
-        filtro="region"
-      />
+      <BannerRegiones />
       {/* modal */}
       {modalOpen && (
         <Modal onClose={handleModalToggle}>

@@ -2,8 +2,9 @@
 import { useSearchParams } from "next/navigation";
 
 import BannerImage from "@/app/componets/banner/banner-imagen";
-import BannerProyectos from "@/app/componets/banner-proyectos/banner-proyectos";
 import NavComoComprar from "@/app/componets/banner-como-comprar/nav-como-comprar";
+
+import BannerRegiones from "@/app/function/banner-regiones-cliente";
 
 const ListItems = () => {
   return (
@@ -119,7 +120,7 @@ const Button = () => {
 const UrlBanner = () => {
   return (
     <>
-      <a href="/como-comprar" className="hover:text-gray-400 mr-4">
+      <a href="/como-comprar" className="mr-4 hover:text-gray-400">
         Cómo comprar
       </a>
       /
@@ -146,7 +147,9 @@ const Page = () => {
                 <h1 className="ml-4 pb-4 text-3xl">
                   Cómo comprar con Subsidio
                 </h1>
-                <p className="text-l ml-4 pb-4"><UrlBanner/></p>
+                <p className="text-l ml-4 pb-4">
+                  <UrlBanner />
+                </p>
                 <p className="text-18px ml-4">
                   Puedes cumplir el sueño de tu vivienda propia con un subsidio
                   habitacional, que es una ayuda económica que te entrega el
@@ -170,7 +173,9 @@ const Page = () => {
                 <h1 className="ml-4 pb-8 text-3xl">
                   Cómo comprar con Crédito Hipotecario
                 </h1>
-                <p className="text-l ml-4 pb-4"><UrlBanner/></p>
+                <p className="text-l ml-4 pb-4">
+                  <UrlBanner />
+                </p>
                 <p className="text-18px ml-4">
                   Puedes cumplir el sueño de tu vivienda propia con un crédito
                   hipotecario, que es un préstamo que te otorga el banco y que
@@ -191,11 +196,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <BannerProyectos
-        texto="Proyectos por región"
-        titulo="región"
-        filtro="region"
-      />
+      <BannerRegiones />
     </>
   );
 };

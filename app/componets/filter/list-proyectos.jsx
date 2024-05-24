@@ -14,7 +14,7 @@ const List = (props) => {
       </div>
       <div className="flex w-full justify-center pb-6 xl:w-1/2">
         <CustomCards
-          idProyecto={2}
+          idProyecto={1}
           pagina={props.pagina}
           ciudad={props.ciudad}
           nombre={nombreProyectoEncoded}
@@ -22,22 +22,14 @@ const List = (props) => {
       </div>
       <div className="flex w-full justify-center pb-6 xl:w-1/2">
         <CustomCards
-          idProyecto={3}
-          pagina={props.pagina}
-          ciudad={props.ciudad}
-          nombre={nombreProyectoEncoded}
-        />
-      </div>
-      <div className="flex w-full justify-center pb-6 xl:w-1/2">
-        <CustomCards
-          idProyecto={4}
+          idProyecto={1}
           pagina={props.pagina}
           ciudad={props.ciudad}
           nombre={nombreProyectoEncoded}
         />
       </div>
 
-      <div className="mb-4 flex w-full justify-center md:justify-start">
+      <div className="mb-4 flex h-10 w-full justify-center md:justify-start">
         <button className="mr-2 flex items-center justify-center rounded border border-gray-400 px-4 py-2 text-black hover:bg-gray-400">
           <img
             className="h-3 w-3"

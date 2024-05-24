@@ -91,11 +91,11 @@ const Proyecto = ({ params: { proyecto } }) => {
       <BannerLoteo />
       <BannerEjecutivas />
       <BannerAccesos />
-      <BannerProyectos
+     {/*  <BannerProyectos
         texto="Proyectos por región"
         titulo="región"
         filtro="region"
-      />
+      /> */}
     </>
   );
 };

@@ -74,7 +74,7 @@ const options = [
   { value: 4, label: "Preguntas Frecuentes" },
 ];
 
-const Banner = (props) => {
+const Page = (props) => {
   const activo = parseInt(props.activo);
 
   const handleChange = (value) => {
@@ -98,51 +98,20 @@ const Banner = (props) => {
 
   return (
     <>
-      <div className="hidden w-1/3 justify-end px-4 pb-4 sm:flex md:h-80 xl:h-64">
-        <div className="border px-6 py-6 shadow-xl">
-          <div className="px-1 py-4">
-            <a
-              href="/clientes"
-              className={`text-xl ${activo === 1 ? "text-rojoMalpo" : "text-grisMalpo"} hover:text-gray-400`}
-            >
-              Clientes
-            </a>
-          </div>
-          <div className="px-4 py-2">
-            <a
-              href="/clientes/post-venta?val=2"
-              className={`text-xl ${activo === 2 ? "text-rojoMalpo" : "text-grisMalpo"} hover:text-gray-400`}
-            >
-              PostVenta
-            </a>
-          </div>
-          <div className="px-4 py-2">
-            <a
-              href="/clientes/manuales-de-compra?val=3"
-              className={`text-xl ${activo === 3 ? "text-rojoMalpo" : "text-grisMalpo"} hover:text-gray-400`}
-            >
-              Manuales de compra
-            </a>
-          </div>
-          <div className="px-4 py-2">
-            <a
-              href="/clientes/preguntas-frecuentes?val=4"
-              className={`text-xl ${activo === 4 ? "text-rojoMalpo" : "text-grisMalpo"} hover:text-gray-400`}
-            >
-              Preguntas Frecuentes
-            </a>
-          </div>
+      <div className="pb-6 pt-28">
+        <div className="ml-4 mb-4">
+          <h1 className="mb-2 text-3xl sm:text-center">Blog</h1>
+          <p className="text-sm sm:text-center">
+            Conoce más sobre el mundo inmobiliario, tendencias, diseño y más
+          </p>
         </div>
-      </div>
-      <div className="flex w-full px-4 pb-4 sm:hidden">
-        <CustomSelect
-          options={options}
-          onChange={handleChange}
-          activo={activo}
-        />
+
+        <div className="mx-auto flex w-11/12 pb-4 md:w-6/12 xl:w-4/12">
+          <CustomSelect options={options} activo={1} />
+        </div>
       </div>
     </>
   );
 };
 
-export default Banner;
+export default Page;
