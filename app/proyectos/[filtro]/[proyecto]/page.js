@@ -1,6 +1,5 @@
-"use client";
-import React from "react";
-
+'use client';
+import React, { useState, useEffect } from "react";
 import BannerProyecto from "@/app/componets/banner-proyectos/banner-proyecto";
 import BannerLogos from "@/app/componets/banner-proyectos/banner-logos";
 import BannerSalaVentas from "@/app/componets/banner-proyectos/banner-sala-ventas";
@@ -15,16 +14,19 @@ import Button from "@/app/componets/button/button";
 import ButtonRojo from "@/app/componets/button/button-rojo";
 import ListProyecto from "@/app/componets/list-proyecto/list-proyecto";
 import ListEtapa from "@/app/componets/list-proyecto/list-etapa";
+import { useSearchParams } from 'next/navigation'
+import { Ctrl_proyectos, ProyectoData } from "@/app/controllers/Ctrl_proyectos";
+import Link from "next/link";
 
 const UrlBanner = (props) => {
   return (
     <>
-      <a href="#" className="mx-1 hover:text-gray-400">
+      <a href="/proyectos" className="mx-1 hover:text-gray-400">
         Proyectos
       </a>
       /
-      <a href="#" className="mx-1 hover:text-gray-400">
-        {props.nombre}
+      <a href={`/proyectos/${props.ciudad}`}  className="mx-1 hover:text-gray-400">
+        {props.ciudad}
       </a>
     </>
   );
@@ -32,57 +34,86 @@ const UrlBanner = (props) => {
 
 const Proyecto = ({ params: { proyecto } }) => {
   const filtroDecodificado = proyecto ? decodeURIComponent(proyecto) : "";
-  const url = <UrlBanner nombre={filtroDecodificado} />;
   const nombre = filtroDecodificado;
+  // const proyectosData= await Ctrl_proyectos()
+  const searchParams = useSearchParams();
+  const idProyecto = searchParams.get("val");
+
+  const [proyectoData, setProyectoData] = useState(null);
+  // console.log("idProyecto",idProyecto);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let  result = await Ctrl_proyectos(idProyecto);
+        setProyectoData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} ciudad={proyectoData?.datos?.proyecto?.comunaNombre} />;
 
   return (
     <>
-      <BannerProyecto url={url} nombre={nombre} />
+      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} />
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <p className="text-18px sm:text-center">
-          La mejor relación precio-calidad. Confía en la experiencia y asesoría
-          Malpo. Comprueba nuestros altos estándares en materiales, diseño y
-          terminaciones.El bienestar y futuro de cada familia, es nuestra
-          priridad.La ubicacion esta en el sector Norte de Maule.
+          {proyectoData?.datos?.proyecto?.informacionProyecto}
         </p>
       </div>
 
       <div className="mb-6 mt-6 flex justify-center">
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
           <ButtonRojo titulo="Cotizar" />
+         
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
           />
+         
           <Button
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
+            // url={proyectoData?.datos?.proyecto?.pdfBrochure}
+            url={proyectoData?.datos?.recursos?.pdfBrochure}
           />
         </div>
       </div>
 
+      {proyectoData?.datos?.recursos && (
       <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">
           Características generales del proyecto
         </h1>
-        <ListProyecto />
+        <ListProyecto caracteristicas={proyectoData?.datos?.recursos}
+        />
       </div>
+  )}
 
+  {proyectoData?.datos?.logos && (
       <div className="pb-6 pt-6">
         <div className="flex flex-wrap justify-start xl:justify-center">
-          <BannerLogos />
-          <BannerLogos />
-          <BannerLogos />
-          <BannerLogos />
-          <BannerLogos />
+          <BannerLogos logos={proyectoData?.datos?.logos}/>
         </div>
       </div>
+  )}
 
-      <CardModelos texto="Modelos de Casas" />
+
+    <div id="modelos">
+    {proyectoData?.datos?.modelos && (
+      <CardModelos texto="Modelos de Casas" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto}/>
+    )}
+    </div>
 
       <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Etapa del proyecto</h1>
-        <ListEtapa />
+        <ListEtapa nombreProyecto={proyectoData?.datos?.proyecto?.nombreWebProyecto} avances={proyectoData?.datos?.avances}/>
       </div>
 
       <BannerSalaVentas />
@@ -94,7 +125,7 @@ const Proyecto = ({ params: { proyecto } }) => {
       <BannerProyectos
         texto="Proyectos por región"
         titulo="región"
-        filtro="region"
+        filtro="regiones"
       />
     </>
   );

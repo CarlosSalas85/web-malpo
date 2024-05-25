@@ -13,8 +13,8 @@ export function Ctrl_regiones() {
                 'Content-Type': 'application/json',
                 'X-API-KEY': apiKey,
                 'Authorization': authHeader
-            }
-            // cache: 'no-store' ,
+            },
+             cache: 'no-store' ,
             // next: { revalidate: true } // Revalidación bajo demanda
         })
             .then(response => response.json())

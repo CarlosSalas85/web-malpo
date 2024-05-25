@@ -1,9 +1,33 @@
 'use client';
 import React, { useState } from "react";
+import { Ctrl_contacto } from "@/app/controllers/Ctrl_contacto";
 import "./styleFooter.css";
 
-const Footer = () => {
+const Modal = ({ onClose, children }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opacity-75">
+      <div className="relative m-auto w-full max-w-md rounded bg-white p-8 shadow-lg">
+        <button
+          className="absolute right-0 top-0 m-4 text-rojoMalpo hover:text-gray-400"
+          onClick={onClose}
+        >
+          <img
+            className="mr-3 h-8 w-8"
+            alt={`icono`}
+            src={`https://c.animaapp.com/o0ROixJd/img/cancel@2x.png`}
+          />
+        </button>
+        <div className="mt-4">{children}</div>
+      </div>
+    </div>
+  );
+};
+
+const Footer = ({redes}) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [formularioEnviado, setFormularioEnviado] = useState(null);
+ // Estado para almacenar los errores del formulario
+ const [errors, setErrors] = useState({});
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
@@ -21,11 +45,39 @@ const Footer = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Aquí puedes agregar la lógica para enviar los datos del formulario
-    console.log(formData);
+    // Validar el formulario
+    // const errors = validateForm(formData);
+    // if (Object.keys(errors).length === 0) {
+        // Enviar el formulario
+        // console.log('Formulario válido, apunto de ser enviados:', formData);
+        try {
+            // console.log("ESTOY CONTACTO A PUNTO DE ENVAIR LOS DATOS AL FORMULARIO",formData);
+            formData.tipoForm="contacto"
+            // Enviar el formulario a la API
+            // DESCOMENTAR ESTAS LINEAS PARA QUE FUNCIONE LA API
+            const response=await Ctrl_contacto(formData);
+            if (response && !response.ok) {
+              throw new Error('Error al enviar el formulario', response);
+          }
+            console.log('El formulario ha sido enviado');
+            setFormularioEnviado(true);
+          } catch (error) {
+           console.error('Error al enviar el formulario:', error.message);
+           setFormularioEnviado(false);
+            // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
+          }
+    // } else {
+    //     setErrors(errors);
+    // }
+    // console.log(formData);
   };
+
+
+
+
 
   return (
     <>
@@ -47,7 +99,7 @@ const Footer = () => {
                 </a>
               </p>
               <p className="mb-4">
-                <a href="#" className="hover:text-gray-400">
+                <a href="#" className="hover:text-gray-400" onClick={handleModalToggle}>
                   Contacto
                 </a>
               </p>
@@ -63,27 +115,15 @@ const Footer = () => {
               </p>
             </div>
             <div className="mt-10 flex items-center text-left sm:mt-0 sm:pl-12">
-              <a href="#" className="mr-2 hover:text-gray-400">
+            {redes.datos.map((redSocial) => (
+              <a key={redSocial.idRrss} href={redSocial.urlRrss} target="_blank" className="mr-2 hover:text-gray-400">
                 <img
                   className="img-rrss mr-2"
-                  alt={`instagram`}
-                  src={`https://c.animaapp.com/kJfIIeGG/img/---icon--instagram-fill-icon-@2x.png`}
+                  alt={`Icon ${redSocial.nombreRrss}`}
+                  src={redSocial.logoRrss}
                 />
               </a>
-              <a href="#" className="mr-2 hover:text-gray-400">
-                <img
-                  className="img-rrss mr-2"
-                  alt={`facebook`}
-                  src={`https://c.animaapp.com/kJfIIeGG/img/---icon--social-facebook-icon-@2x.png`}
-                />
-              </a>
-              <a href="#" className="mr-2 hover:text-gray-400">
-                <img
-                  className="img-rrss"
-                  alt={`youtube`}
-                  src={`https://c.animaapp.com/kJfIIeGG/img/---icon--youtube-@2x.png`}
-                />
-              </a>
+               ))}
             </div>
           </div>
         </div>
@@ -111,6 +151,7 @@ const Footer = () => {
             <h1 className="text-center text-lg font-bold">
               Formulario de Contacto
             </h1>
+            
             <form onSubmit={handleSubmit} className="mx-auto max-w-md">
               <div className="mb-4">
                 <label htmlFor="name" className="mb-2 block">
@@ -177,6 +218,7 @@ const Footer = () => {
               </div>
             </form>
           </div>
+        
         </Modal>
       )}
       {/* modal */}

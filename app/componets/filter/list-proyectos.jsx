@@ -1,15 +1,11 @@
-'use client';
 import CustomCards from "../../componets/card-proyecto/card-proyecto-uno";
 import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
+import { Pagination } from "../pagination/pagination";
 
 
 
 export default async function List(props){
   // Función auxiliar para reemplazar espacios en blanco por guiones bajos y codificar la URL
-const replaceSpaces = (str) => {
-  return encodeURIComponent(str.replace(/\s/g, '-'));
-};
-
 const ids = {
   estadoInversion: props.estadoInversion,
   tipoProyectoId: 0,
@@ -22,6 +18,8 @@ const ids = {
 
 const data = await Ctrl_aplicar_filtros(ids);
 const proyectosIniciales = data.datos;
+const cantidadProyectos = proyectosIniciales.length;
+const totalPaginas = Math.ceil(cantidadProyectos / 4);
 
 
   return (
@@ -29,11 +27,10 @@ const proyectosIniciales = data.datos;
         {proyectosIniciales.map((proyecto, index) => (
         <div className="flex w-full justify-center pb-6 xl:w-1/2" key={index}>
           <CustomCards // Don't forget to add a unique key for each item in the map function
-            idProyecto={1} // Consider using proyecto.id or something unique from your data
+            idProyecto={proyecto.idProyecto} // Consider using proyecto.id or something unique from your data
             pagina={props.pagina}
-            ciudad={props.ciudad}
+            ciudad={proyecto.comunaNombre}
             proyecto={proyecto}
-            nombreProyectoUrl={(replaceSpaces(proyecto.nombreWebProyecto))}
             nombreProyecto={proyecto.nombreWebProyecto}
             comunaNombre={proyecto.comunaNombre}
             nombreEtapa={proyecto.nombreEtapa}
@@ -67,6 +64,7 @@ const proyectosIniciales = data.datos;
           />
         </button>
       </div>
+      {/* <Pagination view="proyectos" totalPages={totalPaginas} onPageChange={cambiarPagina}/>  */}
     </div>
   );
 };

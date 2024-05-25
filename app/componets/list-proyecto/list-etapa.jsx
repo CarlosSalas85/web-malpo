@@ -70,12 +70,34 @@ const IconoList = (props) => {
   );
 };
 
-const List = () => {
+const List = (props) => {
+  console.log("Los datos de nombre Proyecto y avances, avances[0].estadoAvance", props.nombreProyecto, props.avances);
+  const nombreProyecto = props.nombreProyecto;
+  const avances = props.avances;
+  
+  var idmayorAvance = 0;
+  var mayorAvance="Piloto";
+  
+  // Verificar que avances esté definido y tenga al menos 5 elementos
+  if (avances) {
+    // Iterar sobre los primeros cinco avances
+    for (let i = 0; i < 6; i++) {
+      if (avances[i]?.estadoAvance === "1") {
+        idmayorAvance = i; // Actualizamos el mayor valor de i
+        // Si el estado de avance es "1", aplicamos el filtro de escala de grises
+      }
+    }
+    
+   
+
+    var mayorAvance = avances[idmayorAvance]?.nombreAvance;
+    console.log("El valor de mayorAvance es:", mayorAvance);
+  } 
   return (
     <>
       {/* Título */}
       <div className="text-18px mb-4 ml-4 mt-4 md:text-center">
-        <h1>El proyecto Doña Ignacia se encuentra en etapa de Terminaciones</h1>
+        <h1>El proyecto {nombreProyecto} se encuentra en etapa de {mayorAvance}</h1>
       </div>
       <div className="flex flex-col items-center justify-center">
         {/* Fila de íconos */}

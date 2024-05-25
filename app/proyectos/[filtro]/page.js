@@ -72,7 +72,7 @@ export default async function Page (){
           {/* Sección 1/3 */}
           <Filter filtros={contenidoFiltros}/>
           {/* Sección 2/3 */}
-          <ListProyectos pagina="filtros" ciudad="ciudad" estadoInversion="0"/>
+          <ListProyectos pagina="proyectos" ciudad="ciudad" estadoInversion="0"/>
           {/* <ListProyectos pagina="filtros" ciudad="ciudad" proyectos={proyectosIniciales}/> */}
         </div>
 

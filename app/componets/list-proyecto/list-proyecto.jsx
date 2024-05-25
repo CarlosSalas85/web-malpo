@@ -1,78 +1,91 @@
-const List = () => {
+
+const List = (props) => {
+     const mt2Minimo=props.caracteristicas.mt2Minimo;
+     const mt2Maximo=props.caracteristicas.mt2Maximo;
+     const habitacionesMinimo=props.caracteristicas.habitacionesMinimo;
+     const habitacionesMaximo=props.caracteristicas.habitacionesMaximo;
+     const banosMinimo=props.caracteristicas.banosMinimo;
+     const banosMaximo=props.caracteristicas.banosMaximo;
+     const estacionamientosMin=props.caracteristicas.estacionamientosMinimo;
+     const estacionamientosMax=props.caracteristicas.estacionamientosMaximo;
+     const homeOffice= props.caracteristicas.homeOffice
   return (
-    <div className="flex items-center justify-center">
-      <div className="w-full sm:w-2/3 xl:w-1/3">
-        <h1 className="ml-4 mb-4 mt-4 text-xl font-semibold sm:text-center">
-          Título UF 5.000
-        </h1>
-        <div className="mb-4 flex flex-col justify-around sm:flex-row">
-          <div className="mx-auto mb-4 flex w-full flex-col items-center sm:mb-0 sm:w-auto">
-            <span className="flex items-center text-center">
-              <img
-                className="mr-3 h-8 w-8"
-                alt={`icono`}
-                src={`https://c.animaapp.com/AuWMAeuM/img/house.svg`}
-              />
-              <span className="text-2xl font-semibold">Item 1</span>
+    <>
+    <h1 className="mb-4 ml-4 mt-4 text-xl font-semibold sm:text-center">
+      Desde UF {props.caracteristicas.ufMinimo}
+    </h1>
+    <div className="mt-4 flex justify-center">
+      <ul className="flex w-7/12 md:w-9/12 xl:w-8/12 flex-wrap justify-between">
+        <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
+          <div className="flex">
+            <img
+              className="mr-3 h-8 w-8"
+              alt="icono"
+              src="https://c.animaapp.com/AuWMAeuM/img/house.svg"
+            />
+            <span className="text-xl font-semibold">Casa</span>
+          </div>
+        </li>
+        <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
+          <div className="flex">
+            <img
+              className="mr-3 h-8 w-8"
+              alt="icono"
+              src="https://c.animaapp.com/z2K26Tdh/img/group-1@2x.png"
+            />
+            <span className="text-xl font-semibold">
+             {mt2Minimo}-{mt2Maximo}  m2 útiles
             </span>
           </div>
-          <div className="mx-auto flex w-full flex-col items-center sm:w-auto">
-            <span className="flex items-center text-center">
-              <img
-                className="mr-3 h-8 w-8"
-                alt={`icono`}
-                src={`https://c.animaapp.com/z2K26Tdh/img/group-1@2x.png`}
-              />
-              <span className="text-2xl font-semibold">Item 2</span>
+        </li>
+        <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
+          <div className="flex items-center">
+            <img
+              className="mr-3 h-8 w-8"
+              alt="icono"
+              src="https://c.animaapp.com/AuWMAeuM/img/king-bed.svg"
+            />
+            <span className="text-xl font-semibold">
+            {habitacionesMinimo}-{habitacionesMaximo} habitaciones
             </span>
           </div>
-        </div>
-        <div className="mb-4 flex flex-col justify-around sm:flex-row">
-          <div className="mx-auto mb-4 flex w-full flex-col items-center sm:mb-0 sm:w-auto">
-            <span className="flex items-center text-center">
-              <img
-                className="mr-3 h-8 w-8"
-                alt={`icono`}
-                src={`https://c.animaapp.com/AuWMAeuM/img/king-bed.svg`}
-              />
-              <span className="text-2xl font-semibold">Item 1</span>
-            </span>
+        </li>
+        <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
+          <div className="flex items-center">
+            <img
+              className="mr-3 h-8 w-8"
+              alt="icono"
+              src="https://c.animaapp.com/AuWMAeuM/img/bathtub.svg"
+            />
+            <span className="text-xl font-semibold">{banosMinimo}-{banosMaximo} baños</span>
           </div>
-          <div className="mx-auto flex w-full flex-col items-center sm:w-auto">
-            <span className="flex items-center text-center">
-              <img
-                className="mr-3 h-8 w-8"
-                alt={`icono`}
-                src={`https://c.animaapp.com/AuWMAeuM/img/bathtub.svg`}
-              />
-              <span className="text-2xl font-semibold">Item 2</span>
-            </span>
+        </li>
+        <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
+          <div className="flex items-center">
+            <img
+              className="mr-3 h-8 w-8"
+              alt="icono"
+              src="https://c.animaapp.com/AuWMAeuM/img/directions-car.svg"
+            />
+            <span className="text-xl font-semibold">{estacionamientosMin}-{estacionamientosMax} estacionamientos
+        </span>
           </div>
-        </div>
-        <div className="mb-4 flex flex-col justify-around sm:flex-row">
-          <div className="mx-auto mb-4 flex w-full flex-col items-center sm:mb-0 sm:w-auto">
-            <span className="flex items-center text-center">
-              <img
-                className="mr-3 h-8 w-8"
-                alt={`icono`}
-                src={`https://c.animaapp.com/AuWMAeuM/img/directions-car.svg`}
-              />
-              <span className="text-2xl font-semibold">Item 1</span>
-            </span>
+        </li>
+        {homeOffice==1 && (
+        <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
+          <div className="flex items-center">
+            <img
+              className="mr-3 h-8 w-8"
+              alt="icono"
+              src="https://c.animaapp.com/AuWMAeuM/img/laptop-chromebook.svg"
+            />
+            <span className="text-xl font-semibold">Home Office</span>
           </div>
-          <div className="mx-auto flex w-full flex-col items-center sm:w-auto">
-            <span className="flex items-center text-center">
-              <img
-                className="mr-3 h-8 w-8"
-                alt={`icono`}
-                src={`https://c.animaapp.com/AuWMAeuM/img/laptop-chromebook.svg`}
-              />
-              <span className="text-2xl font-semibold">Item 2</span>
-            </span>
-          </div>
-        </div>
-      </div>
+        </li>
+        )}
+      </ul>
     </div>
+  </>
   );
 };
 

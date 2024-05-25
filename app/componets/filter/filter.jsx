@@ -125,28 +125,19 @@ const FilterButton = ({ type, activeFilter, handleClick }) => {
 
 
 const Filter = ({filtros}) => {
-  console.log("Los filtros en Filter son:",filtros);
+  // console.log("Los filtros en Filter son:",filtros);
   const [activeFilterTipo, setActiveFilterTipo] = useState("TODOS");
   const [activeFilterSubsidio, setActiveFilterSubsidio] = useState("TODOS");
   const [activeFilterDormitorios, setActiveFilterDormitorios] =
     useState("TODOS");
   const [activeFilterBanos, setActiveFilterBanos] = useState("TODOS");
   const [mostrarSession, setMostrarSession] = useState(false);
-
-  const [selectedOptionEtapa, setSelectedOptionEtapa] = useState(filtros.etapasProyecto[0].id);
-  const [selectedOptionCiudad, setSelectedOptionCiudad] = useState(filtros.ciudadesProyecto[0].id);
   const [filteredData, setFilteredData] = useState(null);
 
-  const getFilterId = (activeFilter, filterArray, defaultId = 0) => {
-    if (activeFilter === "TODOS") return defaultId;
-    const filterItem = filterArray.find((item) => item.nombre === activeFilter || item.cantidad === activeFilter);
-    return filterItem ? filterItem.id : defaultId;
-  };
 
   const applyFilters = async () => {
     const ids = {
       estadoInversion: 0,
-
       tipoProyectoId: 0,
       subsidioId:0,
       dormitorioId: 0,
@@ -155,11 +146,11 @@ const Filter = ({filtros}) => {
       ciudadId: 0,
     };
 
-    console.log("El valor de ids es:", ids);
+    // console.log("El valor de ids es:", ids);
     const response = await Ctrl_aplicar_filtros(ids);
     setFilteredData(response.datos);
     // actualizarProyectos(response.datos);
-    console.log("Lo que obtengo desde filteredData es:", filteredData);
+    // console.log("Lo que obtengo desde filteredData es:", filteredData);
   };
 
   useEffect(() => {
@@ -198,7 +189,7 @@ const Filter = ({filtros}) => {
       //ciudadId: selectedOptionCiudad,
     };
 
-    console.log("El valor de ids es:", ids);
+    // console.log("El valor de ids es:", ids);
     // console.log(ids);
     // Ctrl_aplicar_filtros(ids)
     //   .then((response) => {

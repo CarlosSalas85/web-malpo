@@ -1,7 +1,8 @@
-export function Ctrl_modelo(id) {
+import { revalidateTag } from 'next/cache';
+
+export function Ctrl_redes_sociales() {
     return new Promise((resolve, reject) => {
-        //var url = process.env.NEXT_PUBLIC_API_URL + 'proyectos/ver_ciudades';
-        var url = process.env.NEXT_PUBLIC_API_URL + `proyectos/modelo/${id}`;
+        var url = `${process.env.NEXT_PUBLIC_API_URL}/rrss/estado/1`;
         const apiKey =process.env.SMTP_API_KEY;
         const username = process.env.SMTP_API_USERNAME;
         const password = process.env.SMTP_API_PASSWORD;
@@ -14,16 +15,18 @@ export function Ctrl_modelo(id) {
                 'X-API-KEY': apiKey,
                 'Authorization': authHeader
             },
-            //    next: { tags: ['modeloId']},
+                next: { tags: ['redes_sociales']},
         })
             .then(response => response.json())
             .then(data => {
-                resolve(data); // Resuelve la Promesa con los datos obtenidos
                 // console.log(data);
+                resolve(data);
+                revalidateTag('redes_sociales'); // Invalida y actualiza la caché para la etiqueta 'ciudades'
+                // Resuelve la Promesa con los datos obtenidos
             })
             .catch(error => {
                 //console.log(error);
                 reject(error); // Rechaza la Promesa si hay algún error
             });
     });
-  }
+}
