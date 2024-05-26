@@ -25,7 +25,7 @@ const UrlBanner = (props) => {
         Proyectos
       </a>
       /
-      <a href={`/proyectos/${props.ciudad}`}  className="mx-1 hover:text-gray-400">
+      <a href={`/proyectos/${props.ciudad}`} className="mx-1 hover:text-gray-400">
         {props.ciudad}
       </a>
     </>
@@ -41,11 +41,11 @@ const Proyecto = ({ params: { proyecto } }) => {
 
   const [proyectoData, setProyectoData] = useState(null);
   // console.log("idProyecto",idProyecto);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let  result = await Ctrl_proyectos(idProyecto);
+        let result = await Ctrl_proyectos(idProyecto);
         setProyectoData(result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -71,56 +71,73 @@ const Proyecto = ({ params: { proyecto } }) => {
       <div className="mb-6 mt-6 flex justify-center">
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
           <ButtonRojo titulo="Cotizar" />
-         
+
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
+            href="#modelos"
+            target="0"
           />
-         
+
           <Button
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
             // url={proyectoData?.datos?.proyecto?.pdfBrochure}
             url={proyectoData?.datos?.recursos?.pdfBrochure}
+            target="1"
           />
         </div>
       </div>
 
       {proyectoData?.datos?.recursos && (
-      <div className="pb-6 pt-6">
-        <h1 className="ml-4 text-3xl sm:text-center">
-          Características generales del proyecto
-        </h1>
-        <ListProyecto caracteristicas={proyectoData?.datos?.recursos}
-        />
-      </div>
-  )}
-
-  {proyectoData?.datos?.logos && (
-      <div className="pb-6 pt-6">
-        <div className="flex flex-wrap justify-start xl:justify-center">
-          <BannerLogos logos={proyectoData?.datos?.logos}/>
+        <div className="pb-6 pt-6">
+          <h1 className="ml-4 text-3xl sm:text-center">
+            Características generales del proyecto
+          </h1>
+          <ListProyecto caracteristicas={proyectoData?.datos?.recursos}
+          />
         </div>
+      )}
+
+      {proyectoData?.datos?.logos && (
+        <div className="pb-6 pt-6">
+          <div className="flex flex-wrap justify-start xl:justify-center">
+            <BannerLogos logos={proyectoData?.datos?.logos} />
+          </div>
+        </div>
+      )}
+
+
+      <div id="modelos">
+        {proyectoData?.datos?.modelos && (
+          <CardModelos texto="Modelos de Casas" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto} />
+        )}
       </div>
-  )}
 
 
-    <div id="modelos">
-    {proyectoData?.datos?.modelos && (
-      <CardModelos texto="Modelos de Casas" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto}/>
-    )}
-    </div>
+      {proyectoData?.datos?.avances && (
+        <div className="pb-6 pt-6">
+          <h1 className="ml-4 text-3xl sm:text-center">Etapa del proyecto</h1>
+          <ListEtapa nombreProyecto={proyectoData?.datos?.proyecto?.nombreWebProyecto} avances={proyectoData?.datos?.avances} />
+        </div>
+      )}
 
-      <div className="pb-6 pt-6">
-        <h1 className="ml-4 text-3xl sm:text-center">Etapa del proyecto</h1>
-        <ListEtapa nombreProyecto={proyectoData?.datos?.proyecto?.nombreWebProyecto} avances={proyectoData?.datos?.avances}/>
-      </div>
+      {proyectoData?.datos?.salas && (
+        <BannerSalaVentas salas={proyectoData?.datos?.salas} />
+      )}
 
-      <BannerSalaVentas />
-      <BannerUbicacion />
-      <BannerMapa />
-      <BannerLoteo />
-      <BannerEjecutivas />
+      {proyectoData?.datos?.proyecto && (
+        <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />
+      )}
+      {proyectoData?.datos?.proyecto && (
+      <BannerMapa proyecto={proyectoData?.datos?.proyecto} />
+      )}
+      {proyectoData?.datos?.proyecto?.imagenLoteo && (
+      <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />
+      )}
+       {proyectoData?.datos?.usuarios && (
+      <BannerEjecutivas usuarios={proyectoData?.datos.usuarios} />
+       )}
       <BannerAccesos />
       <BannerProyectos
         texto="Proyectos por región"

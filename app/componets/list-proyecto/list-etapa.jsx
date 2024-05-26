@@ -71,10 +71,28 @@ const IconoList = (props) => {
 };
 
 const List = (props) => {
-  console.log("Los datos de nombre Proyecto y avances, avances[0].estadoAvance", props.nombreProyecto, props.avances);
+  // console.log("Los datos de nombre Proyecto y avances, avances[0].estadoAvance", props.nombreProyecto, props.avances);
   const nombreProyecto = props.nombreProyecto;
   const avances = props.avances;
-  
+  const iconos_rojo = [].concat(
+    // '../../iconos/etapa/PILOTOON.png',
+    '../../iconos/etapa/OBRASPREVIASOK.png',
+    '../../iconos/etapa/OBRASPREVIASOK.png',
+    '../../iconos/etapa/OBRAGRUESAOK.png',
+    '../../iconos/etapa/TERMINACIONESOK.png',
+    '../../iconos/etapa/RECEPCIONMUNICIPALOK.png',
+    '../../iconos/etapa/ENTREGAOK.png'
+  );
+  const iconos_gris = [].concat(
+    // '../../iconos/etapa/PILOTOOFF.png',
+    '../../iconos/etapa/OBRASPREVIAS.png',
+    '../../iconos/etapa/OBRASPREVIAS.png',
+    '../../iconos/etapa/OBRAGRUESA.png',
+    '../../iconos/etapa/TERMINACIONES.png',
+    '../../iconos/etapa/RECEPCIONMUNICIPAL.png',
+    '../../iconos/etapa/ENTREGA.png'
+  );
+
   var idmayorAvance = 0;
   var mayorAvance="Piloto";
   
@@ -88,50 +106,64 @@ const List = (props) => {
       }
     }
     
-   
 
     var mayorAvance = avances[idmayorAvance]?.nombreAvance;
-    console.log("El valor de mayorAvance es:", mayorAvance);
+    // console.log("El valor de mayorAvance es:", mayorAvance);
   } 
   return (
     <>
       {/* Título */}
+      {avances != null && (
       <div className="text-18px mb-4 ml-4 mt-4 md:text-center">
         <h1>El proyecto {nombreProyecto} se encuentra en etapa de {mayorAvance}</h1>
       </div>
+       )}
+      
+      
+      {avances != null && (
       <div className="flex flex-col items-center justify-center">
         {/* Fila de íconos */}
         <div className="mt-6 flex flex-col justify-center sm:flex-row md:justify-between">
+        {/* Se usa slice(1) para no imprimir el primer elemento del array ya que se imprime abajo */}
+        {/* {avances.slice(1).map((avance, index) => (
+              <IconoList
+                key={index}
+                titulo={avance.nombreAvance}
+                color={avance.estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
+                icono={avance.estadoAvance === "1" ? iconos_rojo[index] : iconos_gris[index]}
+                circulo={index === avances.length - 1 ? "block" : "hidden"}
+              />
+            ))} */}
           <IconoList
-            titulo={"Lanzamiento"}
-            color={"rojoMalpo"}
-            icono={"../../iconos/etapa/OBRASPREVIASOK.png"}
+            titulo={avances[1].nombreAvance}
+            color={avances[1].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
+            icono={avances[1].estadoAvance === "1" ? iconos_rojo[1] : iconos_gris[1]}
             circulo={"hidden"}
           />
           <IconoList
-            titulo={"En Construcción"}
-            color={"rojoMalpo"}
-            icono={"../../iconos/etapa/OBRAGRUESAOK.png"}
+            titulo={avances[2].nombreAvance}
+            color={avances[2].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
+            icono={avances[2].estadoAvance === "1" ? iconos_rojo[2] : iconos_gris[2]}
             circulo={"hidden"}
           />
           <IconoList
-            titulo={"Terminaciones"}
-            color={"grisMalpo"}
-            icono={"../../iconos/etapa/TERMINACIONES.png"}
+            titulo={avances[3].nombreAvance}
+            color={avances[3].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
+            icono={avances[3].estadoAvance === "1" ? iconos_rojo[3] : iconos_gris[3]}
             circulo={"hidden"}
           />
           <IconoList
-            titulo={"Pre-entrega"}
-            color={"grisMalpo"}
-            icono={"../../iconos/etapa/RECEPCIONMUNICIPAL.png"}
+            titulo={avances[4].nombreAvance}
+            color={avances[4].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
+            icono={avances[4].estadoAvance === "1" ? iconos_rojo[4] : iconos_gris[4]}
             circulo={"hidden"}
           />
           <IconoList
-            titulo={"Entrega Inmediata"}
-            color={"grisMalpo"}
-            icono={"../../iconos/etapa/ENTREGA.png"}
+            titulo={avances[5].nombreAvance}
+            color={avances[5].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
+            icono={avances[5].estadoAvance === "1" ? iconos_rojo[5] : iconos_gris[5]}
             circulo={"block"}
-          />
+          /> 
         </div>
 
         <div className="mt-4 flex justify-center md:justify-between">
@@ -143,12 +175,13 @@ const List = (props) => {
                 src={`../../iconos/etapa/PILOTOON.png`}
               />
               <p className={`mt-2 text-rojoMalpo hover:text-gray-400`}>
-                Vivienda Piloto
+                Vivienda Piloto 
               </p>
             </div>
           </a>
         </div>
       </div>
+      )}
     </>
   );
 };
