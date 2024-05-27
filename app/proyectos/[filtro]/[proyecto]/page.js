@@ -8,13 +8,12 @@ import BannerUbicacion from "@/app/componets/banner-proyectos/banner-ubicacion";
 import BannerMapa from "@/app/componets/banner-proyectos/banner-mapa";
 import BannerEjecutivas from "@/app/componets/banner-proyectos/banner-ejecutivas";
 import BannerAccesos from "@/app/componets/banner-proyectos/banner-accesos";
-import BannerProyectos from "@/app/componets/banner-proyectos/banner-proyectos";
 import BannerLoteo from "@/app/componets/banner-proyectos/banner-loteo";
 import CardModelos from "@/app/componets/card-proyecto/card-modelos";
 import Button from "@/app/componets/button/button";
-import ButtonRojo from "@/app/componets/button/button-rojo";
 import ListProyecto from "@/app/componets/list-proyecto/list-proyecto";
 import ListEtapa from "@/app/componets/list-proyecto/list-etapa";
+import ModalCotizador from "@/app/componets/modal/modal-cotizar";
 
 const UrlBanner = (props) => {
   return (
@@ -49,7 +48,10 @@ const Proyecto = ({ params: { proyecto } }) => {
 
       <div className="mb-6 mt-6 flex justify-center">
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
-          <ButtonRojo titulo="Cotizar" />
+          {/* <ButtonRojo titulo="Cotizar" /> */}
+
+          <ModalCotizador />
+
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
@@ -91,7 +93,7 @@ const Proyecto = ({ params: { proyecto } }) => {
       <BannerLoteo />
       <BannerEjecutivas />
       <BannerAccesos />
-     {/*  <BannerProyectos
+      {/*  <BannerProyectos
         texto="Proyectos por región"
         titulo="región"
         filtro="region"

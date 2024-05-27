@@ -10,7 +10,7 @@ const Page = () => {
           <h1 className="mb-2 text-3xl sm:text-center">
             Proyectos de Inversión
           </h1>
-          <p className="text-sm sm:text-center">
+          <p className="text-18px sm:text-center">
             Descubre las propiedades disponibles y elige la que más te convenga
           </p>
         </div>

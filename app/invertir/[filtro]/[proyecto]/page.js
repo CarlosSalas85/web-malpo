@@ -40,7 +40,7 @@ const Proyecto = ({ params: { proyecto } }) => {
         </p>
       </div>
 
-      <div className="pb-6 pt-6">
+      <div className="pb-3 pt-3">
         <h1 className="ml-4 text-xl font-semibold sm:text-center">
           Departamentos de 56, 62 mts² construidos, 3 dormitorios y 2 baños
         </h1>
@@ -67,7 +67,7 @@ const Proyecto = ({ params: { proyecto } }) => {
                   <img
                     className="mr-3 h-8 w-8"
                     alt={`icono`}
-                    src={`https://c.animaapp.com/AuWMAeuM/img/house.svg`}
+                    src="/iconos/invertir/dividendo.png"
                   />
                   Dividendo promedio $300.000
                 </li>
@@ -75,7 +75,7 @@ const Proyecto = ({ params: { proyecto } }) => {
                   <img
                     className="mr-3 h-8 w-8"
                     alt={`icono`}
-                    src={`https://c.animaapp.com/AuWMAeuM/img/house.svg`}
+                    src="/iconos/invertir/plusvalia.png"
                   />
                   Plusvalia anual +7%
                 </li>
@@ -83,7 +83,7 @@ const Proyecto = ({ params: { proyecto } }) => {
                   <img
                     className="mr-3 h-8 w-8"
                     alt={`icono`}
-                    src={`https://c.animaapp.com/AuWMAeuM/img/house.svg`}
+                    src="/iconos/invertir/arriendo.png"
                   />
                   Arriendo promedio $300.0000
                 </li>
