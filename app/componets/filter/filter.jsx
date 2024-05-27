@@ -1,22 +1,36 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useDeferredValue, useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "./styleFiltro.css";
-import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
 
-const CustomSelect = ({ options }) => {
+const CustomSelect = ({ options, handle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0].value);
-  
 
+
+  const modificarURL = (text) => {
+    const cleanString = (str) => {
+      return str.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/ñ/g, "n")
+        .replace(/\s+/g, "-")
+        .toLowerCase();
+    };
+    let url = `${cleanString(text)}`
+    window.history.replaceState(null, '', `/proyectos/${url}`);
+  }
+
+  
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleOptionSelect = (value) => {
+  const handleOptionSelect = (value, text) => {
     setSelectedOption(value);
+    handle(value);
     setIsOpen(false);
+    modificarURL(text)
   };
 
   return (
@@ -32,9 +46,8 @@ const CustomSelect = ({ options }) => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          className={`h-4 w-4 transform transition-transform ${
-            isOpen ? "-rotate-180" : ""
-          }`}
+          className={`h-4 w-4 transform transition-transform ${isOpen ? "-rotate-180" : ""
+            }`}
         >
           <path
             fillRule="evenodd"
@@ -48,19 +61,18 @@ const CustomSelect = ({ options }) => {
           {options.map((option) => (
             <div
               key={option.value}
-              className={`flex cursor-pointer items-center px-4 py-2 ${
-                selectedOption === option.value
-                  ? "bg-gray-200"
-                  : "hover:bg-gray-100"
-              }`}
-              onClick={() => handleOptionSelect(option.value)}
+              className={`flex cursor-pointer items-center px-4 py-2 ${selectedOption === option.value
+                ? "bg-gray-200"
+                : "hover:bg-gray-100"
+                }`}
+              onClick={() => handleOptionSelect(option.value, option.label)}
             >
               <span>{option.label}</span>
               <input
                 type="checkbox"
                 checked={selectedOption === option.value}
                 className="ml-auto cursor-pointer"
-                onChange={() => {}}
+                onChange={() => { }}
               />
             </div>
           ))}
@@ -72,20 +84,31 @@ const CustomSelect = ({ options }) => {
 
 
 
-const FilterButton = ({ type, activeFilter, handleClick }) => {
+const FilterButton = ({ id, type, activeFilter, handleClick }) => {
   return (
     <button
-      className={`text-l h-12 w-32 rounded border border-black hover:text-gray-400 ${
-        activeFilter === type
-          ? "fondo-malpo-gris text-white"
-          : "bg-white text-black"
-      } transition-colors duration-100 ease-in-out`}
-      onClick={() => handleClick(type)}
+      className={`text-l h-12 w-32 rounded border border-black hover:text-gray-400 ${activeFilter === id
+        ? "fondo-malpo-gris text-white"
+        : "bg-white text-black"
+        } transition-colors duration-100 ease-in-out`}
+      onClick={() => handleClick(id)}
     >
       {type}
     </button>
   );
 };
+
+const validar = (p1, p2) => {
+  if (p2 == 0) {
+    return true
+  } else {
+    if (p1 == p2) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
 
 // const data = await Ctrl_filtros();
 // const filtros = data.datos;
@@ -121,45 +144,39 @@ const FilterButton = ({ type, activeFilter, handleClick }) => {
 
 
 
+
 // console.log("Filtros:",contenidoFiltros);
+const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
 
-
-const Filter = ({filtros}) => {
-  console.log("Los filtros en Filter son:",filtros);
-  const [activeFilterTipo, setActiveFilterTipo] = useState("TODOS");
-  const [activeFilterSubsidio, setActiveFilterSubsidio] = useState("TODOS");
-  const [activeFilterDormitorios, setActiveFilterDormitorios] =
-    useState("TODOS");
-  const [activeFilterBanos, setActiveFilterBanos] = useState("TODOS");
-  const [mostrarSession, setMostrarSession] = useState(false);
-
+  const [activeFilterTipo, setActiveFilterTipo] = useState(0);
+  const [activeFilterSubsidio, setActiveFilterSubsidio] = useState(0);
+  const [activeFilterDormitorios, setActiveFilterDormitorios] = useState(0);
+  const [activeFilterBanos, setActiveFilterBanos] = useState(0);
   const [selectedOptionEtapa, setSelectedOptionEtapa] = useState(filtros.etapasProyecto[0].id);
-  const [selectedOptionCiudad, setSelectedOptionCiudad] = useState(filtros.ciudadesProyecto[0].id);
+  const [selectedOptionRegion, setSelectedOptionRegion] = useState(filtroUrl.regionSelecionada);
+  const [selectedOptionCiudad, setSelectedOptionCiudad] = useState(filtroUrl.comunaSelecionada);
+
+  const [mostrarSession, setMostrarSession] = useState(false);
   const [filteredData, setFilteredData] = useState(null);
 
   const getFilterId = (activeFilter, filterArray, defaultId = 0) => {
-    if (activeFilter === "TODOS") return defaultId;
+    if (activeFilter === 0) return defaultId;
     const filterItem = filterArray.find((item) => item.nombre === activeFilter || item.cantidad === activeFilter);
     return filterItem ? filterItem.id : defaultId;
   };
+
 
   const applyFilters = async () => {
     const ids = {
       estadoInversion: 0,
 
       tipoProyectoId: 0,
-      subsidioId:0,
+      subsidioId: 0,
       dormitorioId: 0,
       banoId: 0,
       etapaId: 0,
       ciudadId: 0,
     };
-
-    console.log("El valor de ids es:", ids);
-    const response = await Ctrl_aplicar_filtros(ids);
-    setFilteredData(response.datos);
-    // actualizarProyectos(response.datos);
-    console.log("Lo que obtengo desde filteredData es:", filteredData);
   };
 
   useEffect(() => {
@@ -177,35 +194,29 @@ const Filter = ({filtros}) => {
   const handleClick = () => {
 
     const proyecto = filtros.tiposProyecto.find((tipo) => tipo.nombre === activeFilterTipo);
-    const activeFilterTipoId=proyecto.id;
+    const activeFilterTipoId = proyecto.id;
     const subsidio = filtros.tiposSubsidio.find((subsidio) => subsidio.nombre === activeFilterSubsidio);
-    const activeFilterSubsidioId=subsidio.id;
+    const activeFilterSubsidioId = subsidio.id;
     const dormitorio = filtros.dormitorios.find((dormitorio) => dormitorio.cantidad === activeFilterDormitorios);
     // console.log("dormitorio", dormitorio);
-    const activeFilterDormitorioId=dormitorio.id;
+    const activeFilterDormitorioId = dormitorio.id;
     const bano = filtros.banos.find((bano) => bano.cantidad === activeFilterBanos);
-    const activeFilterBanoId=subsidio.id;
+    const activeFilterBanoId = subsidio.id;
 
     var ids = {
-      estadoInversion:0,
+      estadoInversion: 0,
       tipoProyectoId: activeFilterTipoId,
       subsidioId: activeFilterSubsidioId,
       dormitorioId: activeFilterDormitorioId,
       banoId: activeFilterBanoId,
       etapaId: 0,
-      ciudadId:0
+      ciudadId: 0
       //etapaId: selectedOptionEtapa,
       //ciudadId: selectedOptionCiudad,
     };
 
-    console.log("El valor de ids es:", ids);
-    // console.log(ids);
-    // Ctrl_aplicar_filtros(ids)
-    //   .then((response) => {
-    //     // Actualizar el componente Proximos Proyectos con los nuevos datos
-    //     setCurrentPage(1); // Suponiendo que tienes una variable de estado currentPage
-    //     actualizarProyectos(response.datos);
   };
+
 
   const handleClickTipo = (filter) => {
     setActiveFilterTipo(filter);
@@ -234,13 +245,63 @@ const Filter = ({filtros}) => {
       label: etapa.nombre
     };
   });
-  
+
   const optionsCiudad = filtros.ciudadesProyecto.map(etapa => {
     return {
       value: etapa.id,
       label: etapa.nombre
     };
   });
+
+
+
+
+  const filtrarProyectos = (proyectos, tipoProyecto, bano, dormitorio, subsidio, region, comuna, etapa) => {
+    const proyectosFiltrados = proyectos.filter(proyecto => {
+      // Verificar si algún parámetro de proyecto es igual a cero
+      let filtroTipo = false;
+      let filtroBano = false;
+      let filtroDormitorio = false;
+      let filtroSubsidio = false;
+      let filtroRegion = false;
+      let filtroComuna = false;
+      let filtroEtapa = false;
+      if (
+        tipoProyecto == '0' &&
+        bano == '0' &&
+        dormitorio == '0' &&
+        subsidio == '0' &&
+        region == '0' &&
+        comuna == '0' &&
+        etapa == '0'
+      ) {
+
+        return true
+
+      } else {
+        filtroTipo = validar(proyecto.idTipo, tipoProyecto);
+        filtroBano = validar(proyecto.bano, bano);
+        filtroDormitorio = validar(proyecto.dormitorio, dormitorio);
+        filtroSubsidio = validar(proyecto.idSubsidio, subsidio);
+        if (comuna == '0' && region == '0') {
+          filtroRegion = true;
+          filtroComuna = true;
+        } else {
+          filtroRegion = (proyecto.idRegion == region);
+          filtroComuna = (proyecto.idComuna == comuna);
+        }
+
+        filtroEtapa = validar(proyecto.idEtapa, etapa);
+        return (filtroTipo && filtroBano && filtroDormitorio && filtroSubsidio && (filtroRegion || filtroComuna) && filtroEtapa)
+      }
+    });
+    setFiltrarProyectos(proyectosFiltrados)
+  }
+
+  useEffect(() => {
+    filtrarProyectos(proyectos, activeFilterTipo, activeFilterBanos, activeFilterDormitorios, activeFilterSubsidio, selectedOptionRegion, selectedOptionCiudad, selectedOptionEtapa)
+  }, [activeFilterTipo, activeFilterBanos, activeFilterDormitorios, activeFilterSubsidio, selectedOptionRegion, selectedOptionCiudad, selectedOptionEtapa]);
+
 
 
 
@@ -318,58 +379,62 @@ const Filter = ({filtros}) => {
         <h2 className="text-2xl">Tipo de proyecto</h2>
 
         <div className="mb-6 mt-3 flex">
-  
-        {filtros.tiposProyecto.map((tipoProyecto, index) => (
-  <FilterButton key={index}
-    type={tipoProyecto.nombre}
-    activeFilter={activeFilterTipo}
-    handleClick={handleClickTipo}
-  />
-))}
-          
+
+          {filtros.tiposProyecto.map((tipoProyecto, index) => (
+            <FilterButton key={index}
+              id={tipoProyecto.id}
+              type={tipoProyecto.nombre}
+              activeFilter={activeFilterTipo}
+              handleClick={handleClickTipo}
+            />
+          ))}
+
         </div>
 
         <h2 className="text-2xl">Subsidio</h2>
 
         <div className="mb-6 mt-3 flex">
-        {filtros.tiposSubsidio.map((tipoSubsidio, index) => (
-  <FilterButton key={index}
-    type={tipoSubsidio.nombre}
-    activeFilter={activeFilterSubsidio}
-    handleClick={handleClickSubsidio}
-  />
-))}
+          {filtros.tiposSubsidio.map((tipoSubsidio, index) => (
+            <FilterButton key={index}
+              id={tipoSubsidio.id}
+              type={tipoSubsidio.nombre}
+              activeFilter={activeFilterSubsidio}
+              handleClick={handleClickSubsidio}
+            />
+          ))}
         </div>
 
         <h2 className="text-2xl">Dormitorios</h2>
 
         <div className="mb-6 mt-3 flex">
-        {filtros.dormitorios.map((dormitorio, index) => (
-  <FilterButton key={index}
-    type={dormitorio.cantidad}
-    activeFilter={activeFilterDormitorios}
-    handleClick={handleClickDormitorios}
-  />
-))}
+          {filtros.dormitorios.map((dormitorio, index) => (
+            <FilterButton key={index}
+              id={dormitorio.id}
+              type={dormitorio.cantidad}
+              activeFilter={activeFilterDormitorios}
+              handleClick={handleClickDormitorios}
+            />
+          ))}
         </div>
 
         <h2 className="text-2xl">Baños</h2>
 
         <div className="mb-6 mt-3 flex">
-        {filtros.banos.map((bano, index) => (
-  <FilterButton key={index}
-    type={bano.cantidad}
-    activeFilter={activeFilterBanos}
-    handleClick={handleClickBanos}
-  />
-))}
+          {filtros.banos.map((bano, index) => (
+            <FilterButton key={index}
+              id={bano.id}
+              type={bano.cantidad}
+              activeFilter={activeFilterBanos}
+              handleClick={handleClickBanos}
+            />
+          ))}
         </div>
 
         <h2 className="text-2xl">Etapa del proyecto</h2>
-        <CustomSelect options={options}/>
+        <CustomSelect options={options} handle={setSelectedOptionEtapa} />
 
         <h2 className="text-2xl">Ciudad</h2>
-        <CustomSelect options={optionsCiudad} />
+        <CustomSelect options={optionsCiudad} handle={setSelectedOptionCiudad} />
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ const CustomCards = (props) => {
       {/* Degradado de fondo */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-400"></div>
 
-      <a href={`/${props.pagina}/${props.ciudad}/${props.nombreProyectoUrl}?val=${props.idProyecto}`}>
+      <a href={`/proyecto/${props.nombreProyectoUrl}?val=${props.idProyecto}`}>
         {props.imagen && (
           <picture>
             {/* Imagen de fondo para dispositivos pequeños */}

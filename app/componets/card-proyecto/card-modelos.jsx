@@ -6,7 +6,7 @@ const Card = () => {
       {/* Degradado de fondo */}
       <div className="absolute inset-0 rounded-b-xl bg-gradient-to-b from-gray-950 to-gray-400"></div>
 
-      <a href="/proyectos/talca/doña-ignacia/colonial-77" className="">
+      <a href="/proyecto/doña-ignacia/colonial-77" className="">
         {/* Imagen de fondo */}
         <picture>
           {/* Imagen de fondo para dispositivos pequeños */}

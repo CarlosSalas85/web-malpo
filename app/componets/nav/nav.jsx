@@ -71,7 +71,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="/proyectos/todos"
+                href="/proyectos"
                 className="block px-3 py-2 hover:text-gray-400"
               >
                 Proyectos
