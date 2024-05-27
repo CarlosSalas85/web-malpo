@@ -4,11 +4,11 @@ import { Ctrl_ciudades } from "@/app/controllers/Ctrl_ciudades";
 import { Ctrl_regiones } from "@/app/controllers/Ctrl_regiones";
 import "./banner-proyectos.css";
 
-const CustomButton = ({ texto, filtro }) => {
+const CustomButton = ({ texto, filtro ,region,comuna}) => {
   console.log("nombre, filtro", texto, filtro);
   return (
     <a
-      href={`/proyectos/${filtro}`}
+      href={`/proyectos/${region}/${comuna}`}
       className="mb-2 mr-2 w-full rounded-lg border border-white bg-transparent px-4 py-2 text-white hover:border-gray-400 hover:text-gray-400"
     >
       {texto}
@@ -68,6 +68,8 @@ const Banner = ({ texto, filtro }) => {
                 <CustomButton
                   texto={elemento.nombre}
                   filtro={filtro}
+                  comuna={elemento.idComuna?elemento.idComuna:0}
+                  region={elemento.idRegion?elemento.idRegion:0}
                 />
               </div>
             ))}

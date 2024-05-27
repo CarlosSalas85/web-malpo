@@ -10,6 +10,7 @@ const CustomSelect = ({ options, handle }) => {
 
 
   const modificarURL = (text) => {
+    console.log('asd')
     const cleanString = (str) => {
       return str.normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -147,15 +148,27 @@ const validar = (p1, p2) => {
 
 // console.log("Filtros:",contenidoFiltros);
 const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
-
   const [activeFilterTipo, setActiveFilterTipo] = useState(0);
   const [activeFilterSubsidio, setActiveFilterSubsidio] = useState(0);
   const [activeFilterDormitorios, setActiveFilterDormitorios] = useState(0);
   const [activeFilterBanos, setActiveFilterBanos] = useState(0);
   const [selectedOptionEtapa, setSelectedOptionEtapa] = useState(filtros.etapasProyecto[0].id);
-  const [selectedOptionRegion, setSelectedOptionRegion] = useState(filtroUrl.regionSelecionada);
-  const [selectedOptionCiudad, setSelectedOptionCiudad] = useState(filtroUrl.comunaSelecionada);
+ 
+  
+  const isNumber = (value) => !isNaN(parseFloat(value)) && isFinite(value);
 
+  // Estados iniciales con validación
+  const [selectedOptionRegion, setSelectedOptionRegion] = useState(
+    filtroUrl && isNumber(filtroUrl.regionSelecionada) ? filtroUrl.regionSelecionada : 0
+  );
+  const [selectedOptionCiudad, setSelectedOptionCiudad] = useState(
+    filtroUrl && isNumber(filtroUrl.comunaSelecionada) ? filtroUrl.comunaSelecionada : 0
+  );
+
+  let  nombreRegion = ''
+  let  nombreComuna = ''
+  console.log(nombreRegion)
+  console.log(nombreComuna)
   const [mostrarSession, setMostrarSession] = useState(false);
   const [filteredData, setFilteredData] = useState(null);
 
@@ -164,7 +177,6 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
     const filterItem = filterArray.find((item) => item.nombre === activeFilter || item.cantidad === activeFilter);
     return filterItem ? filterItem.id : defaultId;
   };
-
 
   const applyFilters = async () => {
     const ids = {
@@ -254,9 +266,30 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
   });
 
 
+  const modificarURL = (nombreRegion, nombreComuna) => {
+    console.log('debiera modificar ',nombreRegion , nombreComuna)
+    const cleanString = (str) => {
+      return str.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/ñ/g, "n")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    };
+
+    let url = ``
+    if (selectedOptionCiudad != 0) {
+      url = `${cleanString(nombreComuna)}`
+    } else if (selectedOptionRegion != 0) {
+      url = `${cleanString(nombreRegion)}`
+    } else {
+      url = ``
+    }
+    window.history.replaceState(null, '', `/proyectos/${url}`);
+  }
 
 
   const filtrarProyectos = (proyectos, tipoProyecto, bano, dormitorio, subsidio, region, comuna, etapa) => {
+    console.log(proyectos, tipoProyecto, bano, dormitorio, subsidio, region, comuna, etapa)
     const proyectosFiltrados = proyectos.filter(proyecto => {
       // Verificar si algún parámetro de proyecto es igual a cero
       let filtroTipo = false;
@@ -275,26 +308,36 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
         comuna == '0' &&
         etapa == '0'
       ) {
-
+        modificarURL('','');
         return true
 
       } else {
+        if (comuna != 0) {
+          if (proyecto.idComuna == comuna) {
+            nombreComuna = proyecto.comunaNombre
+          }
+        } else if (region != 0) {
+          if (proyecto.idRegion == region) {
+            nombreRegion = proyecto.regionNombre
+          }
+        }
         filtroTipo = validar(proyecto.idTipo, tipoProyecto);
         filtroBano = validar(proyecto.bano, bano);
         filtroDormitorio = validar(proyecto.dormitorio, dormitorio);
         filtroSubsidio = validar(proyecto.idSubsidio, subsidio);
-        if (comuna == '0' && region == '0') {
+        if (comuna == 0 && region == 0) {
           filtroRegion = true;
           filtroComuna = true;
         } else {
           filtroRegion = (proyecto.idRegion == region);
           filtroComuna = (proyecto.idComuna == comuna);
         }
-
+        modificarURL(nombreRegion,nombreComuna);
         filtroEtapa = validar(proyecto.idEtapa, etapa);
         return (filtroTipo && filtroBano && filtroDormitorio && filtroSubsidio && (filtroRegion || filtroComuna) && filtroEtapa)
       }
     });
+
     setFiltrarProyectos(proyectosFiltrados)
   }
 
@@ -421,6 +464,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
 
         <div className="mb-6 mt-3 flex">
           {filtros.banos.map((bano, index) => (
+            
             <FilterButton key={index}
               id={bano.id}
               type={bano.cantidad}
