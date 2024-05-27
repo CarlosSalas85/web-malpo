@@ -1,19 +1,29 @@
 import "./card-proyecto.css";
 
 const Card = (props) => {
+  const replaceSpaces = (str) => {
+    // return encodeURIComponent(str.replace(/\s/g, '-'));
+    return encodeURIComponent(str.replace(/\s/g, '-'));
+  };
+
   const modelos=props.modelos;
   const proyecto=props.proyecto;
-  // console.log(modelos[0].Modelos.imagenMiniatura);
-  // console.log("El nombre Modelo es:",modelo.nombreModelo);
+  const ciudadProyectoUrl=(replaceSpaces(proyecto.comunaNombre)).toLowerCase();
+  const nombreProyectoUrl=(replaceSpaces(proyecto.nombreWebProyecto)).toLowerCase();
+  
+
   return (
     <>
-    {modelos.map((modelo, index) => (
-    <div key={index} className="relative m-5 flex h-[400px] w-[300px] flex-shrink-0">
+      {modelos.map((modelo, index) => {
+        const modeloNombreUrl = replaceSpaces(modelo.nombreModelo).toLowerCase();
+        const idProyecto=modelo.idProyecto;
+        const idModelo=modelo.idModelo;
+        return (
+          <div key={index} className="relative m-5 flex h-[400px] w-[300px] flex-shrink-0">
       {/* Degradado de fondo */}
       <div className="absolute inset-0 rounded-b-xl bg-gradient-to-b from-gray-950 to-gray-400"></div>
 
-      <a href="/proyectos/talca/doña-ignacia/colonial-77" className="">
-        {/* Imagen de fondo */}
+  <a href={`/proyectos/${ciudadProyectoUrl}/${nombreProyectoUrl}/${modeloNombreUrl}?val1=${idProyecto}&val2=${idModelo}`} className="">        {/* Imagen de fondo */}
         <picture>
           {/* Imagen de fondo para dispositivos pequeños */}
           <source
@@ -78,7 +88,8 @@ const Card = (props) => {
         </div>
       </a>
     </div>
-    ))}
+    );
+  })}
   </>
   );
 };

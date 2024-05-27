@@ -1,9 +1,7 @@
-"use client";
 import React from "react";
 import Image from "next/image";
-import { useState } from "react";
-
 import BannerProyecto from "@/app/componets/banner-proyectos/banner-proyecto";
+import BannerModelos from "@/app/function/banner-modelos";
 import BannerLogos from "@/app/componets/banner-proyectos/banner-logos";
 import BannerUbicacion from "@/app/componets/banner-proyectos/banner-ubicacion";
 import BannerMapa from "@/app/componets/banner-proyectos/banner-mapa";
@@ -14,19 +12,21 @@ import BannerLoteo from "@/app/componets/banner-proyectos/banner-loteo";
 import Button from "@/app/componets/button/button";
 import ButtonRojo from "@/app/componets/button/button-rojo";
 import ListProyecto from "@/app/componets/list-proyecto/list-proyecto";
+import Carousel from "@/app/componets/carousel/carousel";
+import {Ctrl_proyectos} from "@/app/controllers/Ctrl_proyectos";
 
 const UrlBanner = (props) => {
   return (
     <>
-      <a href="#" className="mx-1 hover:text-gray-400">
+      <a href="/proyectos/todos" className="mx-1 hover:text-gray-400">
         Proyectos
       </a>
       /
-      <a href="#" className="mx-1 hover:text-gray-400">
-        Talca
+      <a href="/{$props.ciudad}" className="mx-1 hover:text-gray-400">
+      {props.ciudad}
       </a>
       /
-      <a href="#" className="mx-1 hover:text-gray-400">
+      <a href="/{$props.nombre}" className="mx-1 hover:text-gray-400">
         {props.nombre}
       </a>
     </>
@@ -43,43 +43,53 @@ const images = [
   // Agrega aquí las URLs de tus imágenes
 ];
 
-const Modelos = ({ params: { modelo } }) => {
+export default async function Modelos({params: { modelo }, searchParams:{val1,val2}}){
+  console.log("El valor de params:{modelo}", modelo,val1,val2);
+  const proyectoData = await Ctrl_proyectos(val1);
+  const idModelo = val2;
+  const modelosData = proyectoData?.datos?.modelos;
+  const modeloData = modelosData.filter(modelo => modelo.idModelo === idModelo);
   const filtroDecodificado = modelo ? decodeURIComponent(modelo) : "";
-  const url = <UrlBanner nombre={filtroDecodificado} />;
+  const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} ciudad={proyectoData?.datos?.proyecto?.comunaNombre} />;
+  var tour360Modelo = modeloData[0]?.Modelos?.tour360Modelo; // Asegurate de manejar posibles valores nulos o indefinidos
 
-  const [currentImage, setCurrentImage] = useState(0);
+  if (tour360Modelo && /^(http|https):\/\/\S+$/i.test(tour360Modelo)) {
+      console.log('Es un enlace URL válido:', tour360Modelo);
+  } else {
+      console.log('No es un enlace URL válido o es nulo.');
+  }
+  tour360Modelo=null;
 
-  const nextImage = () => {
-    setCurrentImage((prevImage) =>
-      prevImage + 3 >= images.length ? 0 : prevImage + 3,
-    );
-  };
+  // const [currentImage, setCurrentImage] = useState(0);
 
-  const prevImage = () => {
-    setCurrentImage((prevImage) => (prevImage - 3 < 0 ? 0 : prevImage - 3));
-  };
+  // const nextImage = () => {
+  //   setCurrentImage((prevImage) =>
+  //     prevImage + 3 >= images.length ? 0 : prevImage + 3,
+  //   );
+  // };
 
-  const nextImageMobile = () => {
-    setCurrentImage((prevImage) =>
-      prevImage + 1 >= images.length ? 0 : prevImage + 1,
-    );
-  };
+  // const prevImage = () => {
+  //   setCurrentImage((prevImage) => (prevImage - 3 < 0 ? 0 : prevImage - 3));
+  // };
 
-  const prevImageMobile = () => {
-    setCurrentImage((prevImage) => (prevImage - 1 < 0 ? 0 : prevImage - 1));
-  };
+  // const nextImageMobile = () => {
+  //   setCurrentImage((prevImage) =>
+  //     prevImage + 1 >= images.length ? 0 : prevImage + 1,
+  //   );
+  // };
+
+  // const prevImageMobile = () => {
+  //   setCurrentImage((prevImage) => (prevImage - 1 < 0 ? 0 : prevImage - 1));
+  // };
 
   return (
     <>
       <BannerProyecto url={url} />
 
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
-        <h1 className="mb-4 text-3xl sm:text-center">{filtroDecodificado}</h1>
+        <h1 className="mb-4 text-3xl sm:text-center">{modeloData[0].Modelos.nombreModelo}</h1>
         <p className="text-18px sm:text-center">
-          La mejor relación precio-calidad. Confía en la experiencia y asesoría
-          Malpo. Comprueba nuestros altos estándares en materiales, diseño y
-          terminaciones.El bienestar y futuro de cada familia, es nuestra
-          priridad.La ubicacion esta en el sector Norte de Maule.
+        {modeloData[0].Modelos.informacionModelo}   
         </p>
       </div>
 
@@ -90,30 +100,31 @@ const Modelos = ({ params: { modelo } }) => {
           <Button
             titulo="Tour Virtual"
             imagen="https://c.animaapp.com/UruCFYUm/img/---icon--3d-rotation-@2x.png"
+            url="#tourvirtual" 
           />
           <Button
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
+            href={proyectoData?.datos?.recursos?.pdfBrochure || "#"}
+            target="1"
           />
         </div>
       </div>
 
       <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Atributos del modelo</h1>
-        <ListProyecto />
+         <ListProyecto caracteristicas={modelosData[0].Modelos} tipo="modelos"/> 
       </div>
 
-      <div className="pb-6 pt-6">
-        <div className="flex flex-wrap justify-start xl:justify-center">
-          <BannerLogos />
-          <BannerLogos />
-          <BannerLogos />
-          <BannerLogos />
-          <BannerLogos />
+      {proyectoData?.datos?.logos && (
+        <div className="pb-6 pt-6">
+          <div className="flex flex-wrap justify-start xl:justify-center">
+            <BannerLogos logos={proyectoData?.datos?.logos} />
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="pb-6 pt-6">
+       <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Planta</h1>
         <div className="mt-4 flex justify-center">
           <div className="flex w-2/3 flex-col sm:flex-row">
@@ -141,9 +152,9 @@ const Modelos = ({ params: { modelo } }) => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="pb-6 pt-6">
+      </div> 
+      <Carousel/>
+      {/* <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Imágenes del modelo</h1>
         <div className="relative mx-auto mt-4 hidden w-full md:flex md:w-5/6 md:justify-center">
           <button className="" onClick={prevImage}>
@@ -222,9 +233,10 @@ const Modelos = ({ params: { modelo } }) => {
             />
           </button>
         </div>
-      </div>
+      </div> */}
 
-      <div className="pb-6 pt-6">
+
+      <div id="tourvirtual" className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Tour Virtual</h1>
         <div className="mt-4 flex justify-center">
           <iframe
@@ -236,19 +248,14 @@ const Modelos = ({ params: { modelo } }) => {
           ></iframe>
         </div>
       </div>
-
       <BannerUbicacion />
       <BannerMapa />
-      <BannerEjecutivas />
+      {/* <BannerEjecutivas /> */}
       <BannerLoteo />
       <BannerAccesos />
-      <BannerProyectos
-        texto="Modelos de este proyecto"
-        titulo="modelos"
-        filtro="modelos"
-      />
+      <BannerModelos id={idModelo}/>
     </>
   );
 };
 
-export default Modelos;
+

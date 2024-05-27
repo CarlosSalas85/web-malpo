@@ -21,8 +21,9 @@ const Banner = (props) => {
         </div>
         <div className="flex justify-center pt-6 sm:justify-start">
           <Button
-            titulo={`Ver Ubicación Proyecto en Maps`}
+            titulo={`Contactar ejecutiva`}
             imagen={`https://c.animaapp.com/sQwZVHMV/img/vector.svg`}
+            url="#ejecutivas"
           />
         </div>
       </div>

@@ -1,3 +1,5 @@
+'use client';
+
 const Button = (props) => {
   // Función de manejo de clics
   const handleClick = () => {

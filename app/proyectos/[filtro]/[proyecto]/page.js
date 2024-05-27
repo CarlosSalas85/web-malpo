@@ -1,20 +1,19 @@
-'use client';
-import React, { useState, useEffect } from "react";
+
+import React from "react";
 import BannerProyecto from "@/app/componets/banner-proyectos/banner-proyecto";
+import BannerRegiones from "@/app/function/banner-regiones";
 import BannerLogos from "@/app/componets/banner-proyectos/banner-logos";
 import BannerSalaVentas from "@/app/componets/banner-proyectos/banner-sala-ventas";
 import BannerUbicacion from "@/app/componets/banner-proyectos/banner-ubicacion";
 import BannerMapa from "@/app/componets/banner-proyectos/banner-mapa";
 import BannerEjecutivas from "@/app/componets/banner-proyectos/banner-ejecutivas";
 import BannerAccesos from "@/app/componets/banner-proyectos/banner-accesos";
-import BannerProyectos from "@/app/componets/banner-proyectos/banner-proyectos";
 import BannerLoteo from "@/app/componets/banner-proyectos/banner-loteo";
 import CardModelos from "@/app/componets/card-proyecto/card-modelos";
 import Button from "@/app/componets/button/button";
 import ButtonRojo from "@/app/componets/button/button-rojo";
 import ListProyecto from "@/app/componets/list-proyecto/list-proyecto";
 import ListEtapa from "@/app/componets/list-proyecto/list-etapa";
-import { useSearchParams } from 'next/navigation'
 import { Ctrl_proyectos, ProyectoData } from "@/app/controllers/Ctrl_proyectos";
 import Link from "next/link";
 
@@ -32,30 +31,31 @@ const UrlBanner = (props) => {
   );
 };
 
-const Proyecto = ({ params: { proyecto } }) => {
+const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => { 
   const filtroDecodificado = proyecto ? decodeURIComponent(proyecto) : "";
   const nombre = filtroDecodificado;
   // const proyectosData= await Ctrl_proyectos()
-  const searchParams = useSearchParams();
-  const idProyecto = searchParams.get("val");
+  // const searchParams = useSearchParams();
+  const idProyecto = val;
 
-  const [proyectoData, setProyectoData] = useState(null);
+  // const [proyectoData, setProyectoData] = useState(null);
+  let proyectoData = await Ctrl_proyectos(idProyecto);
   // console.log("idProyecto",idProyecto);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let result = await Ctrl_proyectos(idProyecto);
-        setProyectoData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        // setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let result = await Ctrl_proyectos(idProyecto);
+  //       setProyectoData(result);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     } finally {
+  //       // setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} ciudad={proyectoData?.datos?.proyecto?.comunaNombre} />;
 
@@ -75,7 +75,7 @@ const Proyecto = ({ params: { proyecto } }) => {
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
-            href="#modelos"
+            url="#modelos"
             target="0"
           />
 
@@ -83,7 +83,7 @@ const Proyecto = ({ params: { proyecto } }) => {
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
             // url={proyectoData?.datos?.proyecto?.pdfBrochure}
-            url={proyectoData?.datos?.recursos?.pdfBrochure}
+            href={proyectoData?.datos?.recursos?.pdfBrochure || "#"}
             target="1"
           />
         </div>
@@ -94,7 +94,7 @@ const Proyecto = ({ params: { proyecto } }) => {
           <h1 className="ml-4 text-3xl sm:text-center">
             Características generales del proyecto
           </h1>
-          <ListProyecto caracteristicas={proyectoData?.datos?.recursos}
+          <ListProyecto caracteristicas={proyectoData?.datos?.recursos} tipo="proyecto"
           />
         </div>
       )}
@@ -135,15 +135,13 @@ const Proyecto = ({ params: { proyecto } }) => {
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
       <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />
       )}
+      <div id="ejecutivas">
        {proyectoData?.datos?.usuarios && (
       <BannerEjecutivas usuarios={proyectoData?.datos.usuarios} />
        )}
+       </div>
       <BannerAccesos />
-      <BannerProyectos
-        texto="Proyectos por región"
-        titulo="región"
-        filtro="regiones"
-      />
+   <BannerRegiones/>
     </>
   );
 };

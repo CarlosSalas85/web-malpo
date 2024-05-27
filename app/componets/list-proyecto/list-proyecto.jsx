@@ -1,5 +1,6 @@
 
 const List = (props) => {
+    //PROYECTOS
      const mt2Minimo=props.caracteristicas.mt2Minimo;
      const mt2Maximo=props.caracteristicas.mt2Maximo;
      const habitacionesMinimo=props.caracteristicas.habitacionesMinimo;
@@ -8,11 +9,25 @@ const List = (props) => {
      const banosMaximo=props.caracteristicas.banosMaximo;
      const estacionamientosMin=props.caracteristicas.estacionamientosMinimo;
      const estacionamientosMax=props.caracteristicas.estacionamientosMaximo;
-     const homeOffice= props.caracteristicas.homeOffice
+     const homeOffice= props.caracteristicas.homeOffice;
+     const precioUfProyecto=props.caracteristicas.ufMinimo;
+     //MODELO
+     const m2Construidos=props.caracteristicas.m2Contruidos;
+     const cantidadDormitorios=props.caracteristicas.cantidadDormitorios;
+     const cantidadBanos=props.caracteristicas.cantidadBanos;
+     const estacionamientoModelo=props.caracteristicas.estacionamientoModelo;
+     const precioUfModelo=props.caracteristicas.valorUfModelo;
+    console.log("m2Construidos es:", props.caracteristicas.cantidadDormitorios,m2Construidos)
+     const mt2Construidos = props.tipo === "modelos" ? m2Construidos : `${mt2Minimo}-${mt2Maximo}`;
+  const habitaciones = props.tipo === "modelos" ? cantidadDormitorios : `${habitacionesMinimo}-${habitacionesMaximo}`;
+  const banos = props.tipo === "modelos" ? cantidadBanos : `${banosMinimo}-${banosMaximo}`;
+  const estacionamientos = props.tipo === "modelos" ? estacionamientoModelo : `${estacionamientosMin}-${estacionamientosMax}`;
+  const precioUf= props.tipo === "modelos" ? precioUfModelo : precioUfProyecto;
+  console.log("EL VALOR DE mt2Construidos es:", mt2Construidos);
   return (
     <>
     <h1 className="mb-4 ml-4 mt-4 text-xl font-semibold sm:text-center">
-      Desde UF {props.caracteristicas.ufMinimo}
+      Desde UF {precioUf}
     </h1>
     <div className="mt-4 flex justify-center">
       <ul className="flex w-7/12 md:w-9/12 xl:w-8/12 flex-wrap justify-between">
@@ -34,7 +49,7 @@ const List = (props) => {
               src="https://c.animaapp.com/z2K26Tdh/img/group-1@2x.png"
             />
             <span className="text-xl font-semibold">
-             {mt2Minimo}-{mt2Maximo}  m2 útiles
+            {mt2Construidos}  m2 útiles
             </span>
           </div>
         </li>
@@ -46,7 +61,7 @@ const List = (props) => {
               src="https://c.animaapp.com/AuWMAeuM/img/king-bed.svg"
             />
             <span className="text-xl font-semibold">
-            {habitacionesMinimo}-{habitacionesMaximo} habitaciones
+            {habitaciones} habitaciones
             </span>
           </div>
         </li>
@@ -57,7 +72,7 @@ const List = (props) => {
               alt="icono"
               src="https://c.animaapp.com/AuWMAeuM/img/bathtub.svg"
             />
-            <span className="text-xl font-semibold">{banosMinimo}-{banosMaximo} baños</span>
+            <span className="text-xl font-semibold">{banos} baños</span>
           </div>
         </li>
         <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
@@ -67,7 +82,7 @@ const List = (props) => {
               alt="icono"
               src="https://c.animaapp.com/AuWMAeuM/img/directions-car.svg"
             />
-            <span className="text-xl font-semibold">{estacionamientosMin}-{estacionamientosMax} estacionamientos
+            <span className="text-xl font-semibold">{estacionamientos} estacionamientos
         </span>
           </div>
         </li>

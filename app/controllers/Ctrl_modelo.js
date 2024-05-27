@@ -14,6 +14,7 @@ export function Ctrl_modelo(id) {
                 'X-API-KEY': apiKey,
                 'Authorization': authHeader
             },
+            
             //    next: { tags: ['modeloId']},
         })
             .then(response => response.json())
