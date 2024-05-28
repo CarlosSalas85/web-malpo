@@ -1,29 +1,30 @@
 
 const List = (props) => {
-    //PROYECTOS
-     const mt2Minimo=props.caracteristicas.mt2Minimo;
-     const mt2Maximo=props.caracteristicas.mt2Maximo;
-     const habitacionesMinimo=props.caracteristicas.habitacionesMinimo;
-     const habitacionesMaximo=props.caracteristicas.habitacionesMaximo;
-     const banosMinimo=props.caracteristicas.banosMinimo;
-     const banosMaximo=props.caracteristicas.banosMaximo;
-     const estacionamientosMin=props.caracteristicas.estacionamientosMinimo;
-     const estacionamientosMax=props.caracteristicas.estacionamientosMaximo;
-     const homeOffice= props.caracteristicas.homeOffice;
-     const precioUfProyecto=props.caracteristicas.ufMinimo;
-     //MODELO
-     const m2Construidos=props.caracteristicas.m2Contruidos;
-     const cantidadDormitorios=props.caracteristicas.cantidadDormitorios;
-     const cantidadBanos=props.caracteristicas.cantidadBanos;
-     const estacionamientoModelo=props.caracteristicas.estacionamientoModelo;
-     const precioUfModelo=props.caracteristicas.valorUfModelo;
-    console.log("m2Construidos es:", props.caracteristicas.cantidadDormitorios,m2Construidos)
-     const mt2Construidos = props.tipo === "modelos" ? m2Construidos : `${mt2Minimo}-${mt2Maximo}`;
-  const habitaciones = props.tipo === "modelos" ? cantidadDormitorios : `${habitacionesMinimo}-${habitacionesMaximo}`;
-  const banos = props.tipo === "modelos" ? cantidadBanos : `${banosMinimo}-${banosMaximo}`;
-  const estacionamientos = props.tipo === "modelos" ? estacionamientoModelo : `${estacionamientosMin}-${estacionamientosMax}`;
-  const precioUf= props.tipo === "modelos" ? precioUfModelo : precioUfProyecto;
-  console.log("EL VALOR DE mt2Construidos es:", mt2Construidos);
+     const {
+      mt2Minimo,
+      mt2Maximo,
+      habitacionesMinimo,
+      habitacionesMaximo,
+      banosMinimo,
+      banosMaximo,
+      estacionamientosMinimo,
+      estacionamientosMaximo,
+      homeOffice,
+      ufMinimo,
+      m2Contruidos,
+      cantidadDormitorios,
+      cantidadBanos,
+      estacionamientoModelo,
+      valorUfModelo,
+    } = props.caracteristicas;
+  
+    const isModelo = props.tipo === "modelos";
+  
+    const mt2Construidos = isModelo ? m2Contruidos : `${mt2Minimo}-${mt2Maximo}`;
+    const habitaciones = isModelo ? cantidadDormitorios : `${habitacionesMinimo}-${habitacionesMaximo}`;
+    const banos = isModelo ? cantidadBanos : `${banosMinimo}-${banosMaximo}`;
+    const estacionamientos = isModelo ? estacionamientoModelo : `${estacionamientosMinimo}-${estacionamientosMaximo}`;
+    const precioUf = isModelo ? valorUfModelo : ufMinimo;
   return (
     <>
     <h1 className="mb-4 ml-4 mt-4 text-xl font-semibold sm:text-center">

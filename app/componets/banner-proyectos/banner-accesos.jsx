@@ -20,7 +20,7 @@ const Banner = () => {
           target="1"
         />
         <div className="mt-4 w-full px-4 md:mt-0 md:w-1/3">
-          <a href="https://web.malpo.cl/minisitios/casa/?_gl=1*1nx85nh*_ga*MTM5ODE3MjU3OC4xNzA2ODg1OTUy*_ga_5Y7BMCKGES*MTcxNDA1NDMxNC4zNC4xLjE3MTQwNTQzMzAuMC4wLjA.">
+          <a href="https://web.malpo.cl/minisitios/casa/?_gl=1*1nx85nh*_ga*MTM5ODE3MjU3OC4xNzA2ODg1OTUy*_ga_5Y7BMCKGES*MTcxNDA1NDMxNC4zNC4xLjE3MTQwNTQzMzAuMC4wLjA." target="_blank">
             <div className="flex h-36 items-center justify-between rounded-xl border px-2 text-verdeMalpo shadow-xl">
               <span className="text-3xl font-normal hover:text-gray-400">
                 Eficiencia energética certificada

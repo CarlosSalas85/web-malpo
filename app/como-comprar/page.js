@@ -108,86 +108,44 @@ const Page = () => {
       />
       {/* modal */}
       {modalOpen && (
-        <Modal onClose={handleModalToggle}>
-          <div className="container mx-auto px-4 py-8">
-            <div className="mb-8">
-              <img
-                src="/logos/logoRojoMalpo.png"
-                alt="Logo"
-                className="mr-4 h-6 w-auto"
-              />
+  <Modal onClose={handleModalToggle}>
+    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-lg overflow-y-auto max-h-screen w-1100px">
+        <div className="flex justify-between items-center px-4 py-2 bg-redMalpo">
+          <div className="font-bold text-rojoMalpo text-2xl">Cotización</div>
+          <img src="/logos/logoRojoMalpo.png" alt="Imagen de cotización" className="w-168px h-auto" />
+          <button className="text-gray-600 text-lg" onClick={handleModalToggle}>
+            <img src="https://c.animaapp.com/o0ROixJd/img/cancel@2x.png" alt="Cancel" className="w-12 h-12" />
+          </button>
+        </div>
+        <div className="bg-rojoMalpo text-white text-center font-bold py-4">
+          Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}
+        </div>
+        <div className="px-4 py-2">
+          <div className="mb-4 font-bold">1. Tus Datos</div>
+          <form className="flex flex-wrap" onSubmit={handleSubmit}>
+            <div className="w-full md:w-1/3 mb-4">
+              <label htmlFor="nombre" className="block mb-1">Nombre:</label>
+              <input type="text" id="nombre" name="nombre" className="w-full border border-gray-300 rounded px-4 py-2" />
+              <span className="error">{errors.nombre}</span>
             </div>
-            <h1 className="text-center text-lg font-bold">
-              Formulario de Contacto
-            </h1>
-            <form onSubmit={handleSubmit} className="mx-auto max-w-md">
-              <div className="mb-4">
-                <label htmlFor="name" className="mb-2 block">
-                  Nombre:
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="mb-2 block">
-                  Correo electrónico:
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="phone" className="mb-2 block">
-                  Teléfono:
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="message" className="mb-2 block">
-                  Mensaje:
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows="4"
-                  className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                  required
-                ></textarea>
-              </div>
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
-                >
-                  Enviar
-                </button>
-              </div>
-            </form>
-          </div>
-        </Modal>
-      )}
+            <div className="w-full md:w-1/3 mb-4">
+              <label htmlFor="rut_cliente" className="block mb-1">Rut:</label>
+              <input type="text" id="rut_cliente" name="rut_cliente" className="w-full border border-gray-300 rounded px-4 py-2" />
+              <span className="error">{errors.rut_cliente}</span>
+            </div>
+            <div className="w-full md:w-1/3 mb-4">
+              <label htmlFor="email" className="block mb-1">Correo:</label>
+              <input type="email" id="email" name="email" className="w-full border border-gray-300 rounded px-4 py-2" />
+              <span className="error">{errors.email}</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </Modal>
+)}
+
       {/* modal */}
     </>
   );

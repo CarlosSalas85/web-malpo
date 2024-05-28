@@ -13,9 +13,9 @@ import CardModelos from "@/app/componets/card-proyecto/card-modelos";
 import Button from "@/app/componets/button/button";
 import ButtonRojo from "@/app/componets/button/button-rojo";
 import ListProyecto from "@/app/componets/list-proyecto/list-proyecto";
+import ModalCotizador from "@/app/componets/modal/modal-cotizar";
 import ListEtapa from "@/app/componets/list-proyecto/list-etapa";
-import { Ctrl_proyectos, ProyectoData } from "@/app/controllers/Ctrl_proyectos";
-import Link from "next/link";
+import { Ctrl_proyectos } from "@/app/controllers/Ctrl_proyectos";
 
 const UrlBanner = (props) => {
   return (
@@ -40,28 +40,13 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
 
   // const [proyectoData, setProyectoData] = useState(null);
   let proyectoData = await Ctrl_proyectos(idProyecto);
-  // console.log("idProyecto",idProyecto);
+  const modelosData = proyectoData?.datos?.modelos;
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       let result = await Ctrl_proyectos(idProyecto);
-  //       setProyectoData(result);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     } finally {
-  //       // setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} ciudad={proyectoData?.datos?.proyecto?.comunaNombre} />;
+  const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} ciudad={proyectoData?.datos?.proyecto?.comunaNombre}/>;
 
   return (
     <>
-      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} />
+      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} proyecto={proyectoData?.datos?.proyecto} />
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <p className="text-18px sm:text-center">
           {proyectoData?.datos?.proyecto?.informacionProyecto}
@@ -70,8 +55,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
 
       <div className="mb-6 mt-6 flex justify-center">
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
-          <ButtonRojo titulo="Cotizar" />
-
+          <ModalCotizador proyecto={proyectoData?.datos?.proyecto} modelos={modelosData} />
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"

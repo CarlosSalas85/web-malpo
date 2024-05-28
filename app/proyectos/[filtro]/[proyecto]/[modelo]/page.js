@@ -44,7 +44,7 @@ const images = [
 ];
 
 export default async function Modelos({params: { modelo }, searchParams:{val1,val2}}){
-  console.log("El valor de params:{modelo}", modelo,val1,val2);
+  // console.log("El valor de params:{modelo}", modelo,val1,val2);
   const proyectoData = await Ctrl_proyectos(val1);
   const idModelo = val2;
   const modelosData = proyectoData?.datos?.modelos;
@@ -129,31 +129,37 @@ export default async function Modelos({params: { modelo }, searchParams:{val1,va
         <div className="mt-4 flex justify-center">
           <div className="flex w-2/3 flex-col sm:flex-row">
             {/* Div 1 */}
+            {modeloData[0].Modelos.imagenPiso1 != null && (
             <div className="mx-2 w-full border-gray-300 shadow-md sm:order-first sm:w-1/2 dark:border-gray-700 dark:bg-gray-800">
               <h2 className="text-center text-2xl">Planta del 1er piso</h2>
               <Image
-                src="https://www.innovamalpo.cl/disco2/web_malpo/imagenes_modelos/d84c161ace90d046d29cc468a56ed948.webp"
+                src={modeloData[0].Modelos.imagenPiso1}
                 alt="piso"
                 width={500}
                 height={100}
                 className="mx-auto h-auto"
               />
             </div>
+            )}
             {/* Div 2 */}
+            {modeloData[0].Modelos.imagenPiso2 != null && (
             <div className="mx-2 w-full border-gray-300 shadow-md sm:order-last sm:w-1/2 dark:border-gray-700 dark:bg-gray-800">
               <h2 className="text-center text-2xl">Planta del 2do piso</h2>
               <Image
-                src="https://www.innovamalpo.cl/disco2/web_malpo/imagenes_modelos/0ed4939c93fb5eaa14dbe8f5a5d13c3f.webp"
+                src={modeloData[0].Modelos.imagenPiso2}
                 alt="piso"
                 width={500}
                 height={100}
                 className="mx-auto h-auto"
               />
             </div>
+            )}
           </div>
         </div>
       </div> 
-      <Carousel/>
+      {modeloData[0].Modelos != null && (
+       <Carousel modelos={modelosData[0]?.Modelos}/> 
+      )}
       {/* <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Imágenes del modelo</h1>
         <div className="relative mx-auto mt-4 hidden w-full md:flex md:w-5/6 md:justify-center">
@@ -235,7 +241,7 @@ export default async function Modelos({params: { modelo }, searchParams:{val1,va
         </div>
       </div> */}
 
-
+      
       <div id="tourvirtual" className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Tour Virtual</h1>
         <div className="mt-4 flex justify-center">
@@ -248,10 +254,22 @@ export default async function Modelos({params: { modelo }, searchParams:{val1,va
           ></iframe>
         </div>
       </div>
-      <BannerUbicacion />
-      <BannerMapa />
+      
+      {proyectoData?.datos?.proyecto && (
+        <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />
+      )}
+      {proyectoData?.datos?.proyecto && (
+      <BannerMapa proyecto={proyectoData?.datos?.proyecto} />
+      )}
       {/* <BannerEjecutivas /> */}
-      <BannerLoteo />
+      {proyectoData?.datos?.proyecto?.imagenLoteo && (
+      <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />
+      )}
+      <div id="ejecutivas">
+       {proyectoData?.datos?.usuarios && (
+      <BannerEjecutivas usuarios={proyectoData?.datos.usuarios} />
+       )}
+       </div>
       <BannerAccesos />
       <BannerModelos id={idModelo}/>
     </>

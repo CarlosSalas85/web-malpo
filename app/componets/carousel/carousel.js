@@ -3,38 +3,51 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
+const Carousel = (props) => {
+  const modelos = props.modelos;
+  const images = [
+    modelos?.imagenCarrusel1,
+    modelos?.imagenCarrusel2,
+    modelos?.imagenCarrusel3,
+    modelos?.imagenCarrusel4,
+    modelos?.imagenCarrusel5,
+    modelos?.imagenCarrusel6,
+  ];
 
-const Carousel = () => {
-    const images = [
-        "https://www.innovamalpo.cl/disco2/web_malpo/imagenes_modelos/13ebb64480be8be8c89a1b2d4b9793fc.webp",
-        "https://www.innovamalpo.cl/disco2/web_malpo/imagenes_modelos/13ebb64480be8be8c89a1b2d4b9793fc.webp",
-        "https://www.innovamalpo.cl/disco2/web_malpo/imagenes_modelos/13ebb64480be8be8c89a1b2d4b9793fc.webp",
-        "https://www.innovamalpo.cl/disco2/web_malpo/imagenes_modelos/e413f178fbf57bc0237fab014e1b8fb4.webp",
-        "https://www.innovamalpo.cl/disco2/web_malpo/imagenes_modelos/e413f178fbf57bc0237fab014e1b8fb4.webp",
-        "https://www.innovamalpo.cl/disco2/web_malpo/imagenes_modelos/e413f178fbf57bc0237fab014e1b8fb4.webp",
-        // Agrega aquí las URLs de tus imágenes
-      ];
-      
+  // Verificar si todas las imágenes son nulas
+  const allNull = images.every(image => image === null);
+
+  // Si todas las imágenes son nulas, almacenar un arreglo con un solo elemento nulo
+  const filteredImages = allNull ? [null] : 
+    // De lo contrario, filtrar las imágenes no nulas que tengan extensiones válidas
+    images.filter(image => image !== null && /\.(jpg|png|webp)$/i.test(image));
+
+//   console.log("Imagenes Filtradas:", filteredImages);
+
   const [currentImage, setCurrentImage] = useState(0);
 
   const nextImage = () => {
     setCurrentImage((prevImage) =>
-      prevImage + 3 >= images.length ? 0 : prevImage + 3,
+      prevImage + 3 >= filteredImages.length ? 0 : prevImage + 3
     );
   };
 
   const prevImage = () => {
-    setCurrentImage((prevImage) => (prevImage - 3 < 0 ? 0 : prevImage - 3));
+    setCurrentImage((prevImage) => 
+      prevImage - 3 < 0 ? 0 : prevImage - 3
+    );
   };
 
   const nextImageMobile = () => {
     setCurrentImage((prevImage) =>
-      prevImage + 1 >= images.length ? 0 : prevImage + 1,
+      prevImage + 1 >= filteredImages.length ? 0 : prevImage + 1
     );
   };
 
   const prevImageMobile = () => {
-    setCurrentImage((prevImage) => (prevImage - 1 < 0 ? 0 : prevImage - 1));
+    setCurrentImage((prevImage) => 
+      prevImage - 1 < 0 ? 0 : prevImage - 1
+    );
   };
 
   return (
@@ -50,7 +63,7 @@ const Carousel = () => {
 
         <div className="relative flex w-8/12 justify-center overflow-hidden">
           <div className="flex">
-            {images.map((image, index) => {
+            {filteredImages.map((image, index) => {
               const isCurrent = index === currentImage;
               const isVisible =
                 index >= currentImage && index <= currentImage + 2;
@@ -90,7 +103,7 @@ const Carousel = () => {
 
         <div className="relative flex w-full justify-center overflow-hidden">
           <div className="flex">
-            {images.map((image, index) => {
+            {filteredImages.map((image, index) => {
               const isCurrent = index === currentImage;
               return (
                 <div

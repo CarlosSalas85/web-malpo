@@ -13,7 +13,7 @@ const CustonButton = (props) => {
 };
 
 const Banner = (props) => {
-  console.log("La informacion de las salas son:", props);
+  // console.log("La informacion de las salas son:", props);
   const salas = props.salas;
 
   const obtenerTitulo = (sala) => {
