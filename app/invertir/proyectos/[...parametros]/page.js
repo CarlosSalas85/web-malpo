@@ -3,10 +3,11 @@ import { Ctrl_filtros } from "@/app/controllers/Ctrl_filtros";
 import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
 import Proyectos from "../../componets/proyectos/proyectos";
 
-export default async function Page (){
+export default async function Page({ params }) {
+  const parametros = params.parametros;
   const filtroUrl = {
-    regionSelecionada: 0,
-    comunaSelecionada: 0
+    regionSelecionada: ((parametros) ? parametros[0] ? parametros[0] : 0 : 0),
+    comunaSelecionada: ((parametros) ? parametros[1] ? parametros[1] : 0 : 0)
   }
 
   const data = await Ctrl_filtros();
@@ -14,7 +15,7 @@ export default async function Page (){
   const ids = {
     estadoInversion: 1,
     tipoProyectoId: 0,
-    subsidioId:0,
+    subsidioId: 0,
     dormitorioId: 0,
     banoId: 0,
     etapaId: 0,
@@ -25,8 +26,8 @@ export default async function Page (){
   const data2 = await Ctrl_aplicar_filtros(ids);
   const proyectosIniciales = data2.datos;
 
-   // Mapeo de los filtros en arrays separados
-   const contenidoFiltros = {
+  // Mapeo de los filtros en arrays separados
+  const contenidoFiltros = {
     tiposProyecto: filtros.tiposProyecto.map(tipo => ({
       id: tipo.idTipo,
       nombre: tipo.nombreTipo
