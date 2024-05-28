@@ -4,84 +4,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "./styleFiltro.css";
 
-const CustomSelect = ({ options, handle }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0].value);
 
-
-  const modificarURL = (text) => {
-    console.log('asd')
-    const cleanString = (str) => {
-      return str.normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/ñ/g, "n")
-        .replace(/\s+/g, "-")
-        .toLowerCase();
-    };
-    let url = `${cleanString(text)}`
-    window.history.replaceState(null, '', `/proyectos/${url}`);
-  }
-
-  
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleOptionSelect = (value, text) => {
-    setSelectedOption(value);
-    handle(value);
-    setIsOpen(false);
-    modificarURL(text)
-  };
-
-  return (
-    <div className="relative mb-6 mt-3 rounded border border-black">
-      <div
-        className="flex cursor-pointer items-center justify-between rounded border border-gray-300 px-4 py-2 pb-4 pt-4"
-        onClick={toggleDropdown}
-      >
-        <span>
-          {options.find((opt) => opt.value === selectedOption)?.label}
-        </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className={`h-4 w-4 transform transition-transform ${isOpen ? "-rotate-180" : ""
-            }`}
-        >
-          <path
-            fillRule="evenodd"
-            d="M6.293 7.293a1 1 0 011.414 0L10 9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </div>
-      {isOpen && (
-        <div className="absolute z-10 mt-1 w-full rounded border border-gray-300 bg-white shadow-md">
-          {options.map((option) => (
-            <div
-              key={option.value}
-              className={`flex cursor-pointer items-center px-4 py-2 ${selectedOption === option.value
-                ? "bg-gray-200"
-                : "hover:bg-gray-100"
-                }`}
-              onClick={() => handleOptionSelect(option.value, option.label)}
-            >
-              <span>{option.label}</span>
-              <input
-                type="checkbox"
-                checked={selectedOption === option.value}
-                className="ml-auto cursor-pointer"
-                onChange={() => { }}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 
 
@@ -147,14 +70,14 @@ const validar = (p1, p2) => {
 
 
 // console.log("Filtros:",contenidoFiltros);
-const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
+const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) => {
   const [activeFilterTipo, setActiveFilterTipo] = useState(0);
   const [activeFilterSubsidio, setActiveFilterSubsidio] = useState(0);
   const [activeFilterDormitorios, setActiveFilterDormitorios] = useState(0);
   const [activeFilterBanos, setActiveFilterBanos] = useState(0);
   const [selectedOptionEtapa, setSelectedOptionEtapa] = useState(filtros.etapasProyecto[0].id);
- 
-  
+
+
   const isNumber = (value) => !isNaN(parseFloat(value)) && isFinite(value);
 
   // Estados iniciales con validación
@@ -165,8 +88,8 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
     filtroUrl && isNumber(filtroUrl.comunaSelecionada) ? filtroUrl.comunaSelecionada : 0
   );
 
-  let  nombreRegion = ''
-  let  nombreComuna = ''
+  let nombreRegion = ''
+  let nombreComuna = ''
   console.log(nombreRegion)
   console.log(nombreComuna)
   const [mostrarSession, setMostrarSession] = useState(false);
@@ -176,6 +99,85 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
     if (activeFilter === 0) return defaultId;
     const filterItem = filterArray.find((item) => item.nombre === activeFilter || item.cantidad === activeFilter);
     return filterItem ? filterItem.id : defaultId;
+  };
+
+  const CustomSelect = ({ options, handle }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(options[0].value);
+
+
+    const modificarURL = (text) => {
+      console.log('asd')
+      const cleanString = (str) => {
+        return str.normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/ñ/g, "n")
+          .replace(/\s+/g, "-")
+          .toLowerCase();
+      };
+      let url = `${cleanString(text)}`
+      window.history.replaceState(null, '', `/${pagina}/${url}`);
+    }
+
+
+    const toggleDropdown = () => {
+      setIsOpen(!isOpen);
+    };
+
+    const handleOptionSelect = (value, text) => {
+      setSelectedOption(value);
+      handle(value);
+      setIsOpen(false);
+      modificarURL(text)
+    };
+
+    return (
+      <div className="relative mb-6 mt-3 rounded border border-black">
+        <div
+          className="flex cursor-pointer items-center justify-between rounded border border-gray-300 px-4 py-2 pb-4 pt-4"
+          onClick={toggleDropdown}
+        >
+          <span>
+            {options.find((opt) => opt.value === selectedOption)?.label}
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className={`h-4 w-4 transform transition-transform ${isOpen ? "-rotate-180" : ""
+              }`}
+          >
+            <path
+              fillRule="evenodd"
+              d="M6.293 7.293a1 1 0 011.414 0L10 9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+        {isOpen && (
+          <div className="absolute z-10 mt-1 w-full rounded border border-gray-300 bg-white shadow-md">
+            {options.map((option) => (
+              <div
+                key={option.value}
+                className={`flex cursor-pointer items-center px-4 py-2 ${selectedOption === option.value
+                  ? "bg-gray-200"
+                  : "hover:bg-gray-100"
+                  }`}
+                onClick={() => handleOptionSelect(option.value, option.label)}
+              >
+                <span>{option.label}</span>
+                <input
+                  type="checkbox"
+                  checked={selectedOption === option.value}
+                  className="ml-auto cursor-pointer"
+                  onChange={() => { }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   };
 
   const applyFilters = async () => {
@@ -267,7 +269,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
 
 
   const modificarURL = (nombreRegion, nombreComuna) => {
-    console.log('debiera modificar ',nombreRegion , nombreComuna)
+    console.log('debiera modificar ', nombreRegion, nombreComuna)
     const cleanString = (str) => {
       return str.normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -284,12 +286,16 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
     } else {
       url = ``
     }
-    window.history.replaceState(null, '', `/proyectos/${url}`);
+    window.history.replaceState(null, '', `/${pagina}/${url}`);
   }
 
 
   const filtrarProyectos = (proyectos, tipoProyecto, bano, dormitorio, subsidio, region, comuna, etapa) => {
-    console.log(proyectos, tipoProyecto, bano, dormitorio, subsidio, region, comuna, etapa)
+
+    if (!proyectos || !Array.isArray(proyectos)) {
+      return;
+    }
+
     const proyectosFiltrados = proyectos.filter(proyecto => {
       // Verificar si algún parámetro de proyecto es igual a cero
       let filtroTipo = false;
@@ -308,7 +314,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
         comuna == '0' &&
         etapa == '0'
       ) {
-        modificarURL('','');
+        modificarURL('', '');
         return true
 
       } else {
@@ -332,7 +338,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
           filtroRegion = (proyecto.idRegion == region);
           filtroComuna = (proyecto.idComuna == comuna);
         }
-        modificarURL(nombreRegion,nombreComuna);
+        modificarURL(nombreRegion, nombreComuna);
         filtroEtapa = validar(proyecto.idEtapa, etapa);
         return (filtroTipo && filtroBano && filtroDormitorio && filtroSubsidio && (filtroRegion || filtroComuna) && filtroEtapa)
       }
@@ -464,7 +470,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos }) => {
 
         <div className="mb-6 mt-3 flex">
           {filtros.banos.map((bano, index) => (
-            
+
             <FilterButton key={index}
               id={bano.id}
               type={bano.cantidad}

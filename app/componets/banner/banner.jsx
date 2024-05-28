@@ -25,7 +25,7 @@ const BottonBanner = () => {
           {/* Modifico el segundo elemento solo para sm */}
           <div className="mb-4 w-1/2 px-2 sm:w-1/5">
             <div className="card-fondo-tranparente flex h-full flex-col items-center justify-center rounded-xl border-2 border-white px-3 py-12">
-              <a href="/invertir/todos" className="hover:text-gray-400">
+              <a href="/invertir/proyectos/" className="hover:text-gray-400">
                 <div className="h-2/3 text-4xl">Para Invertir</div>
                 <div className="flex h-1/3 items-center justify-center">
                   <img
