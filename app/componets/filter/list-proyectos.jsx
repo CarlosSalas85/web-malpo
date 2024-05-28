@@ -24,6 +24,30 @@ const totalPaginas = Math.ceil(cantidadProyectos / 4);
 
   return (
     <div className="flex w-full flex-wrap md:ml-4 md:mr-20 md:w-3/5">
+      <div className="flex w-full justify-center pb-6 xl:w-1/2">
+        <CustomCards
+          idProyecto={1}
+          pagina={props.pagina}
+          ciudad={props.ciudad}
+          nombre={nombreProyectoEncoded}
+        />
+      </div>
+      <div className="flex w-full justify-center pb-6 xl:w-1/2">
+        <CustomCards
+          idProyecto={1}
+          pagina={props.pagina}
+          ciudad={props.ciudad}
+          nombre={nombreProyectoEncoded}
+        />
+      </div>
+      <div className="flex w-full justify-center pb-6 xl:w-1/2">
+        <CustomCards
+          idProyecto={1}
+          pagina={props.pagina}
+          ciudad={props.ciudad}
+          nombre={nombreProyectoEncoded}
+        />
+      </div>
         {proyectosIniciales.map((proyecto, index) => (
         <div className="flex w-full justify-center pb-6 xl:w-1/2" key={index}>
           <CustomCards // Don't forget to add a unique key for each item in the map function
@@ -42,7 +66,7 @@ const totalPaginas = Math.ceil(cantidadProyectos / 4);
           </div>
         ))}
 
-      <div className="mb-4 flex w-full justify-center md:justify-start">
+      <div className="mb-4 flex h-10 w-full justify-center md:justify-start">
         <button className="mr-2 flex items-center justify-center rounded border border-gray-400 px-4 py-2 text-black hover:bg-gray-400">
           <img
             className="h-3 w-3"

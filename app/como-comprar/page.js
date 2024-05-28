@@ -1,12 +1,16 @@
 "use client";
+import React from "react";
 import { useState } from "react";
 
 import BannerImage from "@/app/componets/banner/banner-imagen";
-import BannerProyectos from "@/app/componets/banner-proyectos/banner-proyectos";
 import NavComoComprar from "@/app/componets/banner-como-comprar/nav-como-comprar";
 import ButtonComoComprar from "@/app/componets/banner-como-comprar/button-como-comprar";
 
-const Modal = ({ onClose, children }) => {
+import BannerRegiones from "@/app/function/banner-regiones-cliente";
+
+import ModalCorreos from "@/app/componets/modal/modal-correos";
+
+const Modal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opacity-75">
       <div className="relative m-auto w-full max-w-md rounded bg-white p-8 shadow-lg">
@@ -20,7 +24,9 @@ const Modal = ({ onClose, children }) => {
             src={`https://c.animaapp.com/o0ROixJd/img/cancel@2x.png`}
           />
         </button>
-        <div className="mt-4">{children}</div>
+        <div className="mt-4">
+          <ModalCorreos titulo="Formulario de Contacto Compra" />
+        </div>
       </div>
     </div>
   );
@@ -31,24 +37,6 @@ const Page = () => {
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
-  };
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aquí puedes agregar la lógica para enviar los datos del formulario
-    console.log(formData);
   };
 
   return (
@@ -101,12 +89,9 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <BannerProyectos
-        texto="Proyectos por región"
-        titulo="región"
-        filtro="region"
-      />
+      <BannerRegiones />
       {/* modal */}
+<<<<<<< HEAD
       {modalOpen && (
   <Modal onClose={handleModalToggle}>
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -146,6 +131,9 @@ const Page = () => {
   </Modal>
 )}
 
+=======
+      {modalOpen && <Modal onClose={handleModalToggle}></Modal>}
+>>>>>>> origin/devSalas
       {/* modal */}
     </>
   );

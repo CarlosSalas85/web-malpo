@@ -11,7 +11,6 @@ import BannerAccesos from "@/app/componets/banner-proyectos/banner-accesos";
 import BannerLoteo from "@/app/componets/banner-proyectos/banner-loteo";
 import CardModelos from "@/app/componets/card-proyecto/card-modelos";
 import Button from "@/app/componets/button/button";
-import ButtonRojo from "@/app/componets/button/button-rojo";
 import ListProyecto from "@/app/componets/list-proyecto/list-proyecto";
 import ModalCotizador from "@/app/componets/modal/modal-cotizar";
 import ListEtapa from "@/app/componets/list-proyecto/list-etapa";

@@ -68,10 +68,10 @@ const CustomSelect = ({ options, onChange, activo }) => {
 };
 
 const options = [
-  { value: 1, label: "Clientes" },
-  { value: 2, label: "PostVenta" },
-  { value: 3, label: "Manuales de compra" },
-  { value: 4, label: "Preguntas Frecuentes" },
+  { value: 1, label: "Nosotros" },
+  { value: 2, label: "Misión y Visión" },
+  { value: 3, label: "Filosofía" },
+  { value: 4, label: "Historia" },
 ];
 
 const Banner = (props) => {
@@ -81,16 +81,16 @@ const Banner = (props) => {
     let url;
     switch (value) {
       case 1:
-        url = "/clientes";
+        url = "/nosotros";
         break;
       case 2:
-        url = "/clientes/post-venta?val=2";
+        url = "/nosotros/mision-vision?val=2";
         break;
       case 3:
-        url = "/clientes/manuales-de-compra?val=3";
+        url = "/nosotros/filosofia?val=3";
         break;
       case 4:
-        url = "/clientes/preguntas-frecuentes?val=4";
+        url = "/nosotros/historia?val=4";
         break;
     }
     window.location.href = url;
@@ -102,34 +102,34 @@ const Banner = (props) => {
         <div className="border px-6 py-6 shadow-xl">
           <div className="px-1 py-4">
             <a
-              href="/clientes"
+              href="/nosotros"
               className={`text-xl ${activo === 1 ? "text-rojoMalpo" : "text-grisMalpo"} hover:text-gray-400`}
             >
-              Clientes
+              Nosotros
             </a>
           </div>
           <div className="px-4 py-2">
             <a
-              href="/clientes/post-venta?val=2"
+              href="/nosotros/mision-vision?val=2"
               className={`text-xl ${activo === 2 ? "text-rojoMalpo" : "text-grisMalpo"} hover:text-gray-400`}
             >
-              PostVenta
+              Misión y Visión
             </a>
           </div>
           <div className="px-4 py-2">
             <a
-              href="/clientes/manuales-de-compra?val=3"
+              href="/nosotros/filosofia?val=3"
               className={`text-xl ${activo === 3 ? "text-rojoMalpo" : "text-grisMalpo"} hover:text-gray-400`}
             >
-              Manuales de compra
+              Filosofía
             </a>
           </div>
           <div className="px-4 py-2">
             <a
-              href="/clientes/preguntas-frecuentes?val=4"
+              href="/nosotros/historia?val=4"
               className={`text-xl ${activo === 4 ? "text-rojoMalpo" : "text-grisMalpo"} hover:text-gray-400`}
             >
-              Preguntas Frecuentes
+              Historia
             </a>
           </div>
         </div>

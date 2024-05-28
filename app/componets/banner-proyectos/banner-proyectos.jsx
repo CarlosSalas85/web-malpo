@@ -37,7 +37,7 @@ const Banner = (props) => {
                 className="flex w-1/3 sm:w-1/6 sm:justify-center lg:w-auto"
               >
                 <CustomButton
-                  texto={props.filtro === "modelo" ? elemento.nombreModelo : elemento.nombre}
+                  texto={elemento.nombre}
                   filtro={props.filtro}
                   id={elemento.id}
                 />

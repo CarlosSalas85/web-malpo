@@ -9,12 +9,12 @@ const Banner = () => {
         <ButtonAcceso
           nombre="Beneficios de invertir"
           icono="https://c.animaapp.com/K6aqUhg9/img/real-estate-agent@2x.png"
-          url="#"
+          url="/invertir/atencion-virtual-inversionistas"
         />
         <ButtonAcceso
           nombre="Preguntas frecuentes Inversionistas"
           icono="https://c.animaapp.com/9f5vD9WN/img/home@2x.png"
-          url="#"
+          url="/clientes/preguntas-frecuentes?val=4"
         />       
       </div>
     </div>
