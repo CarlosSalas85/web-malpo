@@ -31,7 +31,7 @@ const List = (props) => {
       Desde UF {precioUf}
     </h1>
     <div className="mt-4 flex justify-center">
-      <ul className="flex w-7/12 md:w-9/12 xl:w-8/12 flex-wrap justify-between">
+      <ul className="flex w-7/12 md:w-9/12 xl:w-6/12 flex-wrap justify-between">
         <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
           <div className="flex">
             <img

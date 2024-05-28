@@ -2,14 +2,15 @@
 const nodemailer = require("nodemailer");
 
 export async function Ctrl_inversionista(formData) {
-  console.log("LOS DATOS QUE LLEGAN A LA FUNCION DE ENVIAR CORREO SON:", formData,formData.email);
-  console.log("EMAIL:", formData.email); 
+  // console.log("LOS DATOS QUE LLEGAN A LA FUNCION DE ENVIAR CORREO SON:", formData,formData.email);
+  // console.log("EMAIL:", formData.email); 
   var to=formData.email;
   // console.log("EL VALOR DE TO",to);
   var subject="Inversionista";
   var text='Nombre:' + formData.name + ' Email:' + formData.email; // Ajusta el formato del texto si lo necesitas
   var text2='Nuestro equipo de Malpo se pondrá en contacto contigo';
-  var body = `<div><h1>${subject}</h1><p>Nombre: ${formData.name}</p><p>Email: ${formData.email}</p><p>Telefono: ${formData.telefono}</p><p>Proyecto: ${formData.proyecto}</p><p>Confirmación hora mediante llamada telefonica: ${formData.date}</p></div>`;
+  var body = `<div><h1>${subject}</h1><p>Nombre: ${formData.name}</p><p>Email: ${formData.email}</p><p>phone: ${formData.phone}</p><p>Proyecto: ${formData.project}</p><p>Confirmación hora mediante llamada telefonica: ${formData.date}</p></div>`;
+  var body2 = `<div>Nuestro equipo de Malpo se pondrá en contacto contigo</div><div>`;
   // console.log(to,subject,body,process.env.SMTP_EMAIL_INVERSIONISTA,process.env.NEXT_PUBLIC_API_URL);
   try {
     const { SMTP_EMAIL_INVERSIONISTA, SMTP_PASSWORD } = process.env;
@@ -39,7 +40,7 @@ export async function Ctrl_inversionista(formData) {
     // Envía el correo electrónico
     const sendResult = await transport.sendMail({
       from: "inversionistas@malpo.cl",
-      to,
+      to:"inversionistas@malpo.cl",
       subject,
       text, // Puedes incluir el texto plano si lo deseas
       html: body, // Aquí se pasa el contenido HTML
@@ -50,18 +51,19 @@ export async function Ctrl_inversionista(formData) {
 
     const sendResult2 = await transport.sendMail({
       from: "inversionistas@malpo.cl",
-      to:to2,
+      to,
       subject,
       text2, // Puedes incluir el texto plano si lo deseas
-      // html: body2, // Aquí se pasa el contenido HTML
+      html: body2, // Aquí se pasa el contenido HTML
     });
 
     console.log("Correo electrónico enviado exitosamente:", sendResult2);
     
     console.log('Formulario enviado con éxito');
-
+    return { success: true };  // Devuelve un objeto indicando éxito
     // Realizar cualquier otra acción después de enviar el formulario
   } catch (error) {
     console.error("Error al enviar el correo electrónico:", error);
+    return { success: false, message: error.message };  // Devuelve un objeto indicando fallo
   }
 }

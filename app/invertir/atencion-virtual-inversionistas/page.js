@@ -1,13 +1,16 @@
 'use client';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BannerImage from "@/app/componets/banner/banner-imagen";
 import { Ctrl_inversionista } from "@/app/controllers/Ctrl_inversionista";
+import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
+
 
 const Page = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    project:"",
     date: "",
     option: "",
     message: "",
@@ -15,19 +18,54 @@ const Page = () => {
 
   const [sendSuccess, setSendSuccess] = useState(false);
   const [sendError, setSendError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const [proyectos, setProyectos] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(""); // Estado para almacenar el proyecto seleccionado
+
+
+  useEffect(() => {
+    const ids = {
+      estadoInversion: 0,
+      etapaId: 0,
+      ciudadId: 0,
+      tipoProyectoId: 0,
+      subsidioId: 0,
+      dormitorioId: 0,
+      banoId: 0,
+    };
+
+    Ctrl_aplicar_filtros(ids)
+      .then(data_proyectos => {
+        setProyectos(data_proyectos.datos);
+        console.log("Datos de proyectos recibidos por API:", data_proyectos.datos);
+      })
+      .catch(error => {
+        console.error("Error al obtener proyectos:", error);
+      });
+  }, []);
+
+
+  // Función para manejar el cambio de selección del proyecto
+  const handleProjectChange = (e) => {
+    setSelectedProject(e.target.value); // Actualiza el proyecto seleccionado en el estado
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await Ctrl_inversionista(formData);
-      if (response && !response.ok) {
-        throw new Error('Error al enviar el formulario');
+      console.log('Response:', response); // Añadir registro de la respuesta
+
+      if (!response.success) {
+        throw new Error(response.message || 'Error al enviar el formulario');
       }
+
       setSendSuccess(true);
       setSendError(false);
       setFormData({
@@ -35,11 +73,12 @@ const Page = () => {
         email: "",
         phone: "",
         date: "",
-        option: "",
+        project: "",
         message: "",
       });
     } catch (error) {
       console.error('Error al enviar el formulario:', error.message);
+      setErrorMessage(error.message);
       setSendSuccess(false);
       setSendError(true);
     }
@@ -86,6 +125,16 @@ const Page = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="mx-auto mt-10 max-w-md">
+            {sendSuccess && (
+              <div className="bg-green-500 text-white text-center py-2 mb-4 rounded">
+                ¡Formulario enviado con éxito!
+              </div>
+            )}
+            {sendError && (
+              <div className="bg-red-500 text-white text-center py-2 mb-4 rounded">
+                Error al enviar el formulario. {/* {errorMessage} */}
+              </div>
+            )}
             <div className="mb-4">
               <label htmlFor="name" className="mb-2 block">
                 Nombre:
@@ -128,39 +177,41 @@ const Page = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="date" className="mb-2 block">
-                Fecha:
+              <label htmlFor="datetime" className="mb-2 block">
+                Fecha y hora:
               </label>
               <input
-                type="date"
-                id="date"
-                name="date"
-                value={formData.date}
+                type="datetime-local"
+                id="datetime"
+                name="datetime"
+                value={formData.datetime}
                 onChange={handleChange}
                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                 required
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="option" className="mb-2 block">
-                Opción:
+              <label htmlFor="project" className="mb-2 block">
+                Proyecto:
               </label>
               <select
-                id="option"
-                name="option"
-                value={formData.option}
-                onChange={handleChange}
+                id="project"
+                name="project"
+                value={selectedProject}
+                onChange={handleProjectChange}
                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                 required
               >
                 <option value="" disabled>
-                  Selecciona una opción
+                  Selecciona un proyecto
                 </option>
-                <option value="option1">Opción 1</option>
-                <option value="option2">Opción 2</option>
-                <option value="option3">Opción 3</option>
+                {proyectos.map((proyecto) => (
+                  <option key={proyecto.idProyecto} value={proyecto.nombreWebProyecto}>
+                    {proyecto.nombreWebProyecto}
+                  </option>
+                ))}
               </select>
-            </div>
+            </div>;
             <div className="mb-6">
               <label htmlFor="message" className="mb-2 block">
                 Mensaje:
@@ -184,16 +235,6 @@ const Page = () => {
               </button>
             </div>
           </form>
-          {sendSuccess && (
-            <div className="bg-green-500 text-white text-center py-2 mb-4 rounded">
-              ¡Formulario enviado con éxito!
-            </div>
-          )}
-          {sendError && (
-            <div className="bg-red-500 text-white text-center py-2 mb-4 rounded">
-              Error al enviar el formulario. Inténtalo de nuevo.
-            </div>
-          )}
         </div>
       </div>
 
@@ -203,4 +244,8 @@ const Page = () => {
 };
 
 export default Page;
+
+
+
+
 
