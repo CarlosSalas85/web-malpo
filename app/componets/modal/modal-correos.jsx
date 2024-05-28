@@ -9,8 +9,8 @@ const Modal = (props) => {
     phone: "",
     message: "",
   });
-  const [sendSuccess, setSendSuccess] = useState(false);
-  const [sendError, setSendError] = useState(false);
+  // const [sendSuccess, setSendSuccess] = useState(false);
+  // const [sendError, setSendError] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,16 +21,15 @@ const Modal = (props) => {
     e.preventDefault();
     try {
       formData.subject = "Denuncia";
-      const response = await Ctrl_contacto(formData);
-      if (response && !response.ok) {
-        throw new Error('Error al enviar el formulario', response);
+      const success = await Ctrl_contacto(formData);
+      if (success) {
+        alert('¡El correo se ha enviado con éxito!');
+      } else {
+        throw new Error('Error al enviar el formulario');
       }
-      setSendSuccess(true);
-      setSendError(false);
     } catch (error) {
       console.error('Error al enviar el formulario:', error.message);
-      setSendSuccess(false);
-      setSendError(true);
+      alert('Ha ocurrido un error al enviar el formulario');
     }
   };
 
@@ -44,7 +43,7 @@ const Modal = (props) => {
         />
       </div>
       <h1 className="text-center text-lg font-bold">{props.titulo}</h1>
-      {sendSuccess && (
+      {/* {sendSuccess && (
         <div className="bg-green-500 text-white text-center py-2 mb-4 rounded">
           ¡El correo se ha enviado con éxito!
         </div>
@@ -53,7 +52,7 @@ const Modal = (props) => {
         <div className="bg-red-500 text-white text-center py-2 mb-4 rounded">
           Error al enviar el correo. Inténtalo de nuevo.
         </div>
-      )}
+      )} */}
       <form onSubmit={handleSubmit} className="mx-auto max-w-md">
         <div className="mb-4">
           <label htmlFor="name" className="mb-2 block">

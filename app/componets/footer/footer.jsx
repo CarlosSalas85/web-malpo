@@ -20,7 +20,7 @@ const Modal = ({ onClose}) => {
             src={`https://c.animaapp.com/o0ROixJd/img/cancel@2x.png`}
           />
         </button>
-        <div className="mt-4"><ModalCorreos titulo="Formulario de Contacto"/></div>
+        <div className="mt-4"><ModalCorreos titulo="Formulario de Contacto" asunto="Contacto"/></div>
       </div>
     </div>
   );

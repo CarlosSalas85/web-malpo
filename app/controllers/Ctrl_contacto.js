@@ -62,12 +62,13 @@ export async function Ctrl_contacto(formData) {
     console.log("Correo electrónico  a usuario enviado exitosamente:", sendResult2);
     
     console.log('Formulario enviado con éxito');
-
+    return true;
 
 
 
     // Realizar cualquier otra acción después de enviar el formulario
   } catch (error) {
     console.error("Error al enviar el correo electrónico:", error);
+    return false;
   }
 }

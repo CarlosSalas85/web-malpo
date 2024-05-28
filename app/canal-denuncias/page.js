@@ -20,7 +20,7 @@ const Modal = ({ onClose }) => {
           />
         </button>
         <div className="mt-4">
-          <ModalCorreos titulo="Formulario de Denuncia" />
+          <ModalCorreos titulo="Formulario de Denuncia" asunto="Denuncia" />
         </div>
       </div>
     </div>

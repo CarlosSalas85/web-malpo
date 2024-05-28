@@ -54,7 +54,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
 
       <div className="mb-6 mt-6 flex justify-center">
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
-          <ModalCotizador proyecto={proyectoData?.datos?.proyecto} modelos={modelosData} />
+          <ModalCotizador proyecto={proyectoData} modelos={modelosData} />
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"

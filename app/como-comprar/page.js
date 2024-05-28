@@ -91,49 +91,7 @@ const Page = () => {
       </div>
       <BannerRegiones />
       {/* modal */}
-<<<<<<< HEAD
-      {modalOpen && (
-  <Modal onClose={handleModalToggle}>
-    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg overflow-y-auto max-h-screen w-1100px">
-        <div className="flex justify-between items-center px-4 py-2 bg-redMalpo">
-          <div className="font-bold text-rojoMalpo text-2xl">Cotización</div>
-          <img src="/logos/logoRojoMalpo.png" alt="Imagen de cotización" className="w-168px h-auto" />
-          <button className="text-gray-600 text-lg" onClick={handleModalToggle}>
-            <img src="https://c.animaapp.com/o0ROixJd/img/cancel@2x.png" alt="Cancel" className="w-12 h-12" />
-          </button>
-        </div>
-        <div className="bg-rojoMalpo text-white text-center font-bold py-4">
-          Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}
-        </div>
-        <div className="px-4 py-2">
-          <div className="mb-4 font-bold">1. Tus Datos</div>
-          <form className="flex flex-wrap" onSubmit={handleSubmit}>
-            <div className="w-full md:w-1/3 mb-4">
-              <label htmlFor="nombre" className="block mb-1">Nombre:</label>
-              <input type="text" id="nombre" name="nombre" className="w-full border border-gray-300 rounded px-4 py-2" />
-              <span className="error">{errors.nombre}</span>
-            </div>
-            <div className="w-full md:w-1/3 mb-4">
-              <label htmlFor="rut_cliente" className="block mb-1">Rut:</label>
-              <input type="text" id="rut_cliente" name="rut_cliente" className="w-full border border-gray-300 rounded px-4 py-2" />
-              <span className="error">{errors.rut_cliente}</span>
-            </div>
-            <div className="w-full md:w-1/3 mb-4">
-              <label htmlFor="email" className="block mb-1">Correo:</label>
-              <input type="email" id="email" name="email" className="w-full border border-gray-300 rounded px-4 py-2" />
-              <span className="error">{errors.email}</span>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </Modal>
-)}
-
-=======
       {modalOpen && <Modal onClose={handleModalToggle}></Modal>}
->>>>>>> origin/devSalas
       {/* modal */}
     </>
   );
