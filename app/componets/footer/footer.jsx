@@ -23,14 +23,16 @@ const Modal = ({ onClose, children }) => {
   );
 };
 
-const Footer = ({redes}) => {
+const Footer = ({ redes }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [formularioEnviado, setFormularioEnviado] = useState(null);
- // Estado para almacenar los errores del formulario
- const [errors, setErrors] = useState({});
+  const [sendSuccess, setSendSuccess] = useState(false);
+  const [sendError, setSendError] = useState(false);
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
+    setSendSuccess(false); // Reset success message when opening the modal
+    setSendError(false);   // Reset error message when opening the modal
   };
 
   const [formData, setFormData] = useState({
@@ -47,98 +49,80 @@ const Footer = ({redes}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para enviar los datos del formulario
-    // Validar el formulario
-    // const errors = validateForm(formData);
-    // if (Object.keys(errors).length === 0) {
-        // Enviar el formulario
-        // console.log('Formulario válido, apunto de ser enviados:', formData);
-        try {
-            // console.log("ESTOY CONTACTO A PUNTO DE ENVAIR LOS DATOS AL FORMULARIO",formData);
-            formData.tipoForm="contacto"
-            // Enviar el formulario a la API
-            // DESCOMENTAR ESTAS LINEAS PARA QUE FUNCIONE LA API
-            const response=await Ctrl_contacto(formData);
-            if (response && !response.ok) {
-              throw new Error('Error al enviar el formulario', response);
-          }
-            console.log('El formulario ha sido enviado');
-            setFormularioEnviado(true);
-          } catch (error) {
-           console.error('Error al enviar el formulario:', error.message);
-           setFormularioEnviado(false);
-            // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
-          }
-    // } else {
-    //     setErrors(errors);
-    // }
-    // console.log(formData);
+
+    try {
+      formData.subject = "Contacto";
+      const response = await Ctrl_contacto(formData);
+      if (response && !response.ok) {
+        throw new Error('Error al enviar el formulario', response);
+      }
+      setSendSuccess(true);
+      setSendError(false);
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error.message);
+      setSendSuccess(false);
+      setSendError(true);
+    }
   };
-
-
-
-
 
   return (
     <>
-    <footer className="bg-grisMalpo px-4 py-8 text-white">
-      <div className="flex flex-col md:flex-row md:justify-center">
-        <div className="text-left md:mr-8 md:text-center">
-          {" "}
-          {/* Texto centrado en md */}
-          <img
-            src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
-            className="logo-malpo-blanco mx-0 sm:mx-auto sm:mb-6" // Centrado horizontalmente en sm, alineado a la izquierda en otros tamaños
-            alt="Logo malpo blanco"
-          />
-          <div className="mt-10 flex flex-col items-start sm:flex-row sm:justify-between">
-            <div className="text-left sm:mb-0 sm:mr-4 sm:pr-12">
-              <p className="mb-4">
-                <a href="#" className="hover:text-gray-400">
-                  Nosotros
-                </a>
-              </p>
-              <p className="mb-4">
-                <a href="#" className="hover:text-gray-400" onClick={handleModalToggle}>
-                  Contacto
-                </a>
-              </p>
-              <p className="mb-4">
-                <a href="#" className="hover:text-gray-400">
-                  Trabaja en Malpo
-                </a>
-              </p>
-              <p className="mb-0">
-                <a href="#" className="hover:text-gray-400">
-                  Canal de denuncias
-                </a>
-              </p>
-            </div>
-            <div className="mt-10 flex items-center text-left sm:mt-0 sm:pl-12">
-            {redes.datos.map((redSocial) => (
-              <a key={redSocial.idRrss} href={redSocial.urlRrss} target="_blank" className="mr-2 hover:text-gray-400">
-                <img
-                  className="img-rrss mr-2"
-                  alt={`Icon ${redSocial.nombreRrss}`}
-                  src={redSocial.logoRrss}
-                />
-              </a>
-               ))}
+      <footer className="bg-grisMalpo px-4 py-8 text-white">
+        <div className="flex flex-col md:flex-row md:justify-center">
+          <div className="text-left md:mr-8 md:text-center">
+            <img
+              src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
+              className="logo-malpo-blanco mx-0 sm:mx-auto sm:mb-6"
+              alt="Logo malpo blanco"
+            />
+            <div className="mt-10 flex flex-col items-start sm:flex-row sm:justify-between">
+              <div className="text-left sm:mb-0 sm:mr-4 sm:pr-12">
+                <p className="mb-4">
+                  <a href="#" className="hover:text-gray-400">
+                    Nosotros
+                  </a>
+                </p>
+                <p className="mb-4">
+                  <a href="#" className="hover:text-gray-400" onClick={handleModalToggle}>
+                    Contacto
+                  </a>
+                </p>
+                <p className="mb-4">
+                  <a href="#" className="hover:text-gray-400">
+                    Trabaja en Malpo
+                  </a>
+                </p>
+                <p className="mb-0">
+                  <a href="/canal-denuncias" className="hover:text-gray-400">
+                    Canal de denuncias
+                  </a>
+                </p>
+              </div>
+              <div className="mt-10 flex items-center text-left sm:mt-0 sm:pl-12">
+                {redes.datos.map((redSocial) => (
+                  <a key={redSocial.idRrss} href={redSocial.urlRrss} target="_blank" className="mr-2 hover:text-gray-400">
+                    <img
+                      className="img-rrss mr-2"
+                      alt={`Icon ${redSocial.nombreRrss}`}
+                      src={redSocial.logoRrss}
+                    />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="md:text-center pt-10 text-xs">
-        @ 2024 Malpo.- Las imágenes y textos contenidos en este sitio web son
-        meramente ilustrativos y referenciales, por lo que podrían no
-        representar la realidad. La empresa se reserva la facultad de efectuar
-        cambios en los proyectos. Los precios están sujetos a disponibilidad de
-        los productos. Exija su cotización en las salas y puntos de ventas.
-      </div>
-    </footer>
-     {/* modal */}
-     {modalOpen && (
+        <div className="md:text-center pt-10 text-xs">
+          @ 2024 Malpo.- Las imágenes y textos contenidos en este sitio web son
+          meramente ilustrativos y referenciales, por lo que podrían no
+          representar la realidad. La empresa se reserva la facultad de efectuar
+          cambios en los proyectos. Los precios están sujetos a disponibilidad de
+          los productos. Exija su cotización en las salas y puntos de ventas.
+        </div>
+      </footer>
+
+      {modalOpen && (
         <Modal onClose={handleModalToggle}>
           <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
@@ -151,7 +135,16 @@ const Footer = ({redes}) => {
             <h1 className="text-center text-lg font-bold">
               Formulario de Contacto
             </h1>
-            
+            {sendSuccess && (
+              <div className="bg-green-500 text-white text-center py-2 mb-4 rounded">
+                ¡El correo se ha enviado con éxito!
+              </div>
+            )}
+            {sendError && (
+              <div className="bg-red-500 text-white text-center py-2 mb-4 rounded">
+                Error al enviar el correo. Inténtalo de nuevo.
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="mx-auto max-w-md">
               <div className="mb-4">
                 <label htmlFor="name" className="mb-2 block">
@@ -218,10 +211,8 @@ const Footer = ({redes}) => {
               </div>
             </form>
           </div>
-        
         </Modal>
       )}
-      {/* modal */}
     </>
   );
 };
