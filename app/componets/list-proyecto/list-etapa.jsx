@@ -1,8 +1,35 @@
+'use client';
+import { useState } from "react";
+
+
+
+const Modal = ({ onClose}) => {
+  return (
+    <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opacity-75">
+      <div className="relative m-auto w-full max-w-md rounded bg-white p-8 shadow-lg">
+        <button
+          className="absolute right-0 top-0 m-4 text-rojoMalpo hover:text-gray-400"
+          onClick={onClose}
+        >
+          <img
+            className="mr-3 h-8 w-8"
+            alt={`icono`}
+            src={`https://c.animaapp.com/o0ROixJd/img/cancel@2x.png`}
+          />
+        </button>
+        <div className="mt-4"></div>
+      </div>
+    </div>
+  );
+};
+
+
+
 const IconoList = (props) => {
   return (
     <>
       <div className="hidden sm:block">
-        <a href="#" className="flex flex-col items-center">
+      <a href="#" className="flex flex-col items-center" onClick={props.onClick}>
           <div className="mt-4 flex flex-col items-center">
             <img className="h-10 w-10" alt={`icono`} src={props.icono} />
             <div className="mt-2 flex flex-wrap items-center justify-center">
@@ -38,7 +65,7 @@ const IconoList = (props) => {
           <div className="flex flex-row">
             {/* Primera columna */}
             <div className="mr-3 flex w-20 flex-col items-end">
-              <img className="h-10 w-10" alt={`icono`} src={props.icono} />
+              <img className="h-10 w-10" alt={`icono`} src={props.icono}  />
             </div>
 
             {/* Segunda columna */}
@@ -72,11 +99,18 @@ const IconoList = (props) => {
 
 const List = (props) => {
   // console.log("Los datos de nombre Proyecto y avances, avances[0].estadoAvance", props.nombreProyecto, props.avances);
+  
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleModalToggle = () => {
+    setModalOpen(!modalOpen);
+  };
+
+
   const nombreProyecto = props.nombreProyecto;
   const avances = props.avances;
   const iconos_rojo = [].concat(
     // '../../iconos/etapa/PILOTOON.png',
-    '../../iconos/etapa/OBRASPREVIASOK.png',
     '../../iconos/etapa/OBRASPREVIASOK.png',
     '../../iconos/etapa/OBRAGRUESAOK.png',
     '../../iconos/etapa/TERMINACIONESOK.png',
@@ -85,7 +119,6 @@ const List = (props) => {
   );
   const iconos_gris = [].concat(
     // '../../iconos/etapa/PILOTOOFF.png',
-    '../../iconos/etapa/OBRASPREVIAS.png',
     '../../iconos/etapa/OBRASPREVIAS.png',
     '../../iconos/etapa/OBRAGRUESA.png',
     '../../iconos/etapa/TERMINACIONES.png',
@@ -109,6 +142,9 @@ const List = (props) => {
 
     var mayorAvance = avances[idmayorAvance]?.nombreAvance;
     // console.log("El valor de mayorAvance es:", mayorAvance);
+
+
+    
   } 
   return (
     <>
@@ -119,51 +155,21 @@ const List = (props) => {
       </div>
        )}
       
-      
       {avances != null && (
       <div className="flex flex-col items-center justify-center">
         {/* Fila de íconos */}
         <div className="mt-6 flex flex-col justify-center sm:flex-row md:justify-between">
         {/* Se usa slice(1) para no imprimir el primer elemento del array ya que se imprime abajo */}
-        {/* {avances.slice(1).map((avance, index) => (
+       {avances.slice(1).map((avance, index) => (
               <IconoList
                 key={index}
                 titulo={avance.nombreAvance}
                 color={avance.estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
                 icono={avance.estadoAvance === "1" ? iconos_rojo[index] : iconos_gris[index]}
-                circulo={index === avances.length - 1 ? "block" : "hidden"}
+                circulo={index === avances.length-2 ? "block" : "hidden"}
+                onClick={handleModalToggle}
               />
-            ))} */}
-          <IconoList
-            titulo={avances[1].nombreAvance}
-            color={avances[1].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
-            icono={avances[1].estadoAvance === "1" ? iconos_rojo[1] : iconos_gris[1]}
-            circulo={"hidden"}
-          />
-          <IconoList
-            titulo={avances[2].nombreAvance}
-            color={avances[2].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
-            icono={avances[2].estadoAvance === "1" ? iconos_rojo[2] : iconos_gris[2]}
-            circulo={"hidden"}
-          />
-          <IconoList
-            titulo={avances[3].nombreAvance}
-            color={avances[3].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
-            icono={avances[3].estadoAvance === "1" ? iconos_rojo[3] : iconos_gris[3]}
-            circulo={"hidden"}
-          />
-          <IconoList
-            titulo={avances[4].nombreAvance}
-            color={avances[4].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
-            icono={avances[4].estadoAvance === "1" ? iconos_rojo[4] : iconos_gris[4]}
-            circulo={"hidden"}
-          />
-          <IconoList
-            titulo={avances[5].nombreAvance}
-            color={avances[5].estadoAvance === "1" ? "rojoMalpo" : "grisMalpo"}
-            icono={avances[5].estadoAvance === "1" ? iconos_rojo[5] : iconos_gris[5]}
-            circulo={"block"}
-          /> 
+            ))} 
         </div>
 
         <div className="mt-4 flex justify-center md:justify-between">
@@ -182,6 +188,8 @@ const List = (props) => {
         </div>
       </div>
       )}
+
+    {modalOpen && <Modal onClose={handleModalToggle}>HOLA MUNDO</Modal>}
     </>
   );
 };

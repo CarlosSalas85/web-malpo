@@ -949,53 +949,59 @@ const Page = (props) => {
           </div>
         </Modal>
       )}
-
-          {modalOpen2 && (
-  <Modal onClose={handleModalToggle2}>
-              <div className="modal-cotizador bg-white rounded-lg shadow-lg p-6">
-              <div className="modal-header flex justify-between items-center">
-              <div className="modal-cotizador-titulo font-bold text-bg-rojoMalpo text-lg">Cotización</div>
-                <img
+   {modalOpen2 && (
+<Modal onClose={handleModalToggle2}>
+          <div className="container mx-auto w-full px-4 py-2">
+            <div className="mb-3 flex items-center justify-between">
+              <h1 className="text-lg font-bold">Cotización</h1>
+              <img
                 src="/logos/logoRojoMalpo.png"
                 alt="Logo"
-                className="mr-4 h-6 w-auto"
+                className="h-6 w-auto"
               />
-                <button
-          className="absolute right-0 top-0 m-4 text-rojoMalpo hover:text-gray-400"
-        >
-                {/* <img
-                    className="cancel w-12 h-12"
-                    alt="Cancel"
-                    src="https://c.animaapp.com/o0ROixJd/img/cancel@2x.png"
-                /> */}
-                </button>
             </div>
-            <div className="modal-content">
-                <div className="modal-section">
-                    <div className="seccion-1 font-normal text-base">
-                        <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{pieReserva}</strong> UF, tasa anual <strong>{(tasaMensual * 12).toFixed(1)}</strong> y un plazo de <strong>{plazo}</strong> años es:
-                    </div>
-                    <div className="seccion-2 bg-rojoMalpo focus:shadow-outline rounded px-4 py-2 text-white">
-                        <div>Tu Dividendo Mensual es:</div>
-                        <div>$ {formatNumberWithCommas(cotizacionCLP)}</div>
-                    </div>
-                    <a
-                        href="#"
-                        onClick={handleDownloadPDF}
-                        className="block text-bg-rojoMalpo underline mt-2 text-right"
-                    >
-                        Imprimir
-                    </a>
-                    <hr className="bg-rojoMalpo h-2 w-full mt-4" />
-                    <div className="seccion-3 font-normal text-base">
-                        <strong>El monto del dividendo es solo estimativo no incluye seguros asociados.</strong>
-                    </div>
-                </div>
+ 
+            <div className="mx-auto mb-4 mt-4">
+              <p className="text-18px pt-4 sm:text-center">
+              <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{pieReserva}</strong> UF, tasa anual <strong>{(tasaMensual * 12).toFixed(1)}</strong> y un plazo de <strong>{plazo}</strong> años es:
+              </p>
             </div>
-        </div>
-
-    </Modal>
-  )};
+ 
+            <div className="mx-auto mb-4 mt-4 flex h-28 flex-col items-center justify-center bg-rojoMalpo text-white">
+            <div>Tu Dividendo Mensual es:</div>
+            <div>$ {formatNumberWithCommas(cotizacionCLP)}</div>
+            </div>
+ 
+            <div className="mt-4 flex justify-end pr-4 text-rojoMalpo">
+              <button className="flex items-center" onClick={handleDownloadPDF}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 9V2h12v7M6 18h12v4H6v-4zM6 14h12v-4H6v4zM18 9H6M4 18h2M18 18h2M18 6h2M6 6H4"
+                  />
+                </svg>
+                <span className="ml-2">Imprimir</span>
+              </button>
+            </div>
+ 
+            <div className="mx-auto mb-4 mt-4 flex h-2 flex-col items-center justify-center bg-rojoMalpo text-white"></div>
+ 
+            <div className="mx-auto mb-4 mt-4">
+              <p className="text-18px pt-4 sm:text-center">
+              <strong>El monto del dividendo es solo estimativo no incluye seguros asociados.</strong>
+              </p>
+            </div>
+          </div>
+        </Modal>
+   )}
     </>
   )
 };

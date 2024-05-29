@@ -14,6 +14,7 @@ import ButtonRojo from "@/app/componets/button/button-rojo";
 import ListProyecto from "@/app/componets/list-proyecto/list-proyecto";
 import Carousel from "@/app/componets/carousel/carousel";
 import {Ctrl_proyectos} from "@/app/controllers/Ctrl_proyectos";
+import ModalCotizador from "@/app/componets/modal/modal-cotizar";
 
 const UrlBanner = (props) => {
   return (
@@ -95,7 +96,7 @@ export default async function Modelos({params: { modelo }, searchParams:{val1,va
 
       <div className="mb-6 mt-6 flex justify-center">
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
-         <ButtonRojo titulo=" Cotizar Proyecto"/>
+        <ModalCotizador proyecto={proyectoData} modelos={modelosData} />
 
           <Button
             titulo="Tour Virtual"
