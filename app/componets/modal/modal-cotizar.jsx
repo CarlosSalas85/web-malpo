@@ -501,20 +501,6 @@ const Page = (props) => {
   };
 
 
-  const [formData, setFormData] = useState({
-    name: "",
-    rut: "",
-    email: "",
-    telefono: "",
-    ciudad: "",
-    referral: "",
-    message: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -1005,7 +991,7 @@ const Page = (props) => {
   );
 }else{
 return (
-  
+  modalOpen && (
   <Modal onClose={handleModalToggle}>
   <div className="modal-overlay">
         <div className="modal-cotizador bg-white rounded-lg shadow-lg p-6">
@@ -1051,7 +1037,7 @@ return (
         </div>
     </div>
     </Modal>
-)
+));
 }
 };
 
