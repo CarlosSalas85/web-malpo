@@ -25,8 +25,6 @@ export default async function Page({ }) {
   const data2 = await Ctrl_aplicar_filtros(ids);
   const proyectosIniciales = data2.datos;
 
-  // console.log("Proyectos Iniciales",proyectosIniciales);
-
   // Mapeo de los filtros en arrays separados
   const contenidoFiltros = {
     tiposProyecto: filtros.tiposProyecto.map(tipo => ({
@@ -56,10 +54,6 @@ export default async function Page({ }) {
     })),
   };
 
-
-
-  // console.log("Filtros:",contenidoFiltros);
-
   return (
     <>
       <div className="md:pb-6 md:pt-28">
@@ -73,7 +67,7 @@ export default async function Page({ }) {
         </div>
 
         <div className="flex flex-col md:flex-row">
-          <Proyectos filtros={contenidoFiltros} filtroUrl={filtroUrl} proyectos={proyectosIniciales} inseversion="0" pagina="proyectos" />
+          <Proyectos filtros={contenidoFiltros} filtroUrl={filtroUrl} proyectos={proyectosIniciales} inversion="0" pagina="proyectos" paginaDetalle="proyecto"/>
         </div>
 
         <div className="mx-auto mb-4 mt-10 w-11/12 md:w-10/12">

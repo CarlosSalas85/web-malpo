@@ -1,7 +1,7 @@
 import BannerInvertir from "@/app/componets/banner-proyectos/banner-invertir";
 import { Ctrl_filtros } from "@/app/controllers/Ctrl_filtros";
 import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
-import Proyectos from "../../componets/proyectos/proyectos";
+import Proyectos from "../../../componets/proyectos/proyectos";
 
 export default async function Page({ params }) {
   const parametros = params.parametros;
@@ -69,7 +69,7 @@ export default async function Page({ params }) {
         </div>
 
         <div className="flex flex-col md:flex-row">
-          <Proyectos filtros={contenidoFiltros} filtroUrl={filtroUrl} proyectos={proyectosIniciales} inversion="1" pagina="invertir/proyectos" />
+          <Proyectos filtros={contenidoFiltros} filtroUrl={filtroUrl} proyectos={proyectosIniciales} inversion="1" pagina="invertir/proyectos"  paginaDetalle="invertir/proyecto" />
         </div>
         <div className="mx-auto mb-4 mt-10 w-11/12 md:w-10/12">
           <h1 className="mb-2 text-3xl sm:text-center">

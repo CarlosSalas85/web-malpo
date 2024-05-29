@@ -1,13 +1,12 @@
 import "./banner-proyectos.css";
 
-const CustomButton = ({ texto, filtro ,region,comuna}) => {
-  console.log("nombre, filtro", texto, filtro);
+const CustomButton = ({ texto ,region,comuna}) => {
   return (
     <a
       href={`/proyectos/${region}/${comuna}`}
       className="mb-2 mr-2 w-full rounded-lg border border-white bg-transparent px-4 py-2 text-white hover:border-gray-400 hover:text-gray-400"
     >
-      {props.texto}
+      {texto}
     </a>
   );
 };
@@ -28,7 +27,6 @@ const Banner = (props) => {
               >
                 <CustomButton
                   texto={elemento.nombre}
-                  filtro={filtro}
                   comuna={elemento.idComuna?elemento.idComuna:0}
                   region={elemento.idRegion?elemento.idRegion:0}
                 />

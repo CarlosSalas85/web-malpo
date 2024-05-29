@@ -68,7 +68,7 @@ export default async function Page (){
         </div>
 
         <div className="flex flex-col md:flex-row">
-          <Proyectos filtros={contenidoFiltros} filtroUrl={filtroUrl} proyectos={proyectosIniciales} inversion="1" pagina="invertir/proyectos" />
+          <Proyectos filtros={contenidoFiltros} filtroUrl={filtroUrl} proyectos={proyectosIniciales} inversion="1" pagina="invertir/proyectos"  paginaDetalle="invertir/proyecto" />
         </div>
         <div className="mx-auto mb-4 mt-10 w-11/12 md:w-10/12">
           <h1 className="mb-2 text-3xl sm:text-center">

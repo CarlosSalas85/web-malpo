@@ -4,10 +4,6 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "./styleFiltro.css";
 
-
-
-
-
 const FilterButton = ({ id, type, activeFilter, handleClick }) => {
   return (
     <button
@@ -33,6 +29,69 @@ const validar = (p1, p2) => {
     }
   }
 }
+
+const CustomSelect = ({ options, optionDefault, handle }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState((optionDefault) ? optionDefault : options[0].value);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionSelect = (value, text) => {
+    handle(value, text);
+    setSelectedOption(value);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="relative mb-6 mt-3 rounded border border-black">
+      <div
+        className="flex cursor-pointer items-center justify-between rounded border border-gray-300 px-4 py-2 pb-4 pt-4"
+        onClick={toggleDropdown}
+      >
+        <span>
+          {options.find((opt) => opt.value == selectedOption)?.label}
+        </span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className={`h-4 w-4 transform transition-transform ${isOpen ? "-rotate-180" : ""
+            }`}
+        >
+          <path
+            fillRule="evenodd"
+            d="M6.293 7.293a1 1 0 011.414 0L10 9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+      {isOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded border border-gray-300 bg-white shadow-md">
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className={`flex cursor-pointer items-center px-4 py-2 ${selectedOption === option.value
+                ? "bg-gray-200"
+                : "hover:bg-gray-100"
+                }`}
+              onClick={() => handleOptionSelect(option.value, option.label)}
+            >
+              <span>{option.label}</span>
+              <input
+                type="checkbox"
+                checked={selectedOption === option.value}
+                className="ml-auto cursor-pointer"
+                onChange={() => { }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 // const data = await Ctrl_filtros();
 // const filtros = data.datos;
@@ -69,14 +128,12 @@ const validar = (p1, p2) => {
 
 
 
-// console.log("Filtros:",contenidoFiltros);
 const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) => {
   const [activeFilterTipo, setActiveFilterTipo] = useState(0);
   const [activeFilterSubsidio, setActiveFilterSubsidio] = useState(0);
   const [activeFilterDormitorios, setActiveFilterDormitorios] = useState(0);
   const [activeFilterBanos, setActiveFilterBanos] = useState(0);
   const [selectedOptionEtapa, setSelectedOptionEtapa] = useState(filtros.etapasProyecto[0].id);
-
 
   const isNumber = (value) => !isNaN(parseFloat(value)) && isFinite(value);
 
@@ -90,8 +147,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
   let nombreRegion = ''
   let nombreComuna = ''
-  console.log(nombreRegion)
-  console.log(nombreComuna)
+
   const [mostrarSession, setMostrarSession] = useState(false);
   const [filteredData, setFilteredData] = useState(null);
 
@@ -101,84 +157,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
     return filterItem ? filterItem.id : defaultId;
   };
 
-  const CustomSelect = ({ options, handle }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(options[0].value);
 
-
-    const modificarURL = (text) => {
-      console.log('asd')
-      const cleanString = (str) => {
-        return str.normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/ñ/g, "n")
-          .replace(/\s+/g, "-")
-          .toLowerCase();
-      };
-      let url = `${cleanString(text)}`
-      window.history.replaceState(null, '', `/${pagina}/${url}`);
-    }
-
-
-    const toggleDropdown = () => {
-      setIsOpen(!isOpen);
-    };
-
-    const handleOptionSelect = (value, text) => {
-      setSelectedOption(value);
-      handle(value);
-      setIsOpen(false);
-      modificarURL(text)
-    };
-
-    return (
-      <div className="relative mb-6 mt-3 rounded border border-black">
-        <div
-          className="flex cursor-pointer items-center justify-between rounded border border-gray-300 px-4 py-2 pb-4 pt-4"
-          onClick={toggleDropdown}
-        >
-          <span>
-            {options.find((opt) => opt.value === selectedOption)?.label}
-          </span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className={`h-4 w-4 transform transition-transform ${isOpen ? "-rotate-180" : ""
-              }`}
-          >
-            <path
-              fillRule="evenodd"
-              d="M6.293 7.293a1 1 0 011.414 0L10 9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-        {isOpen && (
-          <div className="absolute z-10 mt-1 w-full rounded border border-gray-300 bg-white shadow-md">
-            {options.map((option) => (
-              <div
-                key={option.value}
-                className={`flex cursor-pointer items-center px-4 py-2 ${selectedOption === option.value
-                  ? "bg-gray-200"
-                  : "hover:bg-gray-100"
-                  }`}
-                onClick={() => handleOptionSelect(option.value, option.label)}
-              >
-                <span>{option.label}</span>
-                <input
-                  type="checkbox"
-                  checked={selectedOption === option.value}
-                  className="ml-auto cursor-pointer"
-                  onChange={() => { }}
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
 
   const applyFilters = async () => {
     const ids = {
@@ -212,7 +191,6 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
     const subsidio = filtros.tiposSubsidio.find((subsidio) => subsidio.nombre === activeFilterSubsidio);
     const activeFilterSubsidioId = subsidio.id;
     const dormitorio = filtros.dormitorios.find((dormitorio) => dormitorio.cantidad === activeFilterDormitorios);
-    // console.log("dormitorio", dormitorio);
     const activeFilterDormitorioId = dormitorio.id;
     const bano = filtros.banos.find((bano) => bano.cantidad === activeFilterBanos);
     const activeFilterBanoId = subsidio.id;
@@ -231,7 +209,6 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
   };
 
-
   const handleClickTipo = (filter) => {
     setActiveFilterTipo(filter);
   };
@@ -247,6 +224,15 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
   const handleClickBanos = (filter) => {
     setActiveFilterBanos(filter);
   };
+
+
+  const handleEtapa = (idEtapa, nombreEtapa = '') => {
+    setSelectedOptionEtapa(idEtapa)
+  }
+  const handleCiudad = (idCiudad, nombreCiudad = '') => {
+    setSelectedOptionCiudad(idCiudad)
+    setSelectedOptionRegion(0)
+  }
 
   const toggleSession = () => {
     setMostrarSession(!mostrarSession);
@@ -269,7 +255,6 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
 
   const modificarURL = (nombreRegion, nombreComuna) => {
-    console.log('debiera modificar ', nombreRegion, nombreComuna)
     const cleanString = (str) => {
       return str.normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -289,9 +274,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
     window.history.replaceState(null, '', `/${pagina}/${url}`);
   }
 
-
   const filtrarProyectos = (proyectos, tipoProyecto, bano, dormitorio, subsidio, region, comuna, etapa) => {
-
     if (!proyectos || !Array.isArray(proyectos)) {
       return;
     }
@@ -316,13 +299,12 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
       ) {
         modificarURL('', '');
         return true
-
       } else {
-        if (comuna != 0) {
+        if (comuna != '0') {
           if (proyecto.idComuna == comuna) {
             nombreComuna = proyecto.comunaNombre
           }
-        } else if (region != 0) {
+        } else if (region != '0') {
           if (proyecto.idRegion == region) {
             nombreRegion = proyecto.regionNombre
           }
@@ -331,7 +313,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
         filtroBano = validar(proyecto.bano, bano);
         filtroDormitorio = validar(proyecto.dormitorio, dormitorio);
         filtroSubsidio = validar(proyecto.idSubsidio, subsidio);
-        if (comuna == 0 && region == 0) {
+        if (comuna == '0' && region == '0') {
           filtroRegion = true;
           filtroComuna = true;
         } else {
@@ -481,10 +463,11 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
         </div>
 
         <h2 className="text-2xl">Etapa del proyecto</h2>
-        <CustomSelect options={options} handle={setSelectedOptionEtapa} />
+
+        <CustomSelect options={options} optionDefault handle={handleEtapa} />
 
         <h2 className="text-2xl">Ciudad</h2>
-        <CustomSelect options={optionsCiudad} handle={setSelectedOptionCiudad} />
+        <CustomSelect options={optionsCiudad} optionDefault={selectedOptionCiudad} handle={handleCiudad} />
       </div>
     </div>
   );

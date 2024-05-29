@@ -1,8 +1,5 @@
 'use client';
 import CustomCards from "../../componets/card-proyecto/card-proyecto-uno";
-import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
-
-
 
 export default function List(props) {
   if (!props.proyectos || props.proyectos.length === 0) {
@@ -15,12 +12,13 @@ export default function List(props) {
  
   return (
     <div className="flex w-full flex-wrap md:ml-4 md:mr-20 md:w-3/5">
-
       {props.proyectos.map((proyecto, index) => (
+        
         <div className="flex w-full justify-center pb-6 xl:w-1/2" key={index}>
           <CustomCards // Don't forget to add a unique key for each item in the map function
-            idProyecto={1} // Consider using proyecto.id or something unique from your data
+            idProyecto={proyecto.idProyecto} // Consider using proyecto.id or something unique from your data
             pagina={props.pagina}
+            paginaDetalle={props.paginaDetalle}
             ciudad={props.ciudad}
             proyecto={proyecto}
             nombreProyectoUrl={(replaceSpaces(proyecto.nombreWebProyecto))}
