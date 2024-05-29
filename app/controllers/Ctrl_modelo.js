@@ -14,12 +14,13 @@ export function Ctrl_modelo(id) {
                 'X-API-KEY': apiKey,
                 'Authorization': authHeader
             },
+            
             //    next: { tags: ['modeloId']},
         })
             .then(response => response.json())
             .then(data => {
                 resolve(data); // Resuelve la Promesa con los datos obtenidos
-                console.log(data);
+                // console.log(data);
             })
             .catch(error => {
                 //console.log(error);

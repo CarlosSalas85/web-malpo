@@ -1,6 +1,9 @@
+"use client";
 import BannerImage from "@/app/componets/banner/banner-imagen";
 import NavClientes from "@/app/componets/banner-clientes/nav-clientes";
 import ButtonClientes from "@/app/componets/banner-clientes/button-clientes";
+
+import BannerRegiones from "@/app/function/banner-regiones-cliente";
 
 const Page = () => {
   return (
@@ -36,13 +39,13 @@ const Page = () => {
               />
 
               <ButtonClientes
-                url="/clientes/manuales-de-compra?val=3"
+                url="/clientes/preguntas-frecuentes?val=4"
                 titulo="Preguntas Frecuentes Post-compra"
                 icono="https://c.animaapp.com/Q5nw9tiI/img/quiz@2x.png"
               />
 
               <ButtonClientes
-                url="/clientes/preguntas-frecuentes?val=4"
+                url="/clientes/manuales-de-compra?val=3"
                 titulo="Manuales de cuidado"
                 icono="https://c.animaapp.com/Q5nw9tiI/img/library-books@2x.png"
               />
@@ -50,6 +53,7 @@ const Page = () => {
           </div>
         </div>
       </div>
+      <BannerRegiones />
     </>
   );
 };

@@ -46,10 +46,10 @@ const BottonBanner = () => {
 const Banner = () => {
   return (
     <>
-      <div className="imagen-fondo bg-cover bg-center sm:hidden md:block">
+      <div className="imagen-fondo bg-cover bg-center hidden md:block">
         <BottonBanner />
       </div>
-      <div className="imagen-fondo bg-cover bg-center sm:block md:hidden">
+      <div className="imagen-fondo bg-cover bg-center block md:hidden">
         <BottonBanner />
       </div>
     </>

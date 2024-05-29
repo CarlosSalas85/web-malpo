@@ -1,8 +1,9 @@
 const Button = (props) => {
+  const blank = parseInt(props.blank);
   return (
-    <div className="flex w-full pb-6 md:w-1/2">
+    <div className="flex w-full pb-6 md:w-2/3 xl:w-1/2">
       <div className="w-full xl:w-5/6">
-        <a href={props.url}>
+        <a href={props.url} target={blank === 1 ? "_blank" : "_self"}>
           <div className="fondo-malpo-gris flex h-40 w-full items-center justify-center rounded-lg pb-6 pt-6 text-white sm:pb-4 sm:pt-4">
             {/* Contenido de la tarjeta */}
             <div className="flex w-2/3 justify-start">

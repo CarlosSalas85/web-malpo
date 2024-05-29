@@ -1,5 +1,4 @@
 export function Ctrl_aplicar_filtros(ids) {
-    console.log("ESTOY EN APLICAR FILTROS ids:",ids);
     return new Promise((resolve, reject) => {
         const etapaId = parseInt(ids.etapaId);
         const ciudadId = parseInt(ids.ciudadId);

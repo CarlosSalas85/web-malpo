@@ -88,6 +88,7 @@ const Banner = (props) => {
         break;
       case 3:
         url = "/clientes/manuales-de-compra?val=3";
+        break;
       case 4:
         url = "/clientes/preguntas-frecuentes?val=4";
         break;
@@ -97,7 +98,7 @@ const Banner = (props) => {
 
   return (
     <>
-      <div className="hidden md:h-80 xl:h-64 w-1/3 justify-end px-4 pb-4 sm:flex">
+      <div className="hidden w-1/3 justify-end px-4 pb-4 sm:flex md:h-80 xl:h-64">
         <div className="border px-6 py-6 shadow-xl">
           <div className="px-1 py-4">
             <a

@@ -3,13 +3,15 @@ import "./globals.css";
 
 import Navbar from "./componets/nav/nav";
 import Footer from "./componets/footer/footer";
+import { Ctrl_redes_sociales } from "./controllers/Ctrl_redes_sociales";
 
 export const metadata = {
   title: "Malpo",
   description: "Web Malpo",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const redes = await Ctrl_redes_sociales();
   return (
     <>
       <html lang="en">
@@ -20,7 +22,7 @@ export default function RootLayout({ children }) {
         <body className="lato-regular">
           <Navbar />
           {children}
-          <Footer />
+          <Footer redes={redes}/>
         </body>
       </html>
     </>
