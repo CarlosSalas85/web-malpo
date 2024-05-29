@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Ctrl_como_te_enteraste } from '@/app/controllers/Ctrl_como_te_enteraste';
 import { Ctrl_atributos_importantes } from '@/app/controllers/Ctrl_atributos_importantes';
+import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa la función generatePDF desde el archivo donde la defines
+
 
 const Modal = ({ onClose, children }) => {
   return (
@@ -26,13 +28,20 @@ const Modal = ({ onClose, children }) => {
 const Page = (props) => {
   const proyectoData = props.proyecto;
   const modelosData = props.modelos;
+  const nombreProyecto = proyectoData?.datos?.proyecto?.nombreWebProyecto;
   const tasaAnual = proyectoData?.datos?.proyecto?.valorTasa;
-
+  const [pdfUrl, setPdfUrl] = useState(null);
+    const handleDownloadPDF = async () => {
+        // console.log("EL VALOR DE FECHA CONSULTA EN handleDownloadPDF", fechaConsulta);
+        await generatePDF(fechaConsulta, nombreProyecto, nombre, rut_cliente, telefono, email, modelosData[0].Modelos.nombreModelo, montoSubsidio, porcentajeCredito, montoCreditoHipotecario, ahorroMinimo, pieReserva, tasaMensual, plazo, cotizacionCLP); // Llama a la función generatePDF para generar el PDF
+        setPdfUrl('/cotizacion.pdf'); // Establece la URL del PDF generado
+    };
   // console.log("Los valores de proyectoData y modelosData son:",proyectoData,modelosData);
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
+    console.log("modalOpen:",modalOpen);
   };
 
   const [optionsComoTeEnteraste, setOptionsComoTeEnteraste] = useState([]);
@@ -512,7 +521,6 @@ const Page = (props) => {
   //   // Aquí puedes agregar la lógica para enviar los datos del formulario
   //   console.log(formData);
   // };
-  if (modalOpen) return null;
   if (!formularioEnviado) {
   return (
     <>
@@ -995,37 +1003,46 @@ const Page = (props) => {
       )}
     </>
   );
-}
+}else{
 return (
+  
+  <Modal onClose={handleModalToggle}>
   <div className="modal-overlay">
         <div className="modal-cotizador bg-white rounded-lg shadow-lg p-6">
             <div className="modal-header flex justify-between items-center">
-                <div className="modal-cotizador-titulo font-bold text-red-600 text-lg">Cotización</div>
-                <img src="/malpo-cotizador.png" alt="Imagen de cotización" />
+            <div className="modal-cotizador-titulo font-bold text-bg-rojoMalpo text-lg">Cotización</div>
                 <img
+                src="/logos/logoRojoMalpo.png"
+                alt="Logo"
+                className="mr-4 h-6 w-auto"
+              />
+                <button
+          className="absolute right-0 top-0 m-4 text-rojoMalpo hover:text-gray-400"
+        >
+                {/* <img
                     className="cancel w-12 h-12"
                     alt="Cancel"
-                    onClick={closeModal}
                     src="https://c.animaapp.com/o0ROixJd/img/cancel@2x.png"
-                />
+                /> */}
+                </button>
             </div>
             <div className="modal-content">
                 <div className="modal-section">
                     <div className="seccion-1 font-normal text-base">
                         <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{pieReserva}</strong> UF, tasa anual <strong>{(tasaMensual * 12).toFixed(1)}</strong> y un plazo de <strong>{plazo}</strong> años es:
                     </div>
-                    <div className="seccion-2 bg-red-600 text-white font-normal text-3xl text-center">
+                    <div className="seccion-2 bg-rojoMalpo focus:shadow-outline rounded px-4 py-2 text-white">
                         <div>Tu Dividendo Mensual es:</div>
                         <div>$ {formatNumberWithCommas(cotizacionCLP)}</div>
                     </div>
                     <a
                         href="#"
                         onClick={handleDownloadPDF}
-                        className="block text-red-600 underline mt-2 text-right"
+                        className="block text-bg-rojoMalpo underline mt-2 text-right"
                     >
                         Imprimir
                     </a>
-                    <hr className="bg-red-600 h-2 w-full mt-4" />
+                    <hr className="bg-rojoMalpo h-2 w-full mt-4" />
                     <div className="seccion-3 font-normal text-base">
                         <strong>El monto del dividendo es solo estimativo no incluye seguros asociados.</strong>
                     </div>
@@ -1033,7 +1050,9 @@ return (
             </div>
         </div>
     </div>
+    </Modal>
 )
+}
 };
 
 export default Page;
