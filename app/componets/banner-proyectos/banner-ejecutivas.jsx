@@ -9,8 +9,11 @@ const Banner = (props) => {
       <div className="mx-auto mt-4 flex w-11/12 flex-col sm:items-center sm:justify-center md:flex-row xl:w-5/6">
       {ejecutivas.map((ejecutiva, index) => (
         <CardEjecutiva
+          key={index}
           nombre={ejecutiva.usuarioNombre}
           imagen={ejecutiva.imagenUsuario}
+          telefono={ejecutiva.telefonoUsuario}
+          email={ejecutiva.usuarioEmail}
         />
       ))}
       </div>

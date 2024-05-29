@@ -13,6 +13,7 @@ import CardModelos from "@/app/componets/card-proyecto/card-modelos";
 import Button from "@/app/componets/button/button";
 import ListProyecto from "@/app/componets/list-proyecto/list-proyecto";
 import ModalCotizador from "@/app/componets/modal/modal-cotizar";
+import ModalEjecutivas from "@/app/componets/modal/modal-ejecutiva";
 import ListEtapa from "@/app/componets/list-proyecto/list-etapa";
 import { Ctrl_proyectos } from "@/app/controllers/Ctrl_proyectos";
 
@@ -118,10 +119,15 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
       <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />
       )}
-      <div id="ejecutivas">
+      {/* <div id="ejecutivas">
        {proyectoData?.datos?.usuarios && (
-      <BannerEjecutivas usuarios={proyectoData?.datos.usuarios} />
-       )}
+      <ModalEjecutivas proyecto={proyectoData} />
+       )} 
+       </div>*/}
+       <div id="ejecutivas">
+       {proyectoData?.datos?.usuarios && (
+      <BannerEjecutivas usuarios={proyectoData?.datos?.usuarios} />
+       )} 
        </div>
       <BannerAccesos />
    <BannerRegiones/>
