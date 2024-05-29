@@ -1,23 +1,12 @@
 import "./banner-proyectos.css";
 
-const CustomButton = (props) => {
-  let result;
-  switch (props.filtro) {
-    case "ciudad":
-      result = `0-${props.id}`;
-      break;
-    case "region":
-      result = `${props.id}-0`;
-      break;
-    default:
-      result = "";
-  }
+const CustomButton = ({ texto ,region,comuna}) => {
   return (
     <a
-      href={`/proyectos/${result}`}
+      href={`/proyectos/${region}/${comuna}`}
       className="mb-2 mr-2 w-full rounded-lg border border-white bg-transparent px-4 py-2 text-white hover:border-gray-400 hover:text-gray-400"
     >
-      {props.texto}
+      {texto}
     </a>
   );
 };
@@ -38,8 +27,8 @@ const Banner = (props) => {
               >
                 <CustomButton
                   texto={elemento.nombre}
-                  filtro={props.filtro}
-                  id={elemento.id}
+                  comuna={elemento.idComuna?elemento.idComuna:0}
+                  region={elemento.idRegion?elemento.idRegion:0}
                 />
               </div>
             ))}

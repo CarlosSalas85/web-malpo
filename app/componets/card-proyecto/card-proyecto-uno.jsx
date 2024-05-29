@@ -16,7 +16,8 @@ const replaceSpaces = (str) => {
     <div className="relative flex h-[400px] w-[300px] flex-shrink-0 md:h-[500px] md:w-[300px]">
       {/* Degradado de fondo */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-400"></div>
-      <a href={`/${props.pagina}/${ciudadProyectoUrl}/${nombreProyectoUrl}?val=${props.idProyecto}`}>
+
+      <a href={`/${props.paginaDetalle}/${props.nombreProyectoUrl}?val=${props.idProyecto}`}>
         {props.imagen && (
           <picture>
             {/* Imagen de fondo para dispositivos pequeños */}
