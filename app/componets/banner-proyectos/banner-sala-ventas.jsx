@@ -17,12 +17,12 @@ const Banner = (props) => {
   const salas = props.salas;
 
   const obtenerTitulo = (sala) => {
-    let titulo = `${sala.direccionSala} - ${sala.horario1}`;
-    if (sala.horario2) {
-      titulo += `, ${sala.horario2}`;
+    let titulo = `${sala.direccionSala} - ${sala.horarioSala1}`;
+    if (sala.horarioSala2) {
+      titulo += `, ${sala.horarioSala2}`;
     }
     if (sala.horario3) {
-      titulo += `, ${sala.horario3}`;
+      titulo += `, ${sala.horarioSala2}`;
     }
     titulo += ". Agendar previamente con la ejecutiva";
     return titulo;

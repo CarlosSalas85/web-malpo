@@ -19,12 +19,16 @@ import { Ctrl_proyectos } from "@/app/controllers/Ctrl_proyectos";
 const UrlBanner = (props) => {
   return (
     <>
-      <a href="/proyectos" className="mx-1 hover:text-gray-400">
+      <a href="/proyectos/todos/" className="mx-1 hover:text-gray-400">
         Proyectos
       </a>
       /
-      <a href={`/proyectos/${props.ciudad}`} className="mx-1 hover:text-gray-400">
-        {props.ciudad}
+      <a href={`/proyectos/${props.idRegion}/0`} className="mx-1 hover:text-gray-400">
+        {props.nombreRegion}
+      </a>
+      /
+      <a href={`/proyectos/0/${props.idCiudad}`} className="mx-1 hover:text-gray-400">
+        {props.nombreCiudad} 
       </a>
     </>
   );
@@ -33,19 +37,21 @@ const UrlBanner = (props) => {
 const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => { 
   const filtroDecodificado = proyecto ? decodeURIComponent(proyecto) : "";
   const nombre = filtroDecodificado;
-  // const proyectosData= await Ctrl_proyectos()
-  // const searchParams = useSearchParams();
   const idProyecto = val;
-
   // const [proyectoData, setProyectoData] = useState(null);
   let proyectoData = await Ctrl_proyectos(idProyecto);
   const modelosData = proyectoData?.datos?.modelos;
-
-  const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} ciudad={proyectoData?.datos?.proyecto?.comunaNombre}/>;
+  const idRegion = proyectoData?.datos?.proyecto?.idRegion;
+  const nombreRegion = proyectoData?.datos?.proyecto?.regionNombre;
+  const idCiudad = proyectoData?.datos?.proyecto?.idComuna;
+  const nombreCiudad =proyectoData?.datos?.proyecto?.comunaNombre;
+  console.log
+  const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion}/>;
 
   return (
     <>
-      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} proyecto={proyectoData?.datos?.proyecto} />
+    
+      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto}  imagenCabecera={proyectoData?.datos?.proyecto?.imagenCabecera} imagenMiniatura={proyectoData?.datos?.proyecto?.imagenMiniatura}/>
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <p className="text-18px sm:text-center">
           {proyectoData?.datos?.proyecto?.informacionProyecto}
@@ -66,7 +72,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
             // url={proyectoData?.datos?.proyecto?.pdfBrochure}
-            href={proyectoData?.datos?.recursos?.pdfBrochure || "#"}
+            url={proyectoData?.datos?.recursos?.pdfBrochure || "#"}
             target="1"
           />
         </div>
@@ -118,10 +124,15 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
       <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />
       )}
-      <div id="ejecutivas">
+      {/* <div id="ejecutivas">
        {proyectoData?.datos?.usuarios && (
-      <BannerEjecutivas usuarios={proyectoData?.datos.usuarios} />
-       )}
+      <ModalEjecutivas proyecto={proyectoData} />
+       )} 
+       </div>*/}
+       <div id="ejecutivas">
+       {proyectoData?.datos?.usuarios && (
+      <BannerEjecutivas usuarios={proyectoData?.datos?.usuarios} />
+       )} 
        </div>
       <BannerAccesos />
    <BannerRegiones/>
