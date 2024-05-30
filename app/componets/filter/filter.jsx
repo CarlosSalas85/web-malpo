@@ -21,15 +21,58 @@ const FilterButton = ({ id, type, activeFilter, handleClick }) => {
 const validar = (p1, p2) => {
   if (p2 == 0) {
     return true
+  } else if (p1 == p2) {
+    return true
   } else {
-    if (p1 == p2) {
+    return false
+  }
+}
+
+const validarCasa = (opcion, proyectoTipo) => {
+  if (opcion == 0) {
+    return true
+  } else if (opcion == 4) {
+    if(proyectoTipo == 1 || proyectoTipo == 2){
+      return true
+    }else{
+      return false
+    }
+  } else if (opcion == proyectoTipo) {
+    return true
+  } else {
+    return false
+  }
+}
+const validacionBanos = (opcion, rangoInf, rangoSup) => {
+  if (opcion == 0) {
+    return true
+  } else if (opcion == 99) {
+    if (rangoInf >= 3 ) {
       return true
     } else {
       return false
     }
+  } else if (rangoInf >= opcion <= rangoSup) {
+    return true
+  } else {
+    return false
   }
 }
-
+const validacionDormitorios = (opcion, rangoInf, rangoSup) => {
+  if (opcion == 0) {
+    return true
+  } else if (opcion == 99) {
+    if (rangoInf >= 4) {
+      return true
+    } else {
+      return false
+    }
+  } else if (rangoInf >= opcion <= rangoSup) {
+    return true
+  } else {
+    return false
+  }
+}
 const CustomSelect = ({ options, optionDefault, handle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState((optionDefault) ? optionDefault : options[0].value);
@@ -279,7 +322,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
     if (!proyectos || !Array.isArray(proyectos)) {
       return;
     }
-
+    console.log('estos son todos los proyecots', proyectos)
     const proyectosFiltrados = proyectos.filter(proyecto => {
       // Verificar si algún parámetro de proyecto es igual a cero
       let filtroTipo = false;
@@ -310,9 +353,9 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
             nombreRegion = proyecto.regionNombre
           }
         }
-        filtroTipo = validar(proyecto.idTipo, tipoProyecto);
-        filtroBano = validar(proyecto.bano, bano);
-        filtroDormitorio = validar(proyecto.dormitorio, dormitorio);
+        filtroTipo = validarCasa(tipoProyecto, proyecto.idTipo);
+        filtroBano = validacionBanos(bano, proyecto.banosMinimo, proyecto.banosMaximo);
+        filtroDormitorio = validacionDormitorios(dormitorio, proyecto.habitacionesMinimo, proyecto.habitacionesMaximo);
         filtroSubsidio = validar(proyecto.idSubsidio, subsidio);
         if (comuna == '0' && region == '0') {
           filtroRegion = true;
