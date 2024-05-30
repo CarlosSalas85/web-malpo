@@ -5,8 +5,13 @@ import CustomCards from "../../componets/card-proyecto/card-proyecto-uno";
 export default function List(props) {
 
   const [currentPage, setCurrentPage] = useState(1);
+  
   const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 4;
+
+  useEffect(() =>{
+    setCurrentPage(1)
+  },[props])
 
   if (!props.proyectos || props.proyectos.length === 0) {
     return (
@@ -18,6 +23,7 @@ export default function List(props) {
   }
 
   //PAGINACION
+  
   const totalPages = Math.ceil(props.proyectos.length / itemsPerPage);
   const handleClickPrev = () => {
     if (currentPage > 1) {
