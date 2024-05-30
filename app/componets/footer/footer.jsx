@@ -48,7 +48,7 @@ const Footer = () => {
             <div className="mt-10 flex flex-col items-start sm:flex-row sm:justify-between">
               <div className="text-left sm:mb-0 sm:mr-4 sm:pr-12">
                 <p className="mb-4">
-                  <a href="#" className="hover:text-gray-400">
+                  <a href="/nosotros" className="hover:text-gray-400">
                     Nosotros
                   </a>
                 </p>
@@ -62,7 +62,7 @@ const Footer = () => {
                   </button>
                 </p>
                 <p className="mb-4">
-                  <a href="#" className="hover:text-gray-400">
+                  <a href="/trabaja-con-nosotros" className="hover:text-gray-400">
                     Trabaja en Malpo
                   </a>
                 </p>

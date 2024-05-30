@@ -20,6 +20,7 @@ const Modal = (props) => {
     // Aquí puedes agregar la lógica para enviar los datos del formulario
     console.log(formData);
   };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -29,7 +30,7 @@ const Modal = (props) => {
           className="mr-4 h-6 w-auto"
         />
       </div>
-      <h1 className="text-center text-lg font-bold">{props.titulo}</h1>      
+      <h1 className="text-center text-lg font-bold">{props.titulo}</h1>
       <form onSubmit={handleSubmit} className="mx-auto max-w-md">
         <div className="mb-4">
           <label htmlFor="name" className="mb-2 block">
