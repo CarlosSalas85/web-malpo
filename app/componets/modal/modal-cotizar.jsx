@@ -38,9 +38,14 @@ const Page = (props) => {
   };
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
+  const [modalOpen2, setModalOpen2] = useState(false);
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
+  };
+
+  const handleModalToggle2 = () => {
+    setModalOpen2(!modalOpen2);
   };
 
   const handleModalToggle2 = () => {
@@ -483,7 +488,8 @@ const Page = (props) => {
 
   return (
     <>
-      <button
+      <butt
+        on
         onClick={handleModalToggle}
         className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400"
       >

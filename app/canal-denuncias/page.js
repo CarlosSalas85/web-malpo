@@ -37,8 +37,8 @@ const page = () => {
   return (
     <>
       <BannerImage
-        imagenMobile="https://c.animaapp.com/6zKkMTgT/img/hero-image.png"
-        imagenDesktop="https://c.animaapp.com/6zKkMTgT/img/hero-image.png"
+        imagenMobile="https://c.animaapp.com/Hw46ChtP/img/hero-image.png"
+        imagenDesktop="https://c.animaapp.com/Hw46ChtP/img/hero-image.png"
       />
 
       <div className="mx-auto mb-4 mt-10 w-11/12 md:w-10/12">

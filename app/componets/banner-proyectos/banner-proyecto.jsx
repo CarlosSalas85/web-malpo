@@ -9,10 +9,12 @@ const banner = (props) => {
         {/* Imagen de fondo para dispositivos pequeños */}
         <source
           srcSet={props.imagenMiniatura}
+          srcSet={props.imagenMiniatura}
           media="(max-width: 640px)"
         />
         {/* Imagen de fondo para dispositivos grandes */}
         <source
+          srcSet={props.imagenCabecera}
           srcSet={props.imagenCabecera}
           media="(min-width: 641px)"
         />
