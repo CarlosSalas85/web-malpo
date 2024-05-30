@@ -1,8 +1,10 @@
 import { revalidateTag } from 'next/cache';
-export function Ctrl_blogs_top() {
+
+export function Ctrl_blogs() {
     return new Promise((resolve, reject) => {
-        var url=process.env.NEXT_PUBLIC_API_URL+'blogs/top';
-        const apiKey =process.env.SMTP_API_KEY;
+        //var url = process.env.NEXT_PUBLIC_API_URL + 'proyectos/ver_ciudades';
+        var url=process.env.NEXT_PUBLIC_API_URL+'blogs/blogs';
+        var apiKey =process.env.SMTP_API_KEY;
         const username = process.env.SMTP_API_USERNAME;
         const password = process.env.SMTP_API_PASSWORD;
         const authHeader = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
@@ -14,14 +16,13 @@ export function Ctrl_blogs_top() {
                 'X-API-KEY': apiKey,
                 'Authorization': authHeader
             },
-                //next: { revalidate: 40}, // asi puedo revalidar o hacer que el cache de next se actualice cada cierto tiempo
-                  next: { tags: ['blogs_top']},
-                // next: { revalidate: true } // Revalidación bajo demanda
-            })
+              next: { tags: ['blogs']},
+            // next: { revalidate: true } // Revalidación bajo demanda
+        })
             .then(response => response.json())
             .then(data => {
-                resolve(data);
-                revalidateTag('blogs_top');  // Resuelve la Promesa con los datos obtenidos
+                resolve(data); // Resuelve la Promesa con los datos obtenidos
+                revalidateTag('blogs'); //RevalidateTag para limpiar el cache de nextjs
             })
             .catch(error => {
                 //console.log(error);

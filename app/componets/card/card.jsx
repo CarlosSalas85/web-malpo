@@ -7,7 +7,7 @@ const Card = (props) => {
       <div className="mb-4 ml-4">
         <h1 className="mb-2 text-3xl sm:text-center">{props.texto}</h1>
 
-        <div className="flex justify-start overflow-x-auto overflow-y-hidden xl:justify-center">
+        <div className="flex justify-start overflow-x-auto overflow-y-hidden">
           <CustomCards />
           <div className="card-largo-ver-todo relative mr-4 flex flex-shrink-0 ">
             <a href="#">

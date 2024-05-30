@@ -45,7 +45,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
 
   return (
     <>
-      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} proyecto={proyectoData?.datos?.proyecto} />
+      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} proyecto={proyectoData?.datos?.proyecto} imagenBanner={proyectoData?.datos?.proyecto?.imagenCabecera}/>
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <p className="text-18px sm:text-center">
           {proyectoData?.datos?.proyecto?.informacionProyecto}

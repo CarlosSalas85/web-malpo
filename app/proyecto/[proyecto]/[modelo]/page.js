@@ -85,7 +85,7 @@ export default async function Modelos({params: { modelo }, searchParams:{val1,va
 
   return (
     <>
-      <BannerProyecto url={url} />
+      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} proyecto={proyectoData?.datos?.proyecto} imagenBanner={modelosData[0].Modelos.imagenCabecera}/>
 
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <h1 className="mb-4 text-3xl sm:text-center">{modeloData[0].Modelos.nombreModelo}</h1>
