@@ -1,7 +1,30 @@
 import "./card-proyecto.css";
 import { Ctrl_destacados } from "@/app/controllers/Ctrl_destacados";
 
+const UrlBanner = (props) => {
+  return (
+    <>
+      <a href="/proyectos/todos/" className="mx-1 hover:text-gray-400">
+        Proyectos
+      </a>
+      /
+      <a href={`/proyectos/${props.idRegion}/0`} className="mx-1 hover:text-gray-400">
+        {props.nombreRegion}
+      </a>
+      /
+      <a href={`/proyectos/0/${props.idCiudad}`} className="mx-1 hover:text-gray-400">
+        {props.nombreCiudad} 
+      </a>
+    </>
+  );
+};
+
 export default async function CustomCards() {
+
+
+  const replaceSpaces = (str) => {
+    return encodeURIComponent(str.replace(/\s/g, '-'));
+  };
 
   const data3 = await Ctrl_destacados();
   const proyectos = data3.datos;
@@ -14,6 +37,7 @@ export default async function CustomCards() {
     ufMinimo: card.ufMinimo,
     imagen: card.imagenMiniatura,
     comunaNombre: card.comunaNombre,
+    nombreProyectoUrl:(replaceSpaces(card.nombreWebProyecto)),
     //tipo_vivienda:card.nombreTipo,
     nombreSubsidio: card.nombreSubsidio,
     icono: card.icono,
@@ -21,12 +45,15 @@ export default async function CustomCards() {
 
   }));
 
-  // console.log("colorEtapa es:",contenidoProyectos[0].colorEtapa)
+    
+ 
+
+
 
   return (
     <>
       {contenidoProyectos.map((proyecto, index) => (
-        <div key={index} className="relative mr-4 flex w-[240px] flex-shrink-0">
+        <div key={index}  className="relative mr-4 flex w-[240px] flex-shrink-0">
           {/* Degradado de fondo */}
           <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-400"></div>
           <picture>
@@ -55,12 +82,16 @@ export default async function CustomCards() {
           <div className="relative w-full pl-4 pt-4">
             <div className="w-ful h-1/3">
               <h2 className="text-4xl text-white  hover:text-gray-400">
+              <a href={`/proyecto/${proyecto.nombreProyectoUrl}?val=${proyecto.id}`}>
                 {proyecto.nombre}
+             </a>
               </h2>
             </div>
             {/* Segunda fila */}
             <div className="h-1/6 w-full">
+
               <p className="text-2xl font-bold text-white">Casas en {proyecto.comunaNombre}</p>
+   
             </div>
             {/* Tercera fila */}
             <div className="h-1/6 w-full">

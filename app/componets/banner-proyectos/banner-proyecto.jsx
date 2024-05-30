@@ -8,18 +8,18 @@ const banner = (props) => {
       <picture>
         {/* Imagen de fondo para dispositivos pequeños */}
         <source
-          srcSet={props.imagenBanner}
+          srcSet={props.imagenMiniatura}
           media="(max-width: 640px)"
         />
         {/* Imagen de fondo para dispositivos grandes */}
         <source
-          srcSet={props.imagenBanner}
+          srcSet={props.imagenCabecera}
           media="(min-width: 641px)"
         />
         {/* Imagen de fondo por defecto */}
         <img
           className="absolute inset-0 block h-[500px] w-[100%] bg-cover bg-center"
-          srcSet={props.imagenBanner} // Ruta de la imagen de fondo por defecto para navegadores que no admiten <picture>
+          srcSet={props.imagenCabecera} // Ruta de la imagen de fondo por defecto para navegadores que no admiten <picture>
           alt=""
           style={{ opacity: "0.7" }} // Ajusta la opacidad según sea necesario
         />

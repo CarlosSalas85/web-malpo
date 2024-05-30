@@ -26,7 +26,7 @@ const Modal = ({ onClose}) => {
   );
 };
 
-const Footer = () => {
+const Footer = ({redes}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -73,28 +73,16 @@ const Footer = () => {
                 </p>
               </div>
               <div className="mt-10 flex items-center text-left sm:mt-0 sm:pl-12">
-                <a href="#" className="mr-2 hover:text-gray-400">
-                  <img
-                    className="img-rrss mr-2"
-                    alt={`instagram`}
-                    src={`https://c.animaapp.com/kJfIIeGG/img/---icon--instagram-fill-icon-@2x.png`}
-                  />
-                </a>
-                <a href="#" className="mr-2 hover:text-gray-400">
-                  <img
-                    className="img-rrss mr-2"
-                    alt={`facebook`}
-                    src={`https://c.animaapp.com/kJfIIeGG/img/---icon--social-facebook-icon-@2x.png`}
-                  />
-                </a>
-                <a href="#" className="mr-2 hover:text-gray-400">
-                  <img
-                    className="img-rrss"
-                    alt={`youtube`}
-                    src={`https://c.animaapp.com/kJfIIeGG/img/---icon--youtube-@2x.png`}
-                  />
-                </a>
-              </div>
+            {redes.datos.map((redSocial) => (
+              <a key={redSocial.idRrss} href={redSocial.urlRrss} target="_blank" className="mr-2 hover:text-gray-400">
+                <img
+                  className="img-rrss mr-2"
+                  alt={`Icon ${redSocial.nombreRrss}`}
+                  src={redSocial.logoRrss}
+                />
+              </a>
+               ))}
+            </div>
             </div>
           </div>
         </div>

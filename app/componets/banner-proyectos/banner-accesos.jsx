@@ -16,8 +16,8 @@ const Banner = () => {
         <ButtonAcceso
           nombre="Próximos proyectos"
           icono="https://c.animaapp.com/9f5vD9WN/img/home@2x.png"
-          url="#"
-          target="1"
+          url="/proyectos/todos"
+          target="0"
         />
         <div className="mt-4 w-full px-4 md:mt-0 md:w-1/3">
           <a href="https://web.malpo.cl/minisitios/casa/?_gl=1*1nx85nh*_ga*MTM5ODE3MjU3OC4xNzA2ODg1OTUy*_ga_5Y7BMCKGES*MTcxNDA1NDMxNC4zNC4xLjE3MTQwNTQzMzAuMC4wLjA." target="_blank">

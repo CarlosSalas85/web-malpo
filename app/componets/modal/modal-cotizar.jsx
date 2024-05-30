@@ -59,7 +59,7 @@ const Page = (props) => {
   const [cod_unysoft, setCodUnysoft] = useState(proyectoData?.datos?.proyecto?.codigoUnisoft);
   const [modelo_vivienda, setModeloNombre] = useState(modelosData[0].Modelos.idModelo);
   const [valorUFModelo, setValorUFModelo] = useState(modelosData[0].Modelos.valorUfModelo);
-  const [subsidio, setTipoSubsidio] = useState(proyectoData?.datos?.proyecto.nombreSubsidio);
+  const [subsidio, setTipoSubsidio] = useState(proyectoData?.datos?.proyecto?.nombreSubsidio);
   const [montoSubsidio, setMontoSubsidio] = useState(proyectoData?.datos?.proyecto?.ufSubsidio);
   const [porcentajeCredito, setPorcentajeCredito] = useState('80');
   const [plazo, setPlazoCredito] = useState('');

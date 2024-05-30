@@ -10,7 +10,7 @@ const Card = (props) => {
         <div className="flex justify-start overflow-x-auto overflow-y-hidden">
           <CustomCards />
           <div className="card-largo-ver-todo relative mr-4 flex flex-shrink-0 ">
-            <a href="#">
+            <a href="/proyectos/todos">
               <div className="absolute inset-0 mb-1 mt-1 flex items-center justify-center shadow-md">
                 <div className="text-center">
                   <h2 className="text-xl text-gray-700 hover:text-gray-400">

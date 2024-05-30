@@ -3,13 +3,18 @@ import "./card-proyecto.css";
 const Card = (props) => {
   const replaceSpaces = (str) => {
     // return encodeURIComponent(str.replace(/\s/g, '-'));
+    if(str){
     return encodeURIComponent(str.replace(/\s/g, '-'));
+    }else{
+      return null;
+    }
   };
 
   const modelos = props.modelos;
   const proyecto = props.proyecto;
-  const ciudadProyectoUrl = (replaceSpaces(proyecto.comunaNombre)).toLowerCase();
-  const nombreProyectoUrl = (replaceSpaces(proyecto.nombreWebProyecto)).toLowerCase();
+
+  const ciudadProyectoUrl = (replaceSpaces(proyecto?.comunaNombre)).toLowerCase();
+  const nombreProyectoUrl = (replaceSpaces(proyecto?.nombreWebProyecto)).toLowerCase();
 
 
   return (

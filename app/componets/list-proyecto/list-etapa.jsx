@@ -105,6 +105,15 @@ const List = (props) => {
     mayorAvance = avances[idmayorAvance]?.nombreAvance;
   }
 
+
+  const extractVideoSrc = (iframeHtml) => {
+    const regex = /src="([^"]+)"/;
+    const match = iframeHtml.match(regex);
+    return match ? match[1] : null;
+  };
+
+  const videoSrc = avanceSeleccionado?.videoAvance ? extractVideoSrc(avanceSeleccionado.videoAvance) : null;
+
   return (
     <>
       {avances != null && (
@@ -142,7 +151,7 @@ const List = (props) => {
                   alt={`icono`}
                   src={`../../iconos/etapa/PILOTOON.png`}
                 />
-                <p className={`mt-2 text-rojoMalpo hover:text-gray-400`}>
+                <p className={`mt-2 ${avances[0].estadoAvance === "1" ? "text-grisMalpo" : "text-rojoMalpo"} hover:text-gray-400`}>
                   Vivienda Piloto
                 </p>
               </div>
@@ -170,17 +179,33 @@ const List = (props) => {
               <div className="mt-4">
                 <p>Video Avance Etapa:</p>
                 <div className="video-container mt-1 flex justify-center">
-                  <div className="relative max-w-full h-0" style={{ paddingBottom: '56.25%' }}>
-                    {/* <iframe 
-                      src={avanceSeleccionado.videoAvance} 
-                      className="absolute top-0 left-0 w-full h-full" 
-                      frameBorder="0" 
-                      allowFullScreen 
-                      title="Video Avance"
-                    ></iframe> */}
-                      <div dangerouslySetInnerHTML={{ __html: avanceSeleccionado.videoAvance }} />
+                  <div className="video-container mt-2" style={{ display: 'flex', justifyContent: 'center' }}>
+                    <iframe
+                      width="98%"
+                      height="236.5"
+                      src={videoSrc}
+                      title="YouTube video player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    ></iframe>
                   </div>
                 </div>
+                {/* <div className="video-container mt-1 flex justify-center">
+                  <div className="video-container mt-2" style={{ display: 'flex', justifyContent: 'center' }}>
+                    <iframe
+                      width="98%"
+                      height="236.5"
+                      src={videoSrc}
+                      title="YouTube video player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div> */}
               </div>
             )}
           </div>
