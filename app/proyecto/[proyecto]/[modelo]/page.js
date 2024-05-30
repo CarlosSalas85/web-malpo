@@ -128,7 +128,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
             url={proyectoData?.datos?.recursos?.pdfBrochure || "#"}
-            target="1"
+            blank="1"
           />
         </div>
       </div>

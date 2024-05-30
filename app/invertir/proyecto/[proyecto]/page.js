@@ -48,7 +48,6 @@ const formatNumberWithThousandSeparator = (number) => {
 const proyectosInversionista = proyectosTodos?.datos?.filter(proyecto => proyecto.idProyecto == idProyecto);
 const proyectoInversionistaData = await Ctrl_proyectos(idProyecto);
 const modelosData = proyectoInversionistaData?.datos?.modelos;
-console.log("El valor de modelosDataaaa es:",proyectoInversionistaData,modelosData)
 const nombreTipo = modelosData[0]?.nombreTipo;
   // Array para almacenar los valores de mt2Contruidos
   const mt2Array = modelosData.map((modelo) => parseInt(modelo.m2Contruidos));
@@ -58,11 +57,10 @@ const nombreTipo = modelosData[0]?.nombreTipo;
   const dividendo =formatNumberWithThousandSeparator(parseInt(proyectosInversionista[0].dividendo));
   const arriendo =formatNumberWithThousandSeparator(parseInt(proyectosInversionista[0].arriendo));
 
-console.log("Proyectos Inversionistas:", proyectosInversionista,proyectosInversionista[0].imagenCabecera);
 
   return (
     <>
-      <BannerProyecto url={url} nombre={nombre} imagenBanner={proyectosInversionista[0].imagenCabecera}/>
+      <BannerProyecto url={url} nombre={nombre} imagenCabecera={proyectosInversionista[0].imagenCabecera} imagenMiniatura={proyectosInversionista[0].imagenMiniatura}/>
 
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <h1 className="mb-4 text-3xl sm:text-center">
