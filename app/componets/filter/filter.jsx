@@ -213,6 +213,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
     setActiveFilterTipo(filter);
   };
 
+
   const handleClickSubsidio = (filter) => {
     setActiveFilterSubsidio(filter);
   };
@@ -334,16 +335,13 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
   }, [activeFilterTipo, activeFilterBanos, activeFilterDormitorios, activeFilterSubsidio, selectedOptionRegion, selectedOptionCiudad, selectedOptionEtapa]);
 
 
-
-
-
   return (
     <div className="w-full pl-2 pr-2 md:ml-20 md:mr-4 md:w-2/5">
       <div className="sm:block md:hidden">
         {" "}
         {/* Oculto en pantallas más grandes que sm */}
         <div className="mb-6 flex justify-between text-center">
-          <a href="#" className="items-center">
+          <a href="#" className="items-center" onClick={() => handleClickTipo(0)}>
             <div className="flex flex-col items-center justify-between">
               <img
                 className="h-10 w-10" // Agregamos un margen a la derecha para separar el icono del texto
@@ -353,7 +351,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
               <span>Ver Todo</span>
             </div>
           </a>
-          <a href="#" className="items-center">
+          <a href="#" className="items-center" onClick={() => handleClickTipo(1)}>
             <div className="flex flex-col items-center justify-between">
               <img
                 className="h-10 w-10" // Agregamos un margen a la derecha para separar el icono del texto
@@ -363,7 +361,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
               <span>Casa</span>
             </div>
           </a>
-          <a href="#" className="items-center">
+          <a href="#" className="items-center" onClick={() => handleClickTipo(2)}>
             <div className="flex flex-col items-center justify-between">
               <img
                 className="h-10 w-10" // Agregamos un margen a la derecha para separar el icono del texto
@@ -373,7 +371,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
               <span>Dpto.</span>
             </div>
           </a>
-          <a href="#" className="items-center">
+          <a href="#" className="items-center" onClick={() => handleClickTipo(3)}>
             <div className="flex flex-col items-center justify-between">
               <img
                 className="h-10 w-10" // Agregamos un margen a la derecha para separar el icono del texto
