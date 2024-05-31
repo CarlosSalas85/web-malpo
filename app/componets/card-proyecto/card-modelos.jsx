@@ -3,9 +3,9 @@ import "./card-proyecto.css";
 const Card = (props) => {
   const replaceSpaces = (str) => {
     // return encodeURIComponent(str.replace(/\s/g, '-'));
-    if(str){
-    return encodeURIComponent(str.replace(/\s/g, '-'));
-    }else{
+    if (str) {
+      return encodeURIComponent(str.replace(/\s/g, '-'));
+    } else {
       return null;
     }
   };
@@ -35,33 +35,33 @@ const Card = (props) => {
             {/* Degradado de fondo */}
             <div className="absolute inset-0 rounded-b-xl bg-gradient-to-b from-gray-950 to-gray-400"></div>
 
-            <a href={`/proyecto/${nombreProyectoUrl}/${modeloNombreUrl}?val1=${idProyecto}&val2=${idModelo}`} className="">        
-            {/* Imagen de fondo */}
-            <picture>
-  {/* Imagen de fondo para dispositivos pequeños */}
-  {modelo.Modelos?.imagenMiniatura && (
-    <source
-      srcSet={modelo.Modelos.imagenMiniatura}
-      media="(max-width: 640px)"
-    />
-  )}
-  {/* Imagen de fondo para dispositivos grandes */}
-  {modelo?.Modelos?.imagenMiniatura && (
-    <source
-      srcSet={modelo.Modelos.imagenMiniatura}
-      media="(min-width: 641px)"
-    />
-  )}
-  {/* Imagen de fondo por defecto */}
-  {modelo?.Modelos?.imagenMiniatura && (
-    <img
-      className="absolute inset-0 block h-[400px] w-[300px] rounded-b-xl bg-cover bg-center"
-      src={modelo.Modelos.imagenMiniatura}
-      alt=""
-      style={{ opacity: "0.7" }} // Ajusta la opacidad según sea necesario
-    />
-  )}
-</picture>
+            <a href={`/proyecto/${nombreProyectoUrl}/${modeloNombreUrl}?val1=${idProyecto}&val2=${idModelo}`} className="">
+              {/* Imagen de fondo */}
+              <picture>
+                {/* Imagen de fondo para dispositivos pequeños */}
+                {modelo.Modelos?.imagenMiniatura && (
+                  <source
+                    srcSet={modelo.Modelos.imagenMiniatura}
+                    media="(max-width: 640px)"
+                  />
+                )}
+                {/* Imagen de fondo para dispositivos grandes */}
+                {modelo?.Modelos?.imagenMiniatura && (
+                  <source
+                    srcSet={modelo.Modelos.imagenMiniatura}
+                    media="(min-width: 641px)"
+                  />
+                )}
+                {/* Imagen de fondo por defecto */}
+                {modelo?.Modelos?.imagenMiniatura && (
+                  <img
+                    className="absolute inset-0 block h-[400px] w-[300px] rounded-b-xl bg-cover bg-center"
+                    src={modelo.Modelos.imagenMiniatura}
+                    alt=""
+                    style={{ opacity: "0.7" }} // Ajusta la opacidad según sea necesario
+                  />
+                )}
+              </picture>
 
               {/* Contenido */}
               <div className="relative ml-3 mt-3 px-2 py-2">
@@ -71,30 +71,30 @@ const Card = (props) => {
                   </h2>
                 </div>
                 <div className="h-16">
-                  <br/>
-                  <br/>
+                  <br />
+                  <br />
                   <p className="text-2xl font-bold text-white">{modelo.nombreModelo}</p>
                 </div>
                 <div className="h-16">
-                <br/>
-                  <br/>
+                  <br />
+                  <br />
                   <span
-              className={`inline-flex items-center rounded px-3 py-2 ${textColorClass}`}
-              style={{
-                backgroundColor: `var(${proyecto.colorEtapa})`,
-              }}
-            >
+                    className={`inline-flex items-center rounded px-3 py-2 ${textColorClass}`}
+                    style={{
+                      backgroundColor: `var(${proyecto.colorEtapa})`,
+                    }}
+                  >
                     {proyecto?.nombreEtapa}
-                    
+
                   </span>
                 </div>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <div className="h-10">
                   <ul className="text-white">
                     <li className="flex items-center">
                       <div>
-                        
+
                         <img
                           className="img-logo-list rounded-xl"
                           src="https://c.animaapp.com/3LiIjsbQ/img/payments-4@2x.png"
