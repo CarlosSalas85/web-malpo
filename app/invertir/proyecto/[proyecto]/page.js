@@ -9,7 +9,7 @@ import { Ctrl_proyectos } from "@/app/controllers/Ctrl_proyectos";
 const UrlBanner = (props) => {
   return (
     <>
-      <a href="#" className="mx-1 hover:text-gray-400">
+      <a href="/invertir" className="mx-1 hover:text-gray-400">
         Invertir
       </a>
       /
@@ -25,8 +25,6 @@ const UrlBanner = (props) => {
 export default async function Proyecto ({ params: { proyecto }, searchParams: { val } }){
   
   const filtroDecodificado = proyecto ? decodeURIComponent(proyecto) : "";
-  const url = <UrlBanner nombre={filtroDecodificado} />;
-  const nombre = filtroDecodificado;
   const idProyecto=val;
   const urlButton = `/proyecto/${proyecto}?val=${idProyecto}`;
   const proyectosTodos = await Ctrl_aplicar_filtros({
@@ -47,6 +45,7 @@ const formatNumberWithThousandSeparator = (number) => {
 
 const proyectosInversionista = proyectosTodos?.datos?.filter(proyecto => proyecto.idProyecto == idProyecto);
 const proyectoInversionistaData = await Ctrl_proyectos(idProyecto);
+const nombre=proyectoInversionistaData?.datos?.proyecto.nombreWebProyecto;
 const modelosData = proyectoInversionistaData?.datos?.modelos;
 const nombreTipo = modelosData[0]?.nombreTipo;
   // Array para almacenar los valores de mt2Contruidos
@@ -56,11 +55,14 @@ const nombreTipo = modelosData[0]?.nombreTipo;
   const mt2String = mt2Array.join(", ") + " mts²";
   const dividendo =formatNumberWithThousandSeparator(parseInt(proyectosInversionista[0].dividendo));
   const arriendo =formatNumberWithThousandSeparator(parseInt(proyectosInversionista[0].arriendo));
-
+  const imagenCabecera=proyectoInversionistaData?.datos?.proyecto?.imagenCabecera;
+  const imagenMiniatura=proyectoInversionistaData?.datos?.proyecto.imagenMiniatura;
+ 
+  const url = <UrlBanner nombre={nombre} />;
 
   return (
     <>
-      <BannerProyecto url={url} nombre={nombre} imagenCabecera={proyectosInversionista[0].imagenCabecera} imagenMiniatura={proyectosInversionista[0].imagenMiniatura}/>
+      <BannerProyecto url={url} nombre={nombre} imagenCabecera={imagenCabecera} imagenMiniatura={imagenMiniatura}/>
 
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <h1 className="mb-4 text-3xl sm:text-center">

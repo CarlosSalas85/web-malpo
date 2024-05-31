@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Ctrl_como_te_enteraste } from '@/app/controllers/Ctrl_como_te_enteraste';
 import { Ctrl_atributos_importantes } from '@/app/controllers/Ctrl_atributos_importantes';
 import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa la función generatePDF desde el archivo donde la defines
@@ -31,6 +31,7 @@ const Page = (props) => {
   const nombreProyecto = proyectoData?.datos?.proyecto?.nombreWebProyecto;
   const tasa = proyectoData?.datos?.proyecto?.valorTasa;
   const [tasaAnual, setTasaAnual] = useState(parseFloat(tasa));
+  const formRef = useRef(null);
   const [pdfUrl, setPdfUrl] = useState(null);
   const handleDownloadPDF = async () => {
     await generatePDF(fechaConsulta, nombreProyecto, nombre, rut_cliente, telefono, email, modelosData[0].Modelos.nombreModelo, montoSubsidio, porcentajeCredito, montoCreditoHipotecario, ahorroMinimo, pieReserva, tasaAnual / 12, plazo, cotizacionCLP); // Llama a la función generatePDF para generar el PDF
@@ -38,19 +39,22 @@ const Page = (props) => {
   };
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
-  const [modalOpen2, setModalOpen2] = useState(false);
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+    
   };
-
+  
   const handleModalToggle2 = () => {
     setModalOpen2(!modalOpen2);
   };
 
-  const handleModalToggle2 = () => {
-    setModalOpen2(!modalOpen2);
-  };
+  const NumeroFormateado = ({ numero }) => {
+    const numeroFormateado = numero.toLocaleString(); // Formatea el número con separadores de miles
+  }
 
   const [optionsComoTeEnteraste, setOptionsComoTeEnteraste] = useState([]);
   const [optionsAtributosImportantes, setOptionsAtributosImportantes] = useState([]);
@@ -62,8 +66,8 @@ const Page = (props) => {
   const [ciudad, setCiudad] = useState('');
   const [contacto, setComoTeEnteraste] = useState([]);
   const [cod_unysoft, setCodUnysoft] = useState(proyectoData?.datos?.proyecto?.codigoUnisoft);
-  const [modelo_vivienda, setModeloNombre] = useState(modelosData[0].Modelos.idModelo);
-  const [valorUFModelo, setValorUFModelo] = useState(modelosData[0].Modelos.valorUfModelo);
+  const [modelo_vivienda, setModeloNombre] = useState(modelosData ? modelosData[0]?.Modelos?.idModelo : null);
+  const [valorUFModelo, setValorUFModelo] = useState(modelosData ? modelosData[0]?.Modelos?.valorUfModelo : 0);
   const [subsidio, setTipoSubsidio] = useState(proyectoData?.datos?.proyecto?.nombreSubsidio);
   const [montoSubsidio, setMontoSubsidio] = useState(proyectoData?.datos?.proyecto?.ufSubsidio);
   const [porcentajeCredito, setPorcentajeCredito] = useState('80');
@@ -109,6 +113,22 @@ const Page = (props) => {
   };
 
   const [fechaConsulta, setFechaConsulta] = useState(obtenerFechaActual());
+
+  function formatoNumero(elemento) {
+    // Verifica si el número tiene decimales
+    if (elemento % 1 !== 0) {
+      return new Intl.NumberFormat("es-CL", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(elemento);
+    } else {
+      // Si el número es entero, simplemente lo devuelve sin formato
+      return elemento.toLocaleString("es-CL");
+    }
+  }
+
+
+
 
   useEffect(() => {
     obtenerValorUF();
@@ -241,6 +261,17 @@ const Page = (props) => {
     setCotizacionCLP(parseInt(nuevaCotizacion * parseFloat(valorUFActual)));
   }
 
+  const replacePointWithComma = (number) => {
+    // Verifica si el número es un número finito
+    if (!Number.isFinite(number)) {
+      return ''; // Retorna una cadena vacía si el número no es válido
+    }
+  
+    // Convierte el número a una cadena y reemplaza los puntos con comas
+    const stringWithCommas = number.toString().replace(/\./g, ',');
+  
+    return stringWithCommas;
+  };
 
   // Función para formatear un número con separadores de miles
   const formatNumberWithCommas = (number) => {
@@ -322,6 +353,7 @@ const Page = (props) => {
         // // Realizar cualquier otra acción después de enviar el formulario
         setModalOpen(false);
         setModalOpen2(true);
+
       } catch (error) {
         // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
       }
@@ -488,10 +520,11 @@ const Page = (props) => {
 
   return (
     <>
-      <butt
-        on
+
+      <button
         onClick={handleModalToggle}
         className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400"
+        disabled={modelo_vivienda === null}
       >
         Cotizar
       </button>
@@ -506,7 +539,7 @@ const Page = (props) => {
               />
             </div>
             <h1 className="text-lg font-bold">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
-            <form onSubmit={handleSubmit} className="mx-auto max-w-full">
+            <form onSubmit={handleSubmit}  ref={formRef} className="mx-auto max-w-full">
               <h1 className="text-l flex justify-start py-4 font-bold">
                 1. Tus Datos
               </h1>
@@ -955,8 +988,8 @@ const Page = (props) => {
           </div>
         </Modal>
       )}
-   {modalOpen2 && (
-<Modal onClose={handleModalToggle2}>
+      {modalOpen2 && (
+        <Modal onClose={handleModalToggle2}>
           <div className="container mx-auto w-full px-4 py-2">
             <div className="mb-3 flex items-center justify-between">
               <h1 className="text-lg font-bold">Cotización</h1>
@@ -966,18 +999,18 @@ const Page = (props) => {
                 className="h-6 w-auto"
               />
             </div>
- 
+
             <div className="mx-auto mb-4 mt-4">
-              <p className="text-18px pt-4 sm:text-center">
-              <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{pieReserva}</strong> UF, tasa anual <strong>{(tasaMensual * 12).toFixed(1)}</strong> y un plazo de <strong>{plazo}</strong> años es:
+              <p className="text-18px pt-4 sm:text-center">                                                                                                       
+                <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF, tasa anual <strong>{formatoNumero(formatNumberWithCommas((tasaMensual * 12).toFixed(1)))} %</strong> y un plazo de <strong>{plazo}</strong> años es:
               </p>
             </div>
- 
+
             <div className="mx-auto mb-4 mt-4 flex h-28 flex-col items-center justify-center bg-rojoMalpo text-white">
-            <div>Tu Dividendo Mensual es:</div>
-            <div>$ {formatNumberWithCommas(cotizacionCLP)}</div>
+              <div>Tu Dividendo Mensual es:</div>
+              <div>$ {formatNumberWithCommas(cotizacionCLP)}</div>
             </div>
- 
+
             <div className="mt-4 flex justify-end pr-4 text-rojoMalpo">
               <button className="flex items-center" onClick={handleDownloadPDF}>
                 <svg
@@ -997,17 +1030,17 @@ const Page = (props) => {
                 <span className="ml-2">Imprimir</span>
               </button>
             </div>
- 
+
             <div className="mx-auto mb-4 mt-4 flex h-2 flex-col items-center justify-center bg-rojoMalpo text-white"></div>
- 
+
             <div className="mx-auto mb-4 mt-4">
               <p className="text-18px pt-4 sm:text-center">
-              <strong>El monto del dividendo es solo estimativo no incluye seguros asociados.</strong>
+                <strong>El monto del dividendo es solo estimativo no incluye seguros asociados.</strong>
               </p>
             </div>
           </div>
         </Modal>
-   )}
+      )}
     </>
   )
 };

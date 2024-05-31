@@ -20,11 +20,13 @@ const Banner = (props) => {
           <p>{proyecto?.direccionProyecto}</p>
         </div>
         <div className="flex justify-center pt-6 sm:justify-start">
+          {props.ejecutivas!=null && (
           <Button
             titulo={`Contactar ejecutiva`}
             imagen={`https://c.animaapp.com/sQwZVHMV/img/vector.svg`}
             url="#ejecutivas"
           />
+        )}
         </div>
       </div>
     </div>

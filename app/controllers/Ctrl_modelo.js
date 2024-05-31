@@ -15,12 +15,13 @@ export function Ctrl_modelo(id) {
                 'Authorization': authHeader
             },
             
-            //    next: { tags: ['modeloId']},
+            next: { tags: [`${id}`] },
         })
             .then(response => response.json())
             .then(data => {
                 resolve(data); // Resuelve la Promesa con los datos obtenidos
                 // console.log(data);
+                revalidateTag(`${id}`);
             })
             .catch(error => {
                 //console.log(error);

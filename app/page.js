@@ -13,9 +13,9 @@ export default async function Home() {
     <>    
       <Banner />
       <BannerCiudades/>      
-      <Card texto="Proyectos destacados" />       
-      <BannerRegiones/>
+      <Card texto="Proyectos destacados" />    
       <BannerComoComprar />
+      <BannerRegiones/>
       <BannerBlog />
     </>
   );

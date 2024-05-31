@@ -27,7 +27,8 @@ const IconoList = (props) => {
   return (
     <>
       <div className="hidden sm:block">
-        <a className="flex flex-col items-center" onClick={props.onClick}>
+        
+      <a href="#" className="flex flex-col items-center">
           <div className="mt-4 flex flex-col items-center">
             <img className="h-10 w-10" alt={`icono`} src={props.icono} />
             <div className="mt-2 flex flex-wrap items-center justify-center">
@@ -144,14 +145,14 @@ const List = (props) => {
           </div>
 
           <div className="mt-4 flex justify-center md:justify-between" onClick={() => avances && avances.length > 0 && avances[0].estadoAvance === "1" ? handleModalToggle(avances[0]) : null}>
-            <a>
+          <a href="#">
               <div className="flex flex-col items-center">
                 <img
                   className="w-30 h-12"
                   alt={`icono`}
-                  src={`../../iconos/etapa/PILOTOON.png`}
+                  src={avances[0].estadoAvance === "1" ? "../../iconos/etapa/PILOTOON.png" : "../../iconos/etapa/PILOTOOFF.png"}
                 />
-                <p className={`mt-2 ${avances[0].estadoAvance === "1" ? "text-grisMalpo" : "text-rojoMalpo"} hover:text-gray-400`}>
+                <p className={`mt-2 ${avances[0].estadoAvance === "1" ? "text-rojoMalpo" : "text-grisMalpo"}`}>
                   Vivienda Piloto
                 </p>
               </div>

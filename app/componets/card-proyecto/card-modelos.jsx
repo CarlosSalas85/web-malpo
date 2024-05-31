@@ -10,11 +10,16 @@ const Card = (props) => {
     }
   };
 
-  const modelos = props.modelos;
-  const proyecto = props.proyecto;
 
-  const ciudadProyectoUrl = (replaceSpaces(proyecto?.comunaNombre)).toLowerCase();
-  const nombreProyectoUrl = (replaceSpaces(proyecto?.nombreWebProyecto)).toLowerCase();
+  function formatoNumero(elemento) {
+    return new Intl.NumberFormat("es-CL").format(elemento);
+  }
+
+  const modelos = props?.modelos;
+  const proyecto = props?.proyecto;
+
+  const ciudadProyectoUrl = (replaceSpaces(proyecto?.comunaNombre))?.toLowerCase();
+  const nombreProyectoUrl = (replaceSpaces(proyecto?.nombreWebProyecto))?.toLowerCase();
 
 
   return (
@@ -57,7 +62,7 @@ const Card = (props) => {
               <div className="relative ml-3 mt-3 px-2 py-2">
                 <div className="h-10">
                   <h2 className="text-4xl text-white hover:text-gray-400">
-                    {proyecto.nombreWebProyecto}
+                    {proyecto?.nombreWebProyecto}
                   </h2>
                 </div>
                 <div className="h-16">
@@ -67,10 +72,10 @@ const Card = (props) => {
                   <span
                     className="inline-flex items-center rounded px-3 py-2 text-white"
                     style={{
-                      backgroundColor: `var(${proyecto.colorEtapa})`,
+                      backgroundColor: `var(${proyecto?.colorEtapa})`,
                     }}
                   >
-                    {proyecto.nombreEtapa}
+                    {proyecto?.nombreEtapa}
                   </span>
                 </div>
                 <div className="h-10">
@@ -82,7 +87,7 @@ const Card = (props) => {
                           src="https://c.animaapp.com/3LiIjsbQ/img/payments-4@2x.png"
                         />
                       </div>
-                      <div className="ml-2">Desde UF {modelo.valorUfModelo}</div>
+                      <div className="ml-2">Desde UF {formatoNumero(modelo.valorUfModelo)}</div>
                     </li>
                   </ul>
                 </div>

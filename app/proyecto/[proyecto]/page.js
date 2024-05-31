@@ -60,21 +60,25 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
 
       <div className="mb-6 mt-6 flex justify-center">
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
+          
           <ModalCotizador proyecto={proyectoData} modelos={modelosData} />
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
             url="#modelos"
-            target="0"
+            blank="0"
           />
 
+
+          {proyectoData?.datos?.recursos?.pdfBrochure && (
           <Button
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
             // url={proyectoData?.datos?.proyecto?.pdfBrochure}
-            url={proyectoData?.datos?.recursos?.pdfBrochure || "#"}
-            target="1"
+            url={proyectoData?.datos?.recursos?.pdfBrochure}
+            blank="1"
           />
+        )}
         </div>
       </div>
 
@@ -96,13 +100,13 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
         </div>
       )}
 
-
+    {proyectoData?.datos?.modelos && (
       <div id="modelos">
         {proyectoData?.datos?.modelos && (
           <CardModelos texto="Modelos de Casas" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto} />
         )}
       </div>
-
+    )}
 
       {proyectoData?.datos?.avances && (
         <div className="pb-6 pt-6">
@@ -115,11 +119,11 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
         <BannerSalaVentas salas={proyectoData?.datos?.salas} />
       )}
 
-      {proyectoData?.datos?.proyecto && (
+      {proyectoData?.datos?.proyecto.urlLinkProyecto && (
         <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />
       )}
-      {proyectoData?.datos?.proyecto && (
-      <BannerMapa proyecto={proyectoData?.datos?.proyecto} />
+      {proyectoData?.datos?.proyecto.urlUbicacionProyecto && (
+      <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={proyectoData?.datos?.usuarios}/>
       )}
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
       <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />

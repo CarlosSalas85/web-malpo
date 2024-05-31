@@ -1,6 +1,7 @@
 import React from "react";
 
 const banner = (props) => {
+  
   const proyecto = props.proyecto;
   return (
     <div className="relative h-[500px]">
@@ -8,13 +9,11 @@ const banner = (props) => {
       <picture>
         {/* Imagen de fondo para dispositivos pequeños */}
         <source
-          srcSet={props.imagenMiniatura}
-          srcSet={props.imagenMiniatura}
+          srcSet={props.imagenCabecera}
           media="(max-width: 640px)"
         />
         {/* Imagen de fondo para dispositivos grandes */}
         <source
-          srcSet={props.imagenCabecera}
           srcSet={props.imagenCabecera}
           media="(min-width: 641px)"
         />

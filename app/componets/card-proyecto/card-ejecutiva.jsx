@@ -51,7 +51,7 @@ const Cards = (props) => {
         </div>
         {/* Segunda sección */}
         <div className="w-2/3 pl-2">
-          <a>
+        <a href="#">
             <h1 className="text-lg font-semibold">{props.nombre}</h1>
             <span className="mt-4 flex items-center text-center">
               <img

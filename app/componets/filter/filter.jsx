@@ -440,12 +440,13 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
       <div className={mostrarSession ? "block md:block" : "hidden md:block"}>
         <div className="mb-14 flex justify-between">
           <h2 className="text-2xl">Filtros</h2>
-          <button
+          {/*  Comentando boton de aplicar filtros, ya no es necesario al funcionar en tiempo real los filtros */}
+          {/* <button
             className={`fondo-malpo-gris h-12 w-32 rounded-md border border-black text-white hover:text-gray-400`}
             onClick={() => handleClick()}
           >
             Aplicar Filtros
-          </button>
+          </button> */}
         </div>
 
         <h2 className="text-2xl">Tipo de proyecto</h2>

@@ -26,6 +26,10 @@ export default async function CustomCards() {
     return encodeURIComponent(str.replace(/\s/g, '-'));
   };
 
+  function formatoNumero(elemento) {
+    return new Intl.NumberFormat("es-CL").format(elemento);
+  }
+
   const data3 = await Ctrl_destacados();
   const proyectos = data3.datos;
   // console.log("LO QUE DEVUELVE LA API Ctrl_destacados es:", data3.datos);
@@ -112,7 +116,7 @@ export default async function CustomCards() {
                         src="https://c.animaapp.com/3LiIjsbQ/img/payments-4@2x.png"
                       />
                     </div>
-                    <div className="ml-2">Desde UF {proyecto.ufMinimo}</div>
+                    <div className="ml-2">Desde UF {formatoNumero(proyecto.ufMinimo)}</div>
                   </li>
                   {proyecto.nombreSubsidio !== "Sin Subsidio" && (
                   <li className="flex items-center">
