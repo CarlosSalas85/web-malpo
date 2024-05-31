@@ -8,7 +8,9 @@ const CustomCards = (props) => {
       {/* Degradado de fondo */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-400"></div>
 
-      <a href={`/${props.pagina}/${props.ciudad}/${props.nombre}?val=${props.idProyecto}`}>
+      <a
+        href={`/${props.pagina}/${props.ciudad}/${props.nombre}?val=${props.idProyecto}`}
+      >
         {/* Imagen de fondo */}
         <picture>
           {/* Imagen de fondo para dispositivos pequeños */}
@@ -30,27 +32,31 @@ const CustomCards = (props) => {
           />
         </picture>
 
-        {/* Contenido */}
-        <div className="relative ml-3 mt-3 px-2 py-2">
-          <div className="h-15">
-            <h2 className="text-4xl text-white hover:text-gray-400">
-              Alto Manque
+        {/* Primera fila */}
+        <div className="relative h-full w-full pl-4 pt-4">
+          <div className="w-ful h-1/3">
+            <h2 className="text-4xl text-white  hover:text-gray-400">
+              {props.nombre}
             </h2>
           </div>
-          <div className="h-16">
+          {/* Segunda fila */}
+          <div className="h-1/6 w-full">
             <p className="text-2xl font-bold text-white">Casas en Talca</p>
           </div>
-          <div className="mt-6 h-16">
+          {/* Tercera fila */}
+          <div className="h-1/6 w-full">
             <span
-              className="inline-flex items-center rounded px-3 py-2 text-white"
+              className="inline-flex items-center rounded px-3 py-2 text-black"
               style={{
-                backgroundColor: "var(--malpo-paleta-de-colores-verde-malpo)",
+                backgroundColor: "var(--malpo-paleta-de-colores-blanco)",
               }}
             >
-              Venta en Verde
+              Venta en Blanco
             </span>
           </div>
-          <div className="mt-6">
+          {/* Cuarta fila */}
+          <div className="h-1/3 w-full">
+            {" "}
             <ul className="text-white">
               <li className="flex items-center">
                 <div>

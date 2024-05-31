@@ -6,6 +6,7 @@ const CustomCards = (props) => {
       <div className="relative mr-4 flex w-[240px] flex-shrink-0">
         {/* Degradado de fondo */}
         <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-400"></div>
+        <a>
         <picture>
           {/* Imagen de fondo para dispositivos pequeños */}
           <source
@@ -26,7 +27,7 @@ const CustomCards = (props) => {
           />
         </picture>
         {/* Primera fila */}
-        <div className="relative w-full pl-4 pt-4">
+        <div className="relative w-full h-full pl-4 pt-4">
           <div className="w-ful h-1/3">
             <h2 className="text-4xl text-white  hover:text-gray-400">
               Alto Manque
@@ -72,6 +73,7 @@ const CustomCards = (props) => {
             </ul>
           </div>
         </div>
+        </a>
       </div>
 
       

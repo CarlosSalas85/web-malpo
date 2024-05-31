@@ -9,7 +9,7 @@ const List = (props) => {
           idProyecto={1}
           pagina={props.pagina}
           ciudad={props.ciudad}
-          nombre={nombreProyectoEncoded}
+          nombre='jahshs jhsjhuahs uahuashus'
         />
       </div>
       <div className="flex w-full justify-center pb-6 xl:w-1/2">
@@ -17,7 +17,7 @@ const List = (props) => {
           idProyecto={1}
           pagina={props.pagina}
           ciudad={props.ciudad}
-          nombre={nombreProyectoEncoded}
+          nombre='jajjsak'
         />
       </div>
       <div className="flex w-full justify-center pb-6 xl:w-1/2">
@@ -25,7 +25,7 @@ const List = (props) => {
           idProyecto={1}
           pagina={props.pagina}
           ciudad={props.ciudad}
-          nombre={nombreProyectoEncoded}
+          nombre='aksjjajsi'
         />
       </div>
 
