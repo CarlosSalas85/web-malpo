@@ -70,11 +70,10 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
     nombre: modelo.nombreModelo,
   }));
   const modelosData = proyectoData?.datos?.modelos;
-  const modeloData = modelosData.filter(modelo => modelo.idModelo === idModelo);
+  const modeloData = modelosData?.filter(modelo => modelo.idModelo === idModelo);
   const filtroDecodificado = modelo ? decodeURIComponent(modelo) : "";
   const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} proyectoNombreUrl={nombreProyectoUrl} idProyecto={val1} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion}/>;
-  var tour360Modelo = modeloData[0]?.Modelos?.tour360Modelo; // Asegurate de manejar posibles valores nulos o indefinidos
-  // console.log("El valor de modelosData es:", modelosData,nombreProyectoUrl,proyecto);
+  var tour360Modelo = modeloData && modeloData.length > 0 ? modeloData[0]?.Modelos?.tour360Modelo : null;  // console.log("El valor de modelosData es:", modelosData,nombreProyectoUrl,proyecto);
   if (tour360Modelo && /^(http|https):\/\/\S+$/i.test(tour360Modelo)) {
     // console.log('Es un enlace URL válido:', tour360Modelo);
   } else {
@@ -106,7 +105,15 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
 
   return (
     <>
-      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} proyecto={proyectoData?.datos?.proyecto} imagenCabecera={modelosData[0].Modelos.imagenCabecera} imagenMiniatura={modelosData[0].Modelos.imagenMiniatura} />
+    {modelosData[0] && (
+  <BannerProyecto
+    url={url}
+    nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto}
+    proyecto={proyectoData?.datos?.proyecto}
+    imagenCabecera={modelosData[0]?.Modelos.imagenCabecera}
+    imagenMiniatura={modelosData[0]?.Modelos.imagenMiniatura}
+  />
+)}
 
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <h1 className="mb-4 text-3xl sm:text-center">{modeloData[0].Modelos.nombreModelo}</h1>
@@ -145,7 +152,8 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
           </div>
         </div>
       )}
-
+ 
+ {modeloData[0].Modelos.imagenPiso1 != null && modeloData[0].Modelos.imagenPiso2 (
       <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Planta</h1>
         <div className="mt-4 flex justify-center">
@@ -179,9 +187,11 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
           </div>
         </div>
       </div>
-      {modeloData[0].Modelos != null && (
-        <Carousel modelos={modelosData[0]?.Modelos} />
-      )}
+
+          )}
+      {modeloData[0]?.Modelos != null && (
+     <Carousel modelos={modelosData[0]?.Modelos} />
+      )} 
       {/* <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Imágenes del modelo</h1>
         <div className="relative mx-auto mt-4 hidden w-full md:flex md:w-5/6 md:justify-center">
@@ -264,7 +274,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
       </div> */}
 
 
-      <div id="tourvirtual" className="pb-6 pt-6">
+      {/* <div id="tourvirtual" className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Tour Virtual</h1>
         <div className="mt-4 flex justify-center">
           <iframe
@@ -275,7 +285,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
             allowFullScreen=""
           ></iframe>
         </div>
-      </div>
+      </div> */}
 
       {proyectoData?.datos?.proyecto && (
         <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />

@@ -521,13 +521,42 @@ const Page = (props) => {
   return (
     <>
 
+<div className="relative">
       <button
         onClick={handleModalToggle}
-        className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400"
+        className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400 relative"
         disabled={modelo_vivienda === null}
+        data-tooltip="Proyecto sin modelos disponibles para cotizar"
       >
         Cotizar
       </button>
+      <style jsx>{`
+        button[disabled] {
+          cursor: not-allowed;
+          position: relative;
+        }
+
+        button[disabled]::after {
+          content: attr(data-tooltip);
+          display: none;
+          position: absolute;
+          bottom: 120%;
+          left: 50%;
+          transform: translateX(-50%);
+          white-space: nowrap;
+          background-color: rgba(0, 0, 0, 0.75);
+          color: #fff;
+          padding: 8px;
+          border-radius: 4px;
+          font-size: 14px;
+          z-index: 1;
+        }
+
+        button[disabled]:hover::after {
+          display: block;
+        }
+      `}</style>
+    </div>
       {modalOpen && (
         <Modal onClose={handleModalToggle}>
           <div className="container mx-auto px-4 py-2">

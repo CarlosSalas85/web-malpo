@@ -104,7 +104,7 @@ export default function List(props) {
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
-            className={`mr-2 flex items-center justify-center rounded border px-4 py-2 ${currentPage === index + 1 ? 'border-transparent bg-red-600 text-white' : 'border-gray-400 text-black hover:bg-gray-400'}`}
+            className={`mr-2 flex items-center justify-center rounded border px-4 py-2 ${currentPage === index + 1 ? 'border-transparent bg-rojoMalpo text-white' : 'border-gray-400 text-black hover:bg-gray-400'}`}
             onClick={() => handleClickPage(index + 1)}
             disabled={isLoading}
           >

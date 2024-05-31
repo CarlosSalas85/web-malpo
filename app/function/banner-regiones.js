@@ -9,7 +9,7 @@ const Function = () => {
   return (
     <>
       <BannerProyectos
-        texto="Proyectos por région"       
+        texto="Proyectos por región"       
         filtro="region"
         datos={datos}
       />

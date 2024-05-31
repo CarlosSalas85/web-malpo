@@ -20,6 +20,8 @@ const Card = (props) => {
 
   const ciudadProyectoUrl = (replaceSpaces(proyecto?.comunaNombre))?.toLowerCase();
   const nombreProyectoUrl = (replaceSpaces(proyecto?.nombreWebProyecto))?.toLowerCase();
+  const textColorClass = proyecto.colorEtapa === '--malpo-paleta-de-colores-blanco' ? 'text-black' : 'text-white';
+
 
 
   return (
@@ -35,28 +37,31 @@ const Card = (props) => {
 
             <a href={`/proyecto/${nombreProyectoUrl}/${modeloNombreUrl}?val1=${idProyecto}&val2=${idModelo}`} className="">        
             {/* Imagen de fondo */}
-              <picture>
-                {/* Imagen de fondo para dispositivos pequeños */}
-                <source
-                  // srcSet="https://c.animaapp.com/3LiIjsbQ/img/rectangle-30-4.png"
-                  src={modelo.Modelos.imagenMiniatura}
-                  media="(max-width: 640px)"
-                />
-                {/* Imagen de fondo para dispositivos grandes */}
-                <source
-                  // srcSet="https://c.animaapp.com/3LiIjsbQ/img/rectangle-30-2.png"
-                  src={modelo.Modelos.imagenMiniatura}
-                  media="(min-width: 641px)"
-                />
-                {/* Imagen de fondo por defecto */}
-                <img
-                  className="absolute inset-0 block h-[400px] w-[300px] rounded-b-xl bg-cover bg-center"
-                  //src="https://c.animaapp.com/3LiIjsbQ/img/rectangle-30-2.png" // Ruta de la imagen de fondo por defecto para navegadores que no admiten <picture>
-                  src={modelo.Modelos.imagenMiniatura}
-                  alt=""
-                  style={{ opacity: "0.7" }} // Ajusta la opacidad según sea necesario
-                />
-              </picture>
+            <picture>
+  {/* Imagen de fondo para dispositivos pequeños */}
+  {modelo.Modelos?.imagenMiniatura && (
+    <source
+      srcSet={modelo.Modelos.imagenMiniatura}
+      media="(max-width: 640px)"
+    />
+  )}
+  {/* Imagen de fondo para dispositivos grandes */}
+  {modelo?.Modelos?.imagenMiniatura && (
+    <source
+      srcSet={modelo.Modelos.imagenMiniatura}
+      media="(min-width: 641px)"
+    />
+  )}
+  {/* Imagen de fondo por defecto */}
+  {modelo?.Modelos?.imagenMiniatura && (
+    <img
+      className="absolute inset-0 block h-[400px] w-[300px] rounded-b-xl bg-cover bg-center"
+      src={modelo.Modelos.imagenMiniatura}
+      alt=""
+      style={{ opacity: "0.7" }} // Ajusta la opacidad según sea necesario
+    />
+  )}
+</picture>
 
               {/* Contenido */}
               <div className="relative ml-3 mt-3 px-2 py-2">
@@ -66,22 +71,30 @@ const Card = (props) => {
                   </h2>
                 </div>
                 <div className="h-16">
+                  <br/>
+                  <br/>
                   <p className="text-2xl font-bold text-white">{modelo.nombreModelo}</p>
                 </div>
                 <div className="h-16">
+                <br/>
+                  <br/>
                   <span
-                    className="inline-flex items-center rounded px-3 py-2 text-white"
-                    style={{
-                      backgroundColor: `var(${proyecto?.colorEtapa})`,
-                    }}
-                  >
+              className={`inline-flex items-center rounded px-3 py-2 ${textColorClass}`}
+              style={{
+                backgroundColor: `var(${proyecto.colorEtapa})`,
+              }}
+            >
                     {proyecto?.nombreEtapa}
+                    
                   </span>
                 </div>
+                <br/>
+                <br/>
                 <div className="h-10">
                   <ul className="text-white">
                     <li className="flex items-center">
                       <div>
+                        
                         <img
                           className="img-logo-list rounded-xl"
                           src="https://c.animaapp.com/3LiIjsbQ/img/payments-4@2x.png"

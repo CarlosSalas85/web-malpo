@@ -18,10 +18,15 @@ const Carousel = (props) => {
   const allNull = images.every(image => image === null);
 
   // Si todas las imágenes son nulas, almacenar un arreglo con un solo elemento nulo
-  const filteredImages = allNull ? [null] : 
-    // De lo contrario, filtrar las imágenes no nulas que tengan extensiones válidas
-    images.filter(image => image !== null && /\.(jpg|png|webp)$/i.test(image));
+ // Si todas las imágenes son nulas, almacenar un arreglo vacío
+ const filteredImages = allNull ? [] : 
+ // De lo contrario, filtrar las imágenes no nulas que tengan extensiones válidas
+ images.filter(image => image !== null && /\.(jpg|png|webp)$/i.test(image));
 
+// Si no hay imágenes válidas, no renderizar el componente
+if (filteredImages.length === 0) {
+ return null;
+}
 //   console.log("Imagenes Filtradas:", filteredImages);
 
   const [currentImage, setCurrentImage] = useState(0);
@@ -51,6 +56,7 @@ const Carousel = (props) => {
   };
 
   return (
+
     <div className="pb-6 pt-6">
       <h1 className="ml-4 text-3xl sm:text-center">Imágenes del modelo</h1>
       <div className="relative mx-auto mt-4 hidden w-full md:flex md:w-5/6 md:justify-center">

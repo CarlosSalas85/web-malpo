@@ -58,8 +58,6 @@ function formatoNumero(elemento) {
           </div>
           {/* Tercera fila */}
           <div className="h-1/6 w-full">
-          {/* Tercera fila */}
-          <div className="h-1/6 w-full">
             <span
               className={`inline-flex items-center rounded px-3 py-2 ${textColorClass}`}
               style={{
@@ -69,9 +67,6 @@ function formatoNumero(elemento) {
                {proyecto.nombreEtapa}
             </span>
           </div>
-          {/* Cuarta fila */}
-          <div className="h-1/3 w-full">
-            {" "}
           {/* Cuarta fila */}
           <div className="h-1/3 w-full">
             {" "}

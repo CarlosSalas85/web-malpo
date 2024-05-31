@@ -39,6 +39,8 @@ const Cards = (props) => {
   return (
     <>
       <div className="mx-2 my-2 flex w-full justify-center border shadow md:my-0 md:w-1/3 dark:border-gray-700 dark:bg-gray-800">
+        
+        
         {/* Primera sección */}
         <div className="w-1/3">
           <Image

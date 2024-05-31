@@ -45,6 +45,10 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
   const nombreRegion = proyectoData?.datos?.proyecto?.regionNombre;
   const idCiudad = proyectoData?.datos?.proyecto?.idComuna;
   const nombreCiudad =proyectoData?.datos?.proyecto?.comunaNombre;
+  const ejecutivas=proyectoData?.datos?.proyecto?.usuarioImagen;
+  const ejecutivasConImagen = ejecutivas?.filter(ejecutiva => ejecutiva.usuarioImagen != null);
+
+
   console.log
   const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion}/>;
 
@@ -62,6 +66,8 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
           
           <ModalCotizador proyecto={proyectoData} modelos={modelosData} />
+          
+          
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
@@ -69,16 +75,15 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
             blank="0"
           />
 
-
-          {proyectoData?.datos?.recursos?.pdfBrochure && (
+     
           <Button
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
             // url={proyectoData?.datos?.proyecto?.pdfBrochure}
-            url={proyectoData?.datos?.recursos?.pdfBrochure}
+            url={proyectoData?.datos?.recursos?.pdfBrochure ? proyectoData.datos.recursos.pdfBrochure : 'about:blank'}
             blank="1"
           />
-        )}
+    
         </div>
       </div>
 
@@ -123,7 +128,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
         <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />
       )}
       {proyectoData?.datos?.proyecto.urlUbicacionProyecto && (
-      <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={proyectoData?.datos?.usuarios}/>
+      <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={ejecutivasConImagen}/>
       )}
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
       <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />
@@ -134,7 +139,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
        )} 
        </div>*/}
        <div id="ejecutivas">
-       {proyectoData?.datos?.usuarios && (
+       {proyectoData?.datos?.usuarios && ejecutivasConImagen?.length>0 && (
       <BannerEjecutivas usuarios={proyectoData?.datos?.usuarios} />
        )} 
        </div>
