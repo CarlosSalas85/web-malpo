@@ -18,7 +18,7 @@ export function Ctrl_blog_categorias() {
       .then((response) => response.json())
       .then((data) => {
         resolve(data);
-        revalidateTag("blogs");
+        revalidateTag("categoria");
       })
       .catch((error) => {
         reject(error);

@@ -1,6 +1,7 @@
 import BannerProyecto from "@/app/componets/banner-proyectos/banner-proyecto";
+import InfoBlog from "@/app/componets/banner-blog/info-blog";
+
 import BannerRegiones from "@/app/function/banner-regiones";
-import ShareButtons from "@/app/componets/banner-blog/compartir-rrss";
 
 import { Ctrl_blog } from "@/app/controllers/Ctrl_blog";
 
@@ -30,32 +31,7 @@ const page = async ({ searchParams: { val } }) => {
         imagenCabecera={datos.imagenCabecera}
       />
 
-      <div className="mx-auto mb-3 mt-3 w-11/12 md:w-10/12">
-        <h1 className="mb-2 text-3xl sm:text-center">{datos.subtituloBlog}</h1>
-        <p className="text-18px pt-4 sm:text-center">{datos.informacionBlog}</p>
-      </div>
-
-      <div className="flex items-center justify-center">
-        <div className="mx-auto mb-3 mt-3 w-11/12 md:w-10/12">
-          <img
-            src={datos.imagenCabecera}
-            alt="Descripción de la imagen"
-            className="mx-auto block h-auto w-[600px] rounded-t-lg"
-          />
-        </div>
-      </div>
-
-      <div className="mx-auto mb-3 mt-3 w-11/12 md:w-10/12">
-        <p className="text-18px pt-1 sm:text-center">{datos.autorBlog}</p>
-        <p className="text-18px pt-1 sm:text-center">{datos.fechaBlog}</p>
-        <p className="text-18px pt-1 font-semibold text-rojoMalpo hover:text-gray-400 sm:text-center">
-          <a href={datos.urlBlog} target="_blank">
-            Ver más
-          </a>
-        </p>
-
-       {/*  <ShareButtons /> */}
-      </div>
+      <InfoBlog datos={datos} />
 
       <BannerRegiones />
     </>

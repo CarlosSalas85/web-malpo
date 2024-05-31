@@ -1,3 +1,5 @@
+import { revalidateTag } from "next/cache";
+
 export function Ctrl_blog(id) {
   return new Promise((resolve, reject) => {
     var url = process.env.NEXT_PUBLIC_API_URL + `blogs/blog/${id}`;
