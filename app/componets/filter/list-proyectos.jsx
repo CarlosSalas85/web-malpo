@@ -83,7 +83,7 @@ export default function List(props) {
         ))
       )}
 
-      <div className="mb-4 h-10 flex w-full justify-center md:justify-start">
+      <div className="mb-4 h-10 flex w-full justify-center">
         <button
           className="mr-2 flex items-center justify-center rounded border border-gray-400 px-4 py-2 text-black hover:bg-gray-400"
           onClick={handleClickPrev}
@@ -98,7 +98,7 @@ export default function List(props) {
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
-            className={`mr-2 flex items-center justify-center rounded border px-4 py-2 ${currentPage === index + 1 ? 'border-transparent bg-red-600 text-white' : 'border-gray-400 text-black hover:bg-gray-400'}`}
+            className={`mr-2 flex items-center justify-center rounded border px-4 py-2 ${currentPage === index + 1 ? 'border-transparent fondo-malpo-rojo text-white' : 'border-gray-400 text-black hover:bg-gray-400'}`}
             onClick={() => handleClickPage(index + 1)}
             disabled={isLoading}
           >

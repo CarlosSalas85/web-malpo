@@ -18,6 +18,20 @@ const FilterButton = ({ id, type, activeFilter, handleClick }) => {
   );
 };
 
+const FilterButton2 = ({ id, type, activeFilter, handleClick }) => {
+  return (
+    <button
+      className={`px-4 py-2 text-sm font-medium border border-black rounded ${activeFilter === id
+        ? "fondo-malpo-gris text-white"
+        : "bg-white text-black"
+        } transition-colors duration-100 ease-in-out`}
+      onClick={() => handleClick(id)}
+    >
+      {type}
+    </button>
+  );
+};
+
 const validar = (p1, p2) => {
   if (p2 == 0) {
     return true
@@ -47,7 +61,7 @@ const CustomSelect = ({ options, optionDefault, handle }) => {
   return (
     <div className="relative mb-6 mt-3 rounded border border-black">
       <div
-        className="flex cursor-pointer items-center justify-between rounded border border-gray-300 px-4 py-2 pb-4 pt-4"
+        className="flex cursor-pointer items-center justify-between rounded border border-gray-300 px-4 py-2 pb-1 pt-1"
         onClick={toggleDropdown}
       >
         <span>
@@ -338,7 +352,9 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
 
   return (
-    <div className="w-full pl-2 pr-2 md:ml-20 md:mr-4 md:w-2/5">
+    
+    <div className="pl-2 pr-2 md:ml-20 md:mr-4 grid-cols-2">
+        
       <div className="sm:block md:hidden">
         {" "}
         {/* Oculto en pantallas más grandes que sm */}
@@ -409,10 +425,10 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
         <h2 className="text-2xl">Tipo de proyecto</h2>
 
-        <div className="mb-6 mt-3 flex">
-
+        <div className="mb-6 mt-3 flex flex-wrap gap-1 rounded-md ">
+        
           {filtros.tiposProyecto.map((tipoProyecto, index) => (
-            <FilterButton key={index}
+            <FilterButton2 key={index}
               id={tipoProyecto.id}
               type={tipoProyecto.nombre}
               activeFilter={activeFilterTipo}
@@ -424,9 +440,9 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
         <h2 className="text-2xl">Subsidio</h2>
 
-        <div className="mb-6 mt-3 flex">
+        <div className="mb-6 mt-3 flex flex-wrap gap-1 rounded-md">
           {filtros.tiposSubsidio.map((tipoSubsidio, index) => (
-            <FilterButton key={index}
+            <FilterButton2 key={index}
               id={tipoSubsidio.id}
               type={tipoSubsidio.nombre}
               activeFilter={activeFilterSubsidio}
@@ -437,9 +453,9 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
         <h2 className="text-2xl">Dormitorios</h2>
 
-        <div className="mb-6 mt-3 flex">
+        <div className="mb-6 mt-3 flex flex-wrap gap-1 rounded-md">
           {filtros.dormitorios.map((dormitorio, index) => (
-            <FilterButton key={index}
+            <FilterButton2 key={index}
               id={dormitorio.id}
               type={dormitorio.cantidad}
               activeFilter={activeFilterDormitorios}
@@ -450,10 +466,10 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
         <h2 className="text-2xl">Baños</h2>
 
-        <div className="mb-6 mt-3 flex">
+        <div className="mb-6 mt-3 flex flex-wrap gap-1 rounded-md">
           {filtros.banos.map((bano, index) => (
 
-            <FilterButton key={index}
+            <FilterButton2 key={index}
               id={bano.id}
               type={bano.cantidad}
               activeFilter={activeFilterBanos}
