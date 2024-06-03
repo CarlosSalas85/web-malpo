@@ -46,9 +46,9 @@ const validarCasa = (opcion, proyectoTipo) => {
   if (opcion == 0) {
     return true
   } else if (opcion == 4) {
-    if(proyectoTipo == 1 || proyectoTipo == 2){
+    if (proyectoTipo == 1 || proyectoTipo == 2) {
       return true
-    }else{
+    } else {
       return false
     }
   } else if (opcion == proyectoTipo) {
@@ -61,7 +61,7 @@ const validacionBanos = (opcion, rangoInf, rangoSup) => {
   if (opcion == 0) {
     return true
   } else if (opcion == 99) {
-    if (rangoInf >= 3 ) {
+    if (rangoInf >= 3) {
       return true
     } else {
       return false
@@ -393,9 +393,9 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
 
   return (
-    
+
     <div className="pl-2 pr-2 md:ml-20 md:mr-4 grid-cols-2">
-        
+
       <div className="sm:block md:hidden">
         {" "}
         {/* Oculto en pantallas más grandes que sm */}
@@ -468,7 +468,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
         <h2 className="text-2xl">Tipo de proyecto</h2>
 
         <div className="mb-6 mt-3 flex flex-wrap gap-1 rounded-md ">
-        
+
           {filtros.tiposProyecto.map((tipoProyecto, index) => (
             <FilterButton2 key={index}
               id={tipoProyecto.id}
@@ -522,7 +522,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
         <h2 className="text-2xl">Etapa del proyecto</h2>
 
-        <CustomSelect options={options} optionDefault handle={handleEtapa} />
+        <CustomSelect options={options} optionDefault={0} handle={handleEtapa} />
 
         <h2 className="text-2xl">Ciudad</h2>
         <CustomSelect options={optionsCiudad} optionDefault={selectedOptionCiudad} handle={handleCiudad} />
