@@ -39,18 +39,24 @@ const Page = (props) => {
   };
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
+  const [cotizarDeNuevo, setCotizarDeNuevo] = useState(false);
 
   const handleModalToggle = () => {
-    setModalOpen(!modalOpen);
-    if (formRef.current) {
-      formRef.current.reset();
-    }
-    
+    setModalOpen(!modalOpen); 
+    setCotizarDeNuevo(false);    
   };
   
-  const handleModalToggle2 = () => {
+  const handleModalToggle2 = () => {   
     setModalOpen2(!modalOpen2);
   };
+
+  //Volver a Cotizar se muestra en el modal del resultado del dividendo
+  //Permite volver a abrir el modal de cotización, sin modificar los inputs
+  const volverACotizar = () => {
+    setCotizarDeNuevo(true);  
+    handleModalToggle2();
+    setModalOpen(!modalOpen);
+  }
 
   const NumeroFormateado = ({ numero }) => {
     const numeroFormateado = numero.toLocaleString(); // Formatea el número con separadores de miles
@@ -64,7 +70,7 @@ const Page = (props) => {
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [ciudad, setCiudad] = useState('');
-  const [contacto, setComoTeEnteraste] = useState([]);
+  const [contacto, setComoTeEnteraste] = useState('');
   const [cod_unysoft, setCodUnysoft] = useState(proyectoData?.datos?.proyecto?.codigoUnisoft);
   const [modelo_vivienda, setModeloNombre] = useState(modelosData ? modelosData[0]?.Modelos?.idModelo : null);
   const [valorUFModelo, setValorUFModelo] = useState(modelosData ? modelosData[0]?.Modelos?.valorUfModelo : 0);
@@ -80,8 +86,8 @@ const Page = (props) => {
   const [estado_civil, setEstadoCivil] = useState('');
   const [genero, setGenero] = useState('');
   const [hijos, setTieneHijos] = useState('');
-  const [NombresAtributos, setAtributosImportantes] = useState(['']);
-  const [atributos, setAtributos] = useState([]);
+  const [NombresAtributos, setAtributosImportantes] = useState('');
+  const [atributos, setAtributos] = useState('');
   const [otros_atributos, setOtrosAtributos] = useState('');
   const [motivo_compra, setMotivoCompra] = useState('');
   const [isSelectDisabledMotivoCompra, setIsSelectDisabledMotivoCompra] = useState(false);
@@ -94,9 +100,6 @@ const Page = (props) => {
   const [formularioEnviado, setFormularioEnviado] = useState(false);
   // Estado para validar el RUT
   const [rutValido, setRutValido] = useState(true);
-
-
-
   const [selectedEtapa, setSelectedEtapa] = useState(0);
   const [personName, setPersonName] = useState(['TODOS']);
   // Estado para almacenar los errores del formulario
@@ -113,6 +116,28 @@ const Page = (props) => {
   };
 
   const [fechaConsulta, setFechaConsulta] = useState(obtenerFechaActual());
+  
+  const resetForm = () => {
+    setNombre('');
+    setRut('');
+    setEmail('');
+    setTelefono('');
+    setCiudad('');
+    setComoTeEnteraste(''); 
+    setEdad('');
+    setEstadoCivil('');
+    setGenero('');
+    setTieneHijos('');
+    setAtributos('');
+    setAtributosImportantes('');
+    setOtrosAtributos('');
+    setMotivoCompra('');
+    setOtroMotivoCompra('');
+    setQuienesHabitaran('');
+    setOtroQuienesHabitaran('');
+    setPlazoCredito('');
+  };
+
 
   function formatoNumero(elemento) {
     // Verifica si el número tiene decimales
@@ -126,8 +151,6 @@ const Page = (props) => {
       return elemento.toLocaleString("es-CL");
     }
   }
-
-
 
 
   useEffect(() => {
@@ -206,14 +229,16 @@ const Page = (props) => {
       setModeloNombre(selectedModelo.idModelo);
       setValorUFModelo(selectedModelo.valorUfModelo); // Guarda el valorUF correspondiente al modelo_vivienda seleccionado
     }
-  }
-
-
-
-
+  } 
 
   useEffect(() => {
     if (modalOpen) {
+
+      if (formRef.current && !cotizarDeNuevo) { //si no está cotizando de nuevo se resetea el form
+        formRef.current.reset();
+        resetForm();
+      }
+
       // Llamada a ambas APIs
       Promise.all([
         Ctrl_como_te_enteraste(),
@@ -1037,10 +1062,11 @@ const Page = (props) => {
 
             <div className="mx-auto mb-4 mt-4 flex h-28 flex-col items-center justify-center bg-rojoMalpo text-white">
               <div>Tu Dividendo Mensual es:</div>
-              <div>$ {formatNumberWithCommas(cotizacionCLP)}</div>
+              <div><b className="text-lg">$ {formatNumberWithCommas(cotizacionCLP)}</b></div>
             </div>
 
-            <div className="mt-4 flex justify-end pr-4 text-rojoMalpo">
+            <div className="mt-4 flex justify-between pr-4 text-rojoMalpo">
+              <button className="ml-3" onClick={volverACotizar}><span>Volver a Cotizar</span></button>
               <button className="flex items-center" onClick={handleDownloadPDF}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
