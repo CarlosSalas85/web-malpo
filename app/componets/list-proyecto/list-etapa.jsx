@@ -69,10 +69,12 @@ const IconoList = (props) => {
 };
 
 const List = (props) => {
+  // console.log("props de props", props);
   const [modalOpen, setModalOpen] = useState(false);
   const [avanceSeleccionado, setAvanceSeleccionado] = useState(null);
 
-  const handleModalToggle = (avance = null) => {
+  const handleModalToggle = (avance) => {
+    console.log("modal avance:",avance);
     setAvanceSeleccionado(avance);
     setModalOpen(!modalOpen);
   };
@@ -139,7 +141,7 @@ const List = (props) => {
                     : iconos_gris[index]
                 }
                 circulo={index === avances.length - 2 ? "block" : "hidden"}
-                onClick={avance.estadoAvance === "1" ? () => handleModalToggle(avance) : null}
+                onClick={avance.estadoAvance === "1" ? () => handleModalToggle(avances[index]) : null}
               />
             ))}
           </div>

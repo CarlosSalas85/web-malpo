@@ -9,12 +9,12 @@ import { Ctrl_proyectos } from "@/app/controllers/Ctrl_proyectos";
 const UrlBanner = (props) => {
   return (
     <>
-      <a href="/invertir" className="mx-1 hover:text-gray-400">
+      <a href="/invertir/proyectos" className="mx-1 hover:text-gray-400">
         Invertir
       </a>
       /
-      <a href="#" className="mx-1 hover:text-gray-400">
-        {props.nombre}
+      <a href="/" className="mx-1 hover:text-gray-400">
+        {/* {props.nombre} */}
       </a>
     </>
   );
@@ -57,8 +57,8 @@ const nombreTipo = modelosData[0]?.nombreTipo;
   const arriendo =formatNumberWithThousandSeparator(parseInt(proyectosInversionista[0].arriendo));
   const imagenCabecera=proyectoInversionistaData?.datos?.proyecto?.imagenCabecera;
   const imagenMiniatura=proyectoInversionistaData?.datos?.proyecto.imagenMiniatura;
- 
-  const url = <UrlBanner nombre={nombre} />;
+  // console.log("proyectosTodos,proyectoInversionista",proyectosTodos,proyectoInversionistaData);
+  const url = <UrlBanner nombre={nombre} /* idRegion={proyectoInversionistaData?.datos?.proyecto?.idRegion} nombreRegion={proyectoInversionistaData?.datos?.proyecto?.regionNombre} idComuna={proyectoInversionistaData?.datos?.proyecto?.idComuna} comunaNombre={proyectoInversionistaData?.datos?.proyecto?.comunaNombre} *//>;
 
   return (
     <>

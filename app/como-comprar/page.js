@@ -9,6 +9,10 @@ import ButtonComoComprar from "@/app/componets/banner-como-comprar/button-como-c
 import BannerRegiones from "@/app/function/banner-regiones-cliente";
 
 import ModalCorreos from "@/app/componets/modal/modal-correos";
+import {useGoogleReCaptcha} from "react-google-recaptcha";
+
+
+
 
 const Modal = ({ onClose }) => {
   return (
@@ -34,6 +38,8 @@ const Modal = ({ onClose }) => {
 
 const Page = () => {
   const [modalOpen, setModalOpen] = useState(false);
+
+
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);

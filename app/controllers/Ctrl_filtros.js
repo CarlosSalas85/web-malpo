@@ -13,13 +13,14 @@ export function Ctrl_filtros() {
                 'X-API-KEY': apiKey,
                 'Authorization': authHeader
             },
-            //    next: { tags: ['filtros']},
+            cache: 'no-store' 
         })
             .then(response => response.json())
             .then(data => {
                 // console.log('ESTOY EN CTRL_FILTROS');
                 // console.log(data);
                 resolve(data); // Resuelve la Promesa con los datos obtenidos
+                revalidateTag('filtros'); 
             })
             .catch(error => {
                 // console.log(error);

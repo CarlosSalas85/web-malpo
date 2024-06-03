@@ -1,3 +1,6 @@
+import { revalidateTag } from 'next/cache';
+
+
 export function Ctrl_aplicar_filtros(ids) {
     return new Promise((resolve, reject) => {
         const etapaId = parseInt(ids.etapaId);
@@ -14,13 +17,15 @@ export function Ctrl_aplicar_filtros(ids) {
                 'Content-Type': 'application/json',
                 'X-API-KEY': apiKey,
                 'Authorization': authHeader
-            }
+            },   
+             next: { tags: ['filtros']},
         })
         .then(response => response.json())
         .then(data => {
             // console.log('ESTOY EN CTRL_APLICAR_FILTROS');
             // console.log(data);
             resolve(data); // Resuelve la Promesa con los datos obtenidos
+            revalidateTag('filtros');
         })
         .catch(error => {
             //console.log(error);

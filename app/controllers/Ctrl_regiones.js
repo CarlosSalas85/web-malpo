@@ -1,3 +1,5 @@
+import { revalidateTag } from 'next/cache';
+
 export function Ctrl_regiones() {
   return new Promise((resolve, reject) => {
     var url = `${process.env.NEXT_PUBLIC_API_URL}proyectos/regiones`;
@@ -14,13 +16,13 @@ export function Ctrl_regiones() {
         "X-API-KEY": apiKey,
         Authorization: authHeader,
       },
-      cache: "no-store",
+      next: { tags: ['regiones']},
       // next: { revalidate: true } // Revalidación bajo demanda
     })
       .then((response) => response.json())
       .then((data) => {
         resolve(data); // Resuelve la Promesa con los datos obtenidos
-        revalidateTag("regiones");
+        revalidateTag('regiones'); 
       })
       .catch((error) => {
         //console.log(error);

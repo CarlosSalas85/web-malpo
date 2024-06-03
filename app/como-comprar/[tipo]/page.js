@@ -97,7 +97,7 @@ const Button = () => {
     <div className="pb-3 pt-3">
       <div className="mx-auto flex justify-center md:justify-start">
         <div className="w-5/6 sm:w-2/3 md:w-1/2 ">
-          <a href="#">
+          <a href="https://www.innovamalpo.cl/disco2/web_malpo/pdfs/FORMAS_DE_FINANCIAMIENTO.pdf" target="_blank">
             <div className="fondo-malpo-gris flex h-32 w-full items-center justify-center rounded-lg pb-6 pt-6 text-white sm:pb-4 sm:pt-4">
               {/* Contenido de la tarjeta */}
               <span className="ml-6 text-3xl font-normal hover:text-gray-400 md:ml-0 md:text-center">

@@ -14,6 +14,7 @@ export function Ctrl_ciudades() {
         "X-API-KEY": apiKey,
         Authorization: authHeader,
       },
+      next: { tags: ['ciudades']},
     })
       .then((response) => response.json())
       .then((data) => {

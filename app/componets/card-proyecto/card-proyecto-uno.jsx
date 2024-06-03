@@ -1,6 +1,7 @@
 import "./card-proyecto.css";
 
 const CustomCards = (props) => {
+  // console.log("los props son:", props);
     // Función auxiliar para reemplazar espacios en blanco por guiones bajos y codificar la URL
 const replaceSpaces = (str) => {
   // return encodeURIComponent(str.replace(/\s/g, '-'));
@@ -80,7 +81,7 @@ function formatoNumero(elemento) {
                 </div>
                 <div className="ml-2">Desde UF {formatoNumero(proyecto.ufMinimo)}</div>
               </li>
-              {proyecto.nombreSubsidio!=="Sin Subsidio" && (
+              {proyecto.idSubsidio!==5 && (
               <li className="flex items-center">
                 <div>
                   <img

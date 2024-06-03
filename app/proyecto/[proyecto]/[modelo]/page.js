@@ -153,7 +153,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
         </div>
       )}
  
- {modeloData[0].Modelos.imagenPiso1 != null && modeloData[0].Modelos.imagenPiso2 (
+ {modeloData[0]?.Modelos.imagenPiso1 != null && modeloData[0]?.Modelos.imagenPiso2!=null && (
       <div className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Planta</h1>
         <div className="mt-4 flex justify-center">

@@ -1,16 +1,24 @@
 "use client";
 import React, { useState } from "react";
 import { Ctrl_contacto } from "@/app/controllers/Ctrl_contacto";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Modal = (props) => {
+  var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: "",
   });
-  // const [sendSuccess, setSendSuccess] = useState(false);
-  // const [sendError, setSendError] = useState(false);
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+
+  const handleCaptchaChange = (value) => {
+    setCaptchaToken(value);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,17 +27,25 @@ const Modal = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaToken) {
+      alert("Por favor, completa el captcha.");
+      return;
+    }
+
     try {
-      formData.subject = "Denuncia";
-      const success = await Ctrl_contacto(formData);
+      const formDataWithCaptcha = { ...formData, subject: "Denuncia", captchaToken };
+      const success = await Ctrl_contacto(formDataWithCaptcha);
+
       if (success) {
-        alert('¡El correo se ha enviado con éxito!');
+        setSuccessMessage("¡El correo se ha enviado con éxito!");
+        setErrorMessage("");
       } else {
         throw new Error('Error al enviar el formulario');
       }
     } catch (error) {
       console.error('Error al enviar el formulario:', error.message);
-      alert('Ha ocurrido un error al enviar el formulario');
+      setErrorMessage("Ha ocurrido un error al enviar el formulario");
+      setSuccessMessage("");
     }
   };
 
@@ -43,16 +59,16 @@ const Modal = (props) => {
         />
       </div>
       <h1 className="text-center text-lg font-bold">{props.titulo}</h1>
-      {/* {sendSuccess && (
-        <div className="bg-green-500 text-white text-center py-2 mb-4 rounded">
-          ¡El correo se ha enviado con éxito!
+      {successMessage && (
+        <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+          <span className="font-medium"></span> {successMessage}
         </div>
       )}
-      {sendError && (
-        <div className="bg-red-500 text-white text-center py-2 mb-4 rounded">
-          Error al enviar el correo. Inténtalo de nuevo.
+      {errorMessage && (
+        <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+          <span className="font-medium">¡ERROR!</span> {errorMessage}
         </div>
-      )} */}
+      )}
       <form onSubmit={handleSubmit} className="mx-auto max-w-md">
         <div className="mb-4">
           <label htmlFor="name" className="mb-2 block">
@@ -108,6 +124,11 @@ const Modal = (props) => {
             className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             required
           ></textarea>
+          <ReCAPTCHA 
+            sitekey={captcha_key}
+            onChange={handleCaptchaChange}
+            className="mx-auto"
+          />
         </div>
         <div className="flex justify-center">
           <button
@@ -123,4 +144,5 @@ const Modal = (props) => {
 };
 
 export default Modal;
+
 

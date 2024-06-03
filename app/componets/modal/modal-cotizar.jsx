@@ -47,6 +47,45 @@ const Page = (props) => {
     }
     
   };
+
+
+  const resetFormStates = () => {
+    setNombre('');
+    setRut('');
+    setEmail('');
+    setTelefono('');
+    setCiudad('');
+    setComoTeEnteraste([]);
+    setModeloNombre(modelosData ? modelosData[0]?.Modelos?.idModelo : null);
+    setValorUFModelo(modelosData ? modelosData[0]?.Modelos?.valorUfModelo : 0);
+    setTipoSubsidio(proyectoData?.datos?.proyecto?.nombreSubsidio);
+    setMontoSubsidio(proyectoData?.datos?.proyecto?.ufSubsidio);
+    setPorcentajeCredito('80');
+    setPlazo('');
+    setMontoCreditoHipotecario(0);
+    setAhorroMinimo(proyectoData?.datos?.proyecto?.ahorroMinimo);
+    setPieReserva('');
+    setEdad('');
+    setEstadoCivil('');
+    setGenero('');
+    setTieneHijos('');
+    setAtributosImportantes(['']);
+    setAtributos([]);
+    setOtrosAtributos('');
+    setMotivoCompra('');
+    setIsSelectDisabledMotivoCompra(false);
+    setOtroMotivoCompra('');
+    setQuienesHabitaran('');
+    setOtroQuienesHabitaran('');
+    setTasaMensual(0);
+    setCotizacionUF(0);
+    setCotizacionCLP('');
+    setFormularioEnviado(false);
+    setRutValido(true);
+    setSelectedEtapa(0);
+    setPersonName(['TODOS']);
+    setErrors({});
+  };
   
   const handleModalToggle2 = () => {
     setModalOpen2(!modalOpen2);

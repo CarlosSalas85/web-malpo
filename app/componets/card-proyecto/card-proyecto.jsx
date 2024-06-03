@@ -1,23 +1,7 @@
 import "./card-proyecto.css";
 import { Ctrl_destacados } from "@/app/controllers/Ctrl_destacados";
 
-const UrlBanner = (props) => {
-  return (
-    <>
-      <a href="/proyectos/todos/" className="mx-1 hover:text-gray-400">
-        Proyectos
-      </a>
-      /
-      <a href={`/proyectos/${props.idRegion}/0`} className="mx-1 hover:text-gray-400">
-        {props.nombreRegion}
-      </a>
-      /
-      <a href={`/proyectos/0/${props.idCiudad}`} className="mx-1 hover:text-gray-400">
-        {props.nombreCiudad}
-      </a>
-    </>
-  );
-};
+
 
 export default async function CustomCards() {
 
@@ -30,53 +14,37 @@ export default async function CustomCards() {
     return new Intl.NumberFormat("es-CL").format(elemento);
   }
 
-  const data3 = await Ctrl_destacados();
-  const proyectos = data3.datos;
-  // console.log("LO QUE DEVUELVE LA API Ctrl_destacados es:", data3.datos);
-  const contenidoProyectos = proyectos.map((card, index) => ({   //FALTAAAAN LEEEER DATOOOOS PARA ASIGNAR VARIABLESSSSSSS
-    id: card.idProyecto,
-    nombre: card.nombreWebProyecto,
-    nombreEtapa: card.nombreEtapa,
-    colorEtapa: card.colorEtapa,
-    ufMinimo: card.ufMinimo,
-    imagen: card.imagenMiniatura,
-    comunaNombre: card.comunaNombre,
-    nombreProyectoUrl: (replaceSpaces(card.nombreWebProyecto)),
-    //tipo_vivienda:card.nombreTipo,
-    nombreSubsidio: card.nombreSubsidio,
-    icono: card.icono,
-    //FALTA CASAS
+  const data_blogs = await Ctrl_destacados();
+  const proyectos = data_blogs.datos;
 
-  }));
-
-
+  // const nombreProyectoUrl=(replaceSpaces(proyectos[0].nombreWebProyecto));
 
 
 
 
   return (
     <>
-      {contenidoProyectos.map((proyecto, index) => (
+      {proyectos.map((proyecto, index) => (
         <div className="relative mr-4 flex w-[240px] flex-shrink-0">
           {/* Degradado de fondo */}
           <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-400"></div>
-          <a href={`/proyecto/${proyecto.nombreProyectoUrl}?val=${proyecto.id}`} className="block w-full h-full">
-            {/* Imagen de fondo */}
+          <a href={`/proyecto/${(replaceSpaces(proyecto.nombreWebProyecto))}?val=${proyecto.idProyecto}`} className="block w-full h-full">
+            {/* imagenMiniaturaMiniatura de fondo */}
             <picture>
-              {/* Imagen de fondo para dispositivos pequeños */}
+              {/* imagenMiniatura de fondo para dispositivos pequeños */}
               <source
-                srcSet={proyecto.imagen}
+                srcSet={proyecto.imagenMiniatura}
                 media="(max-width: 640px)"
               />
-              {/* Imagen de fondo para dispositivos grandes */}
+              {/* imagenMiniatura de fondo para dispositivos grandes */}
               <source
-                srcSet={proyecto.imagen}
+                srcSet={proyecto.imagenMiniatura}
                 media="(min-width: 641px)"
               />
-              {/* Imagen de fondo por defecto */}
+              {/* imagenMiniatura de fondo por defecto */}
               <img
-                className="absolute inset-0 block h-[400px] w-[300px] bg-cover bg-center md:h-[500px] md:w-[300px]"
-                srcSet={proyecto.imagen} // Ruta de la imagen de fondo por defecto para navegadores que no admiten <picture>
+                className="absolute inset-0 block h-[450px] w-[300px] bg-cover bg-center"
+                srcSet={proyecto.imagenMiniatura} // Ruta de la imagenMiniatura de fondo por defecto para navegadores que no admiten <picture>
                 alt=""
                 style={{ opacity: "0.7" }} // Ajusta la opacidad según sea necesario
               />
@@ -86,7 +54,7 @@ export default async function CustomCards() {
             <div className="relative w-full h-full pl-4 pt-4">
               <div className="w-ful h-1/3">
                 <h2 className="text-4xl text-white  hover:text-gray-400">
-                {proyecto.nombre}
+                {proyecto.nombreWebProyecto}
                 </h2>
               </div>
               {/* Segunda fila */}
@@ -118,7 +86,7 @@ export default async function CustomCards() {
                     </div>
                     <div className="ml-2">Desde UF {formatoNumero(proyecto.ufMinimo)}</div>
                   </li>
-                  {proyecto.nombreSubsidio !== "Sin Subsidio" && (
+                  {proyecto.idSubsidio !=="5" && (
                   <li className="flex items-center">
                     <div>
                       <img

@@ -16,9 +16,9 @@ export default function List(props) {
   if (!props.proyectos || props.proyectos.length === 0) {
     return (
       <div className="flex w-full flex-wrap md:ml-4 md:mr-20 md:w-3/5">
-        <div className="flex w-full justify-center pb-6 xl:w-1/2">
-          <h3 class="mt-4">No hay proyectos que coincidan con la búsqueda</h3>
-        </div>         
+        <p className="text-3xl font-semibold text-rojoMalpo">
+        No hay proyectos que coincidan con la búsqueda
+          </p>        
       </div>);
   }
 
@@ -83,6 +83,7 @@ export default function List(props) {
               colorEtapa={proyecto.colorEtapa}
               precioUfMinimo={proyecto.ufMinimo}
               imagen={proyecto.imagenMiniatura}
+              idSubsidio={proyecto.idSubsidio}
               nombreSubsidio={proyecto.nombreSubsidio}
             />
           </div>

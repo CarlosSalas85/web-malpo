@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import BannerImage from "@/app/componets/banner/banner-imagen";
 import { Ctrl_inversionista } from "@/app/controllers/Ctrl_inversionista";
 import { Ctrl_aplicar_filtros } from "@/app/controllers/Ctrl_aplicar_filtros";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -14,9 +15,8 @@ const Page = () => {
     option: "",
     message: "",
   });
- 
-  // const [sendSuccess, setSendSuccess] = useState(false);
-  // const [sendError, setSendError] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(""); // State for storing CAPTCHA token
+  var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
   const [errorMessage, setErrorMessage] = useState("");
  
   const handleChange = (e) => {
@@ -26,7 +26,10 @@ const Page = () => {
  
   const [proyectos, setProyectos] = useState([]);
   const [selectedProject, setSelectedProject] = useState(""); // Estado para almacenar el proyecto seleccionado
- 
+  const [alert, setAlert] = useState({
+    type: "",
+    message: "",
+  });
  
   useEffect(() => {
     const ids = {
@@ -54,31 +57,47 @@ const Page = () => {
   const handleProjectChange = (e) => {
     setSelectedProject(e.target.value); // Actualiza el proyecto seleccionado en el estado
   };
+
+  const handleCaptchaChange = (value) => {
+    setCaptchaToken(value); // Update CAPTCHA token state
+  };
  
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaToken) {
+      setAlert({
+        type: "danger",
+        message: "Por favor, complete el CAPTCHA.",
+      });
+      return;
+    }
+
     try {
-      const response = await Ctrl_inversionista(formData);
-      console.log('Response:', response); // Añadir registro de la respuesta
- 
+      const response = await Ctrl_inversionista({ ...formData, captchaToken }); // Include CAPTCHA token in the form data
+      console.log('Response:', response);
+
       if (response.success) {
-        alert('¡El correo se ha enviado con éxito!');
+        setAlert({
+          type: "success",
+          message: "¡El correo se ha enviado con éxito!",
+        });
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          date: "",
+          project: "",
+          message: "",
+        });
       } else {
         throw new Error(response.message || 'Error al enviar el formulario');
       }
- 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        date: "",
-        project: "",
-        message: "",
-      });
     } catch (error) {
       console.error('Error al enviar el formulario:', error.message);
-      setErrorMessage(error.message);
-      alert(`Ha ocurrido un error al enviar el formulario: ${error.message}`);
+      setAlert({
+        type: "danger",
+        message: `Ha ocurrido un error al enviar el formulario: ${error.message}`,
+      });
     }
   };
   
@@ -123,16 +142,16 @@ const Page = () => {
           </p>
  
           <form onSubmit={handleSubmit} className="mx-auto mt-10 max-w-md">
-            {/* {sendSuccess && (
-              <div className="bg-green-500 text-white text-center py-2 mb-4 rounded">
-                ¡Formulario enviado con éxito!
+          {alert.message && (
+              <div
+                className={`p-4 mb-4 text-sm rounded-lg ${
+                  alert.type === "success" ? "text-green-800 bg-green-50" : "text-red-800 bg-red-50"
+                }`}
+                role="alert"
+              >
+                <span className="font-medium"></span> {alert.message}
               </div>
-            )} */}
-            {/* {sendError && (
-              <div className="bg-red-500 text-white text-center py-2 mb-4 rounded">
-                Error al enviar el formulario. {/* {errorMessage} */}
-             {/* </div>
-            )} */}
+            )}
             <div className="mb-4">
               <label htmlFor="name" className="mb-2 block">
                 Nombre:
@@ -224,6 +243,11 @@ const Page = () => {
                 required
               ></textarea>
             </div>
+            <ReCAPTCHA 
+            sitekey={captcha_key}
+            onChange={handleCaptchaChange}
+            className="mx-auto"
+          />
             <div className="flex justify-center">
               <button
                 type="submit"
