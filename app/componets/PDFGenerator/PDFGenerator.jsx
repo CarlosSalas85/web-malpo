@@ -4,6 +4,11 @@ import {jsPDF} from 'jspdf';
 const generatePDF = (fechaConsulta,nombreProyecto,nombre,rut,telefono,email,modeloNombre,montoSubsidio,porcentajeCredito,montoCreditoHipotecario,ahorroMinimo,pieReserva,tasaMensual,plazoCredito,cotizacionCLP) => {
     // console.log("datos Tabla", montoSubsidio,porcentajeCredito,0,ahorroMinimo,pieReserva);
 
+    function formatoNumero(elemento) {
+        return new Intl.NumberFormat("es-CL").format(elemento);
+      }
+
+
     const formatNumberWithCommas = (number) => {
         // Verifica si el número es un número finito
         if (!Number.isFinite(number)) {
@@ -88,7 +93,7 @@ const generatePDF = (fechaConsulta,nombreProyecto,nombre,rut,telefono,email,mode
     doc.setFontSize(12);
     const textWidth = doc.getStringUnitWidth('Financiamiento') * doc.internal.getFontSize() / doc.internal.scaleFactor;
     doc.text('Financiamiento', 10, 170);
-    doc.text('Valor Propiedad: '+ formatNumberWithCommas(parseFloat(montoCreditoHipotecario)+parseFloat(pieReserva)) + ' UF', pageWidth - textWidth - 34, 170);
+    doc.text('Valor Propiedad: '+ formatoNumero(formatNumberWithCommas(parseFloat(montoCreditoHipotecario)+parseFloat(pieReserva))) + ' UF', pageWidth - textWidth - 34, 170);
 
     // Agregar una fila con los campos en una tabla
     const fields = ['Monto Subsidio', '% Hipotecario', 'Monto Hipotecario', 'Ahorro Mínimo', 'Pie o Reserva'];
@@ -103,7 +108,7 @@ const generatePDF = (fechaConsulta,nombreProyecto,nombre,rut,telefono,email,mode
     // Datos ficticios para llenar debajo de los campos
     const montoCreditoHipotecarioFormatted = formatNumberWithCommas(parseInt(montoCreditoHipotecario));
     const pieReservaFormatted = formatNumberWithCommas((parseFloat(pieReserva)));    
-    const fakeData = [montoSubsidio.toString() +' UF',porcentajeCredito.toString()+'%',montoCreditoHipotecarioFormatted+' UF',ahorroMinimo.toString() + ' UF',pieReservaFormatted+' UF'];
+    const fakeData = [montoSubsidio.toString() +' UF',porcentajeCredito.toString()+'%',formatoNumero(montoCreditoHipotecarioFormatted)+' UF',ahorroMinimo.toString() + ' UF',pieReservaFormatted+' UF'];
     fakeData.forEach((data, index) => {
         doc.text(data, 10 + fieldWidth * index+15, rowY + 5 + rowHeight + 5,'center');
     });

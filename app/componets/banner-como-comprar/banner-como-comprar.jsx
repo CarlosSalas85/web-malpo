@@ -9,7 +9,7 @@ const Banner = () => {
         <div className="flex flex-col items-center justify-center md:flex-row">
           {/* Primera tarjeta */}
           <div className="mr-4 mt-4 w-4/5 sm:w-2/3 md:w-1/2">
-            <a href="#">
+            <a href="/como-comprar/con-subsidio?val=2">
               <div className="fondo-malpo-gris flex w-full items-center justify-center rounded-lg pb-6 pt-6 text-white sm:pb-4 sm:pt-4">
                 {/* Contenido de la tarjeta */}
                 <span className="ml-6 text-4xl font-normal hover:text-gray-400 sm:text-2xl md:ml-0 md:text-center">
@@ -27,7 +27,7 @@ const Banner = () => {
 
           {/* Segunda tarjeta */}
           <div className="mr-4 mt-4 w-4/5 sm:w-2/3 md:w-1/2">
-            <a href="#">
+            <a href="/como-comprar/con-hipotecario?val=3">
               <div className="fondo-malpo-gris flex w-full items-center justify-center rounded-lg pb-6 pt-6 text-white sm:pb-4 sm:pt-4">
                 {/* Contenido de la tarjeta */}
 

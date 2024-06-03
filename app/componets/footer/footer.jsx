@@ -26,7 +26,7 @@ const Modal = ({ onClose}) => {
   );
 };
 
-const Footer = () => {
+const Footer = ({redes}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -48,7 +48,7 @@ const Footer = () => {
             <div className="mt-10 flex flex-col items-start sm:flex-row sm:justify-between">
               <div className="text-left sm:mb-0 sm:mr-4 sm:pr-12">
                 <p className="mb-4">
-                  <a href="#" className="hover:text-gray-400">
+                  <a href="/nosotros" className="hover:text-gray-400">
                     Nosotros
                   </a>
                 </p>
@@ -62,7 +62,7 @@ const Footer = () => {
                   </button>
                 </p>
                 <p className="mb-4">
-                  <a href="#" className="hover:text-gray-400">
+                  <a href="/trabaja-con-nosotros" className="hover:text-gray-400">
                     Trabaja en Malpo
                   </a>
                 </p>
@@ -73,28 +73,16 @@ const Footer = () => {
                 </p>
               </div>
               <div className="mt-10 flex items-center text-left sm:mt-0 sm:pl-12">
-                <a href="#" className="mr-2 hover:text-gray-400">
-                  <img
-                    className="img-rrss mr-2"
-                    alt={`instagram`}
-                    src={`https://c.animaapp.com/kJfIIeGG/img/---icon--instagram-fill-icon-@2x.png`}
-                  />
-                </a>
-                <a href="#" className="mr-2 hover:text-gray-400">
-                  <img
-                    className="img-rrss mr-2"
-                    alt={`facebook`}
-                    src={`https://c.animaapp.com/kJfIIeGG/img/---icon--social-facebook-icon-@2x.png`}
-                  />
-                </a>
-                <a href="#" className="mr-2 hover:text-gray-400">
-                  <img
-                    className="img-rrss"
-                    alt={`youtube`}
-                    src={`https://c.animaapp.com/kJfIIeGG/img/---icon--youtube-@2x.png`}
-                  />
-                </a>
-              </div>
+            {redes.datos.map((redSocial) => (
+              <a key={redSocial.idRrss} href={redSocial.urlRrss} target="_blank" className="mr-2 hover:text-gray-400">
+                <img
+                  className="img-rrss mr-2"
+                  alt={`Icon ${redSocial.nombreRrss}`}
+                  src={redSocial.logoRrss}
+                />
+              </a>
+               ))}
+            </div>
             </div>
           </div>
         </div>

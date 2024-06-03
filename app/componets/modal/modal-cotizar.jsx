@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Ctrl_como_te_enteraste } from '@/app/controllers/Ctrl_como_te_enteraste';
 import { Ctrl_atributos_importantes } from '@/app/controllers/Ctrl_atributos_importantes';
 import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa la función generatePDF desde el archivo donde la defines
@@ -29,20 +29,32 @@ const Page = (props) => {
   const proyectoData = props.proyecto;
   const modelosData = props.modelos;
   const nombreProyecto = proyectoData?.datos?.proyecto?.nombreWebProyecto;
-  const tasaAnual = proyectoData?.datos?.proyecto?.valorTasa;
+  const tasa = proyectoData?.datos?.proyecto?.valorTasa;
+  const [tasaAnual, setTasaAnual] = useState(parseFloat(tasa));
+  const formRef = useRef(null);
   const [pdfUrl, setPdfUrl] = useState(null);
-    const handleDownloadPDF = async () => {
-        // console.log("EL VALOR DE FECHA CONSULTA EN handleDownloadPDF", fechaConsulta);
-        await generatePDF(fechaConsulta, nombreProyecto, nombre, rut_cliente, telefono, email, modelosData[0].Modelos.nombreModelo, montoSubsidio, porcentajeCredito, montoCreditoHipotecario, ahorroMinimo, pieReserva, tasaMensual, plazo, cotizacionCLP); // Llama a la función generatePDF para generar el PDF
-        setPdfUrl('/cotizacion.pdf'); // Establece la URL del PDF generado
-    };
-  // console.log("Los valores de proyectoData y modelosData son:",proyectoData,modelosData);
+  const handleDownloadPDF = async () => {
+    await generatePDF(fechaConsulta, nombreProyecto, nombre, rut_cliente, telefono, email, modelosData[0].Modelos.nombreModelo, montoSubsidio, porcentajeCredito, montoCreditoHipotecario, ahorroMinimo, pieReserva, tasaAnual / 12, plazo, cotizacionCLP); // Llama a la función generatePDF para generar el PDF
+    setPdfUrl('/cotizacion.pdf'); // Establece la URL del PDF generado
+  };
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen2, setModalOpen2] = useState(false);
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
-    console.log("modalOpen:",modalOpen);
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+    
   };
+  
+  const handleModalToggle2 = () => {
+    setModalOpen2(!modalOpen2);
+  };
+
+  const NumeroFormateado = ({ numero }) => {
+    const numeroFormateado = numero.toLocaleString(); // Formatea el número con separadores de miles
+  }
 
   const [optionsComoTeEnteraste, setOptionsComoTeEnteraste] = useState([]);
   const [optionsAtributosImportantes, setOptionsAtributosImportantes] = useState([]);
@@ -54,9 +66,9 @@ const Page = (props) => {
   const [ciudad, setCiudad] = useState('');
   const [contacto, setComoTeEnteraste] = useState([]);
   const [cod_unysoft, setCodUnysoft] = useState(proyectoData?.datos?.proyecto?.codigoUnisoft);
-  const [modelo_vivienda, setModeloNombre] = useState(modelosData[0].Modelos.idModelo);
-  const [valorUFModelo, setValorUFModelo] = useState(modelosData[0].Modelos.valorUfModelo);
-  const [subsidio, setTipoSubsidio] = useState(proyectoData?.datos?.proyecto.nombreSubsidio);
+  const [modelo_vivienda, setModeloNombre] = useState(modelosData ? modelosData[0]?.Modelos?.idModelo : null);
+  const [valorUFModelo, setValorUFModelo] = useState(modelosData ? modelosData[0]?.Modelos?.valorUfModelo : 0);
+  const [subsidio, setTipoSubsidio] = useState(proyectoData?.datos?.proyecto?.nombreSubsidio);
   const [montoSubsidio, setMontoSubsidio] = useState(proyectoData?.datos?.proyecto?.ufSubsidio);
   const [porcentajeCredito, setPorcentajeCredito] = useState('80');
   const [plazo, setPlazoCredito] = useState('');
@@ -76,7 +88,7 @@ const Page = (props) => {
   const [otroMotivoCompra, setOtroMotivoCompra] = useState('');
   const [residente_vivienda, setQuienesHabitaran] = useState('');
   const [otroQuienesHabitaran, setOtroQuienesHabitaran] = useState('');
-  const [tasaMensual, setTasaMensual] = useState(parseFloat(tasaAnual / 12).toFixed(4));
+  const [tasaMensual, setTasaMensual] = useState(0);
   const [cotizacionUF, setCotizacionUF] = useState(0);
   const [cotizacionCLP, setCotizacionCLP] = useState('');
   const [formularioEnviado, setFormularioEnviado] = useState(false);
@@ -102,10 +114,25 @@ const Page = (props) => {
 
   const [fechaConsulta, setFechaConsulta] = useState(obtenerFechaActual());
 
+  function formatoNumero(elemento) {
+    // Verifica si el número tiene decimales
+    if (elemento % 1 !== 0) {
+      return new Intl.NumberFormat("es-CL", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(elemento);
+    } else {
+      // Si el número es entero, simplemente lo devuelve sin formato
+      return elemento.toLocaleString("es-CL");
+    }
+  }
+
+
 
 
   useEffect(() => {
     obtenerValorUF();
+    setTasaMensual(parseFloat(tasaAnual / 12).toFixed(4));
   }, []);
 
   const obtenerValorUF = async () => {
@@ -115,11 +142,8 @@ const Page = (props) => {
         throw new Error('No se pudo obtener el valor de la UF');
       }
       const data = await response.json();
-      // console.log("EL VALOR DE LA data ACTUAL ES:", data);
       setValorUFActual(data.serie[0].valor);
-      // console.log("EL VALOR DE LA UF ACTUAL ES:", valorUF);
     } catch (error) {
-      console.error('Error al obtener el valor de la UF:', error.message);
     }
   };
 
@@ -131,7 +155,6 @@ const Page = (props) => {
       return (((((valorUFModelo) * (80)) / 100)));
     } else {
       var porcentaje = parseFloat((((valorUFModelo) - montoSubsidio - ahorroMinimo) / valorUFModelo) * 100).toFixed(2);
-      // console.log("El porcentaje es:", porcentaje);
       if (porcentaje >= 80) {
         setPorcentajeCredito(80);
         return (((((valorUFModelo) * (80)) / 100)).toFixed(2));
@@ -161,7 +184,6 @@ const Page = (props) => {
       return (((((valorUFModelo)) - (montoCreditoHipotecario))));
     } else {
       const pieReserva = valorUFModelo - montoCreditoHipotecario - montoSubsidio - ahorroMinimo;
-      // console.log("EL VALOR DE PIE RESERVA ES:",pieReserva);
       return (pieReserva);
     }
   }
@@ -177,11 +199,11 @@ const Page = (props) => {
   // Función para manejar el cambio en la selección del modelo_vivienda
   const handleModeloChange = (event, opcion) => {
     const selectedModeloNombre = event.target.value;
-    // console.log("EL VALOR EN LA FUNCIÓN handleModeloChange de selectedModeloId es:", selectedModeloNombre);
 
-    const selectedModelo = modelosData.find(modelo_vivienda => modelo_vivienda.nombreModelo === selectedModeloNombre);
+
+    const selectedModelo = modelosData.find(modelo_vivienda => modelo_vivienda.idModelo === selectedModeloNombre);
     if (selectedModelo) {
-      setModeloNombre(selectedModelo.idModelo); // Guarda el id del modelo_vivienda seleccionado
+      setModeloNombre(selectedModelo.idModelo);
       setValorUFModelo(selectedModelo.valorUfModelo); // Guarda el valorUF correspondiente al modelo_vivienda seleccionado
     }
   }
@@ -204,11 +226,8 @@ const Page = (props) => {
           // setComoTeEnteraste([comoTeEnterasteData.datos[0].cod_contacto]);
           // setAtributos([atributosImportantesData.datos[0].cod_atributo]);
           // setAtributosImportantes([atributosImportantesData.datos[0].nombre]);
-
-          // console.log("Datos obtenidos de ambas APIs:", comoTeEnterasteData, atributosImportantesData);
         })
         .catch(error => {
-          console.error("Error al obtener opciones:", error);
         });
 
 
@@ -220,7 +239,9 @@ const Page = (props) => {
 
   useEffect(() => {
     if (valorUFModelo && tasaMensual && plazo) {
-      formulaCotizadorUF();
+      const nuevaCotizacionUF = formulaCotizadorUF(valorUFModelo, tasaMensual, plazo);
+      setCotizacionUF(nuevaCotizacionUF);
+      formulaCotizadorCLP(nuevaCotizacionUF);
     }
   }, [valorUFModelo, tasaMensual, plazo]);
 
@@ -229,25 +250,28 @@ const Page = (props) => {
     const operacion1 = (parseFloat(montoCreditoHipotecario)) * (parseFloat(tasaMensual) / 100);
     const tasaMensualT = (1 + ((parseFloat(tasaMensual) / 100)));
     const plazoT = ((parseInt(plazo)) * 12);
-
     const operacion2 = Math.pow(tasaMensualT, plazoT);
-    // const operacion2 = ((1 + ((parseFloat(tasaMensual) / 100))) ^ ((parseInt(plazo)) * 12));
     const operacion3 = operacion2 - 1;
-    console.log("Operacion1, Operacion2, Operacion3:", operacion1, operacion2, operacion3);
-    setCotizacionUF((operacion1 * operacion2) / parseFloat(operacion3));
-    console.log(cotizacionUF);
+    const resultado = ((operacion1 * operacion2)) / parseFloat(operacion3);
+    return resultado;
   }
 
-  useEffect(() => {
-    if (valorUFModelo && tasaMensual && plazo) {
-      formulaCotizadorCLP();
+
+  function formulaCotizadorCLP(nuevaCotizacion) {
+    setCotizacionCLP(parseInt(nuevaCotizacion * parseFloat(valorUFActual)));
+  }
+
+  const replacePointWithComma = (number) => {
+    // Verifica si el número es un número finito
+    if (!Number.isFinite(number)) {
+      return ''; // Retorna una cadena vacía si el número no es válido
     }
-  }, [cotizacionCLP, valorUFModelo, tasaMensual, plazo]);
-
-  function formulaCotizadorCLP() {
-    setCotizacionCLP(parseInt(cotizacionUF * parseFloat(valorUFActual)));
-  }
-
+  
+    // Convierte el número a una cadena y reemplaza los puntos con comas
+    const stringWithCommas = number.toString().replace(/\./g, ',');
+  
+    return stringWithCommas;
+  };
 
   // Función para formatear un número con separadores de miles
   const formatNumberWithCommas = (number) => {
@@ -320,24 +344,21 @@ const Page = (props) => {
 
       try {
         // Enviar el formulario a la API
-        console.log("formData", formData);
         //const response = await Ctrl_cotizador(formData);
 
         //  if (response && !response.ok) {
         //      throw new Error('Error al enviar el formulario', response);
         //  }
 
-        // console.log('Formulario enviado con éxito');
         // // Realizar cualquier otra acción después de enviar el formulario
-        setFormularioEnviado(true);
-        console.log("formularioEnviado pasa a true al usar enviarse formulario", formularioEnviado)
+        setModalOpen(false);
+        setModalOpen2(true);
+
       } catch (error) {
-        console.error('Error al enviar el formulario:', error.message);
         // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
       }
     } else {
       // Mostrar errores si el formulario no es válido
-      console.log("Errores:", validationErrors);
       setErrors(validationErrors);
     }
   };
@@ -379,7 +400,6 @@ const Page = (props) => {
 
   // Función para manejar el cambio en la selección del contacto
   const handleContactoChange = (e) => {
-    // console.log("evento", e);
     const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
     setComoTeEnteraste(selectedValues);
   };
@@ -410,7 +430,6 @@ const Page = (props) => {
     } else {
       setIsSelectDisabledOtrosAtributos(false); // Permite que el select esté habilitado si "OTRO" no está seleccionado
     }
-    console.log("isSelectDisabledOtrosAtributos:", isSelectDisabledOtrosAtributos);
   };
 
   const handleOtrosAtributosChange = (e) => {
@@ -445,7 +464,6 @@ const Page = (props) => {
       errors.rut_cliente = 'El RUT ingresado es inválido';
     }
     if (!data.email.trim()) {
-      console.log("EL VALOR DE data.email es:", data.email);
       errors.email = 'El correo electrónico es requerido';
     } else if (!isValidEmail(data.email)) {
       errors.email = 'El correo electrónico es inválido';
@@ -500,23 +518,45 @@ const Page = (props) => {
     return emailPattern.test(email);
   };
 
-
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // Aquí puedes agregar la lógica para enviar los datos del formulario
-  //   console.log(formData);
-  // };
-  if (!formularioEnviado) {
   return (
     <>
+
+<div className="relative">
       <button
         onClick={handleModalToggle}
-        className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400"
+        className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400 relative"
+        disabled={modelo_vivienda === null}
+        data-tooltip="Proyecto sin modelos disponibles para cotizar"
       >
         Cotizar
       </button>
+      <style jsx>{`
+        button[disabled] {
+          cursor: not-allowed;
+          position: relative;
+        }
 
+        button[disabled]::after {
+          content: attr(data-tooltip);
+          display: none;
+          position: absolute;
+          bottom: 120%;
+          left: 50%;
+          transform: translateX(-50%);
+          white-space: nowrap;
+          background-color: rgba(0, 0, 0, 0.75);
+          color: #fff;
+          padding: 8px;
+          border-radius: 4px;
+          font-size: 14px;
+          z-index: 1;
+        }
+
+        button[disabled]:hover::after {
+          display: block;
+        }
+      `}</style>
+    </div>
       {modalOpen && (
         <Modal onClose={handleModalToggle}>
           <div className="container mx-auto px-4 py-2">
@@ -528,7 +568,7 @@ const Page = (props) => {
               />
             </div>
             <h1 className="text-lg font-bold">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
-            <form onSubmit={handleSubmit} className="mx-auto max-w-full">
+            <form onSubmit={handleSubmit}  ref={formRef} className="mx-auto max-w-full">
               <h1 className="text-l flex justify-start py-4 font-bold">
                 1. Tus Datos
               </h1>
@@ -642,11 +682,11 @@ const Page = (props) => {
                   <select
                     id="modelo_vivienda"
                     name="modelo_vivienda"
-                    value={formData.name}
+                    value={modelo_vivienda}
                     onChange={(event) => handleModeloChange(event, modelo_vivienda)}
                     className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                   > {modelosData?.map(modelo_vivienda => (
-                    <option key={modelo_vivienda.idModelo} value={modelo_vivienda.nombreModelo} onChange={(e) => handleModeloChange(e)}>{modelo_vivienda.nombreModelo}</option>
+                    <option key={modelo_vivienda.idModelo} value={modelo_vivienda.idModelo} onChange={(e) => handleModeloChange(e)}>{modelo_vivienda.nombreModelo}</option>
                   ))}
                   </select>
                 </div>
@@ -708,7 +748,12 @@ const Page = (props) => {
                   <label htmlFor="referral" className="mb-2 flex justify-start">
                     Plazo del Crédito (años):
                   </label>
-                  <select id="plazo" name="plazo" className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none" value={plazo} onChange={(e) => setPlazoCredito(e.target.value)}>
+                  <select
+                    id="plazo"
+                    name="plazo"
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    value={plazo} onChange={(e) => setPlazoCredito(e.target.value)}
+                    required>
                     <option value="" disabled>Selecciona una opción</option>
                     <option value="20">20 años</option>
                     <option value="25">25 años</option>
@@ -802,21 +847,6 @@ const Page = (props) => {
 
                     <option value="casado">Casado/a</option> </select>
                 </div>
-                {/* <div className="mb-4">
-                  <label htmlFor="genero" className="mb-2 flex justify-start">
-                    Género
-                  </label>
-                  <select
-                    id="genero"
-                    name="genero"
-                    value={genero}
-                    onChange={(e) => setGenero(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                  > <option value="">Selecciona una opción</option>
-                    <option value="Hombre">Hombre</option>
-                    <option value="Mujer">Mujer</option>
-                  </select>
-                </div> */}
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
@@ -948,7 +978,7 @@ const Page = (props) => {
 
                   <select id="residente_vivienda" name="residente_vivienda" className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none" value={residente_vivienda} onChange={(e) => setQuienesHabitaran(e.target.value)} required>
 
-                  <option value="" disabled>Selecciona una opción</option>
+                    <option value="" disabled>Selecciona una opción</option>
 
                     <option value="solo/a usted">Solo/a usted</option>
 
@@ -966,15 +996,15 @@ const Page = (props) => {
 
                 </div>
 
-                </div>
+              </div>
 
-                  {residente_vivienda === "otro" && (
-                    <div className="form-group">
-                      <label htmlFor="otroQuienesHabitaran" className="mb-2 flex justify-start">Especifique quién(es) habitarán:</label>
-                      <textarea id="otroQuienesHabitaran" name="otroQuienesHabitaran" className="form-textarea w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none" value={otroQuienesHabitaran} onChange={(e) => setOtroQuienesHabitaran(e.target.value)}></textarea>
-                      {errors.otroQuienesHabitaran && <span className="error">{errors.otroQuienesHabitaran}</span>}
-                    </div>
-                  )} 
+              {residente_vivienda === "otro" && (
+                <div className="form-group">
+                  <label htmlFor="otroQuienesHabitaran" className="mb-2 flex justify-start">Especifique quién(es) habitarán:</label>
+                  <textarea id="otroQuienesHabitaran" name="otroQuienesHabitaran" className="form-textarea w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none" value={otroQuienesHabitaran} onChange={(e) => setOtroQuienesHabitaran(e.target.value)}></textarea>
+                  {errors.otroQuienesHabitaran && <span className="error">{errors.otroQuienesHabitaran}</span>}
+                </div>
+              )}
               <div className="flex justify-center">
                 <button
                   type="submit"
@@ -987,58 +1017,61 @@ const Page = (props) => {
           </div>
         </Modal>
       )}
-    </>
-  );
-}else{
-return (
-  modalOpen && (
-  <Modal onClose={handleModalToggle}>
-  <div className="modal-overlay">
-        <div className="modal-cotizador bg-white rounded-lg shadow-lg p-6">
-            <div className="modal-header flex justify-between items-center">
-            <div className="modal-cotizador-titulo font-bold text-bg-rojoMalpo text-lg">Cotización</div>
-                <img
+      {modalOpen2 && (
+        <Modal onClose={handleModalToggle2}>
+          <div className="container mx-auto w-full px-4 py-2">
+            <div className="mb-3 flex items-center justify-between">
+              <h1 className="text-lg font-bold">Cotización</h1>
+              <img
                 src="/logos/logoRojoMalpo.png"
                 alt="Logo"
-                className="mr-4 h-6 w-auto"
+                className="h-6 w-auto"
               />
-                <button
-          className="absolute right-0 top-0 m-4 text-rojoMalpo hover:text-gray-400"
-        >
-                {/* <img
-                    className="cancel w-12 h-12"
-                    alt="Cancel"
-                    src="https://c.animaapp.com/o0ROixJd/img/cancel@2x.png"
-                /> */}
-                </button>
             </div>
-            <div className="modal-content">
-                <div className="modal-section">
-                    <div className="seccion-1 font-normal text-base">
-                        <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{pieReserva}</strong> UF, tasa anual <strong>{(tasaMensual * 12).toFixed(1)}</strong> y un plazo de <strong>{plazo}</strong> años es:
-                    </div>
-                    <div className="seccion-2 bg-rojoMalpo focus:shadow-outline rounded px-4 py-2 text-white">
-                        <div>Tu Dividendo Mensual es:</div>
-                        <div>$ {formatNumberWithCommas(cotizacionCLP)}</div>
-                    </div>
-                    <a
-                        href="#"
-                        onClick={handleDownloadPDF}
-                        className="block text-bg-rojoMalpo underline mt-2 text-right"
-                    >
-                        Imprimir
-                    </a>
-                    <hr className="bg-rojoMalpo h-2 w-full mt-4" />
-                    <div className="seccion-3 font-normal text-base">
-                        <strong>El monto del dividendo es solo estimativo no incluye seguros asociados.</strong>
-                    </div>
-                </div>
+
+            <div className="mx-auto mb-4 mt-4">
+              <p className="text-18px pt-4 sm:text-center">                                                                                                       
+                <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF, tasa anual <strong>{formatoNumero(formatNumberWithCommas((tasaMensual * 12).toFixed(1)))} %</strong> y un plazo de <strong>{plazo}</strong> años es:
+              </p>
             </div>
-        </div>
-    </div>
-    </Modal>
-));
-}
+
+            <div className="mx-auto mb-4 mt-4 flex h-28 flex-col items-center justify-center bg-rojoMalpo text-white">
+              <div>Tu Dividendo Mensual es:</div>
+              <div>$ {formatNumberWithCommas(cotizacionCLP)}</div>
+            </div>
+
+            <div className="mt-4 flex justify-end pr-4 text-rojoMalpo">
+              <button className="flex items-center" onClick={handleDownloadPDF}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 9V2h12v7M6 18h12v4H6v-4zM6 14h12v-4H6v4zM18 9H6M4 18h2M18 18h2M18 6h2M6 6H4"
+                  />
+                </svg>
+                <span className="ml-2">Imprimir</span>
+              </button>
+            </div>
+
+            <div className="mx-auto mb-4 mt-4 flex h-2 flex-col items-center justify-center bg-rojoMalpo text-white"></div>
+
+            <div className="mx-auto mb-4 mt-4">
+              <p className="text-18px pt-4 sm:text-center">
+                <strong>El monto del dividendo es solo estimativo no incluye seguros asociados.</strong>
+              </p>
+            </div>
+          </div>
+        </Modal>
+      )}
+    </>
+  )
 };
 
 export default Page;

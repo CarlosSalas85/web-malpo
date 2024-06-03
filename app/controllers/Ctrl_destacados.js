@@ -14,7 +14,7 @@ export function Ctrl_destacados() {
                 'X-API-KEY': apiKey,
                 'Authorization': authHeader
             },
-               next: { tags: ['ciudades']},
+               next: { tags: ['destacados']},
 
         })
             .then(response => response.json())

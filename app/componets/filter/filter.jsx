@@ -35,15 +35,58 @@ const FilterButton2 = ({ id, type, activeFilter, handleClick }) => {
 const validar = (p1, p2) => {
   if (p2 == 0) {
     return true
+  } else if (p1 == p2) {
+    return true
   } else {
-    if (p1 == p2) {
+    return false
+  }
+}
+
+const validarCasa = (opcion, proyectoTipo) => {
+  if (opcion == 0) {
+    return true
+  } else if (opcion == 4) {
+    if(proyectoTipo == 1 || proyectoTipo == 2){
+      return true
+    }else{
+      return false
+    }
+  } else if (opcion == proyectoTipo) {
+    return true
+  } else {
+    return false
+  }
+}
+const validacionBanos = (opcion, rangoInf, rangoSup) => {
+  if (opcion == 0) {
+    return true
+  } else if (opcion == 99) {
+    if (rangoInf >= 3 ) {
       return true
     } else {
       return false
     }
+  } else if (rangoInf >= opcion <= rangoSup) {
+    return true
+  } else {
+    return false
   }
 }
-
+const validacionDormitorios = (opcion, rangoInf, rangoSup) => {
+  if (opcion == 0) {
+    return true
+  } else if (opcion == 99) {
+    if (rangoInf >= 4) {
+      return true
+    } else {
+      return false
+    }
+  } else if (rangoInf >= opcion <= rangoSup) {
+    return true
+  } else {
+    return false
+  }
+}
 const CustomSelect = ({ options, optionDefault, handle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState((optionDefault) ? optionDefault : options[0].value);
@@ -227,6 +270,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
     setActiveFilterTipo(filter);
   };
 
+
   const handleClickSubsidio = (filter) => {
     setActiveFilterSubsidio(filter);
   };
@@ -292,7 +336,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
     if (!proyectos || !Array.isArray(proyectos)) {
       return;
     }
-
+    console.log('estos son todos los proyecots', proyectos)
     const proyectosFiltrados = proyectos.filter(proyecto => {
       // Verificar si algún parámetro de proyecto es igual a cero
       let filtroTipo = false;
@@ -323,9 +367,9 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
             nombreRegion = proyecto.regionNombre
           }
         }
-        filtroTipo = validar(proyecto.idTipo, tipoProyecto);
-        filtroBano = validar(proyecto.bano, bano);
-        filtroDormitorio = validar(proyecto.dormitorio, dormitorio);
+        filtroTipo = validarCasa(tipoProyecto, proyecto.idTipo);
+        filtroBano = validacionBanos(bano, proyecto.banosMinimo, proyecto.banosMaximo);
+        filtroDormitorio = validacionDormitorios(dormitorio, proyecto.habitacionesMinimo, proyecto.habitacionesMaximo);
         filtroSubsidio = validar(proyecto.idSubsidio, subsidio);
         if (comuna == '0' && region == '0') {
           filtroRegion = true;
@@ -348,9 +392,6 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
   }, [activeFilterTipo, activeFilterBanos, activeFilterDormitorios, activeFilterSubsidio, selectedOptionRegion, selectedOptionCiudad, selectedOptionEtapa]);
 
 
-
-
-
   return (
     
     <div className="pl-2 pr-2 md:ml-20 md:mr-4 grid-cols-2">
@@ -359,7 +400,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
         {" "}
         {/* Oculto en pantallas más grandes que sm */}
         <div className="mb-6 flex justify-between text-center">
-          <a href="#" className="items-center">
+          <a href="#" className="items-center" onClick={() => handleClickTipo(0)}>
             <div className="flex flex-col items-center justify-between">
               <img
                 className="h-10 w-10" // Agregamos un margen a la derecha para separar el icono del texto
@@ -369,7 +410,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
               <span>Ver Todo</span>
             </div>
           </a>
-          <a href="#" className="items-center">
+          <a href="#" className="items-center" onClick={() => handleClickTipo(1)}>
             <div className="flex flex-col items-center justify-between">
               <img
                 className="h-10 w-10" // Agregamos un margen a la derecha para separar el icono del texto
@@ -379,7 +420,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
               <span>Casa</span>
             </div>
           </a>
-          <a href="#" className="items-center">
+          <a href="#" className="items-center" onClick={() => handleClickTipo(2)}>
             <div className="flex flex-col items-center justify-between">
               <img
                 className="h-10 w-10" // Agregamos un margen a la derecha para separar el icono del texto
@@ -389,7 +430,7 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
               <span>Dpto.</span>
             </div>
           </a>
-          <a href="#" className="items-center">
+          <a href="#" className="items-center" onClick={() => handleClickTipo(3)}>
             <div className="flex flex-col items-center justify-between">
               <img
                 className="h-10 w-10" // Agregamos un margen a la derecha para separar el icono del texto
@@ -415,12 +456,13 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
       <div className={mostrarSession ? "block md:block" : "hidden md:block"}>
         <div className="mb-14 flex justify-between">
           <h2 className="text-2xl">Filtros</h2>
-          <button
+          {/*  Comentando boton de aplicar filtros, ya no es necesario al funcionar en tiempo real los filtros */}
+          {/* <button
             className={`fondo-malpo-gris h-12 w-32 rounded-md border border-black text-white hover:text-gray-400`}
             onClick={() => handleClick()}
           >
             Aplicar Filtros
-          </button>
+          </button> */}
         </div>
 
         <h2 className="text-2xl">Tipo de proyecto</h2>

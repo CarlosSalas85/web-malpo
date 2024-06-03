@@ -13,7 +13,8 @@ export async function Ctrl_proyectos(idProyecto) {
               'Content-Type': 'application/json',
               'X-API-KEY': apiKey,
               'Authorization': authHeader
-          }
+          },
+          cache: 'no-store' ,
         })
           .then(response => response.json())
           .then(data => {

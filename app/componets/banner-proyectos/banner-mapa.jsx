@@ -1,16 +1,32 @@
-import Button from "../../componets/button/button";
+import React from 'react';
+
+function isValidUrl(url) {
+  try {
+    new URL(url);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
 
 const Banner = (props) => {
-  const proyecto=props.proyecto;
+  const { proyecto, ejecutivas } = props;
+  console.log(props);
   return (
     <div className="mb-4 mt-4 flex flex-col justify-center md:flex-row md:px-0">
       {/* Mapa de Google */}
       <div className="flex w-full justify-center px-4 md:w-2/5 md:justify-end">
-        <iframe
-          src={proyecto?.urlUbicacionProyecto}
-          className="h-[350px] w-[500px] self-end border border-gray-300 shadow-md dark:border-gray-700 dark:bg-gray-800"
-          title="Google Map"
-        ></iframe>
+        {proyecto?.urlUbicacionProyecto && isValidUrl(proyecto.urlUbicacionProyecto) ? (
+          <iframe
+            src={proyecto.urlUbicacionProyecto}
+            className="h-[350px] w-[500px] self-end border border-gray-300 shadow-md dark:border-gray-700 dark:bg-gray-800"
+            title="Google Map"
+          ></iframe>
+        ) : (
+          <div
+            className="h-[350px] w-[500px] self-end border border-gray-300 shadow-md dark:border-gray-700 dark:bg-gray-800"
+          ></div>
+        )}
       </div>
       {/* Título */}
       <div className="w-full pl-4 md:w-2/5 md:pl-2 mt-4 md:mt-0">
@@ -20,11 +36,13 @@ const Banner = (props) => {
           <p>{proyecto?.direccionProyecto}</p>
         </div>
         <div className="flex justify-center pt-6 sm:justify-start">
-          <Button
-            titulo={`Contactar ejecutiva`}
-            imagen={`https://c.animaapp.com/sQwZVHMV/img/vector.svg`}
-            url="#ejecutivas"
-          />
+          {ejecutivas?.length > 0 && (
+            <Button
+              titulo="Contactar ejecutiva"
+              imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
+              url="#ejecutivas"
+            />
+          )}
         </div>
       </div>
     </div>

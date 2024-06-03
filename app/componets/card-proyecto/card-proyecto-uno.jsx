@@ -7,6 +7,10 @@ const replaceSpaces = (str) => {
   return encodeURIComponent(str.replace(/\s/g, '-'));
 };
 
+function formatoNumero(elemento) {
+  return new Intl.NumberFormat("es-CL").format(elemento);
+}
+
 
   const proyecto=props.proyecto;
   const ciudadProyectoUrl=(replaceSpaces(proyecto.comunaNombre)).toLowerCase();
@@ -41,28 +45,31 @@ const replaceSpaces = (str) => {
         )}
 
         {/* Contenido */}
-        <div className="relative ml-3 mt-3 px-2 py-2">
-          <div className="h-15">
-            <h2 className="text-4xl text-white hover:text-gray-400">
+       {/* Primera fila */}
+       <div className="relative w-full h-full pl-4 pt-4">
+          <div className="w-ful h-1/3">
+            <h2 className="text-4xl text-white  hover:text-gray-400">
               {proyecto.nombreWebProyecto}
             </h2>
           </div>
-          <div className="h-16">
+          {/* Segunda fila */}
+          <div className="h-1/6 w-full">
             <p className="text-2xl font-bold text-white">en {proyecto.comunaNombre}</p>
           </div>
-          <div className="mt-6 h-16">
-            <div className="h-1/6 w-full">
-              <span
-                className={`inline-flex items-center rounded px-3 py-2 ${textColorClass}`}
-                style={{
-                  backgroundColor: `var(${proyecto.colorEtapa})`,
-                }}
-              >
-                {proyecto.nombreEtapa}
-              </span>
-            </div>
+          {/* Tercera fila */}
+          <div className="h-1/6 w-full">
+            <span
+              className={`inline-flex items-center rounded px-3 py-2 ${textColorClass}`}
+              style={{
+                backgroundColor: `var(${proyecto.colorEtapa})`,
+              }}
+            >
+               {proyecto.nombreEtapa}
+            </span>
           </div>
-          <div className="mt-6">
+          {/* Cuarta fila */}
+          <div className="h-1/3 w-full">
+            {" "}
             <ul className="text-white">
               <li className="flex items-center">
                 <div>
@@ -71,7 +78,7 @@ const replaceSpaces = (str) => {
                     src="https://c.animaapp.com/3LiIjsbQ/img/payments-4@2x.png"
                   />
                 </div>
-                <div className="ml-2">Desde UF {proyecto.ufMinimo}</div>
+                <div className="ml-2">Desde UF {formatoNumero(proyecto.ufMinimo)}</div>
               </li>
               {proyecto.nombreSubsidio!=="Sin Subsidio" && (
               <li className="flex items-center">

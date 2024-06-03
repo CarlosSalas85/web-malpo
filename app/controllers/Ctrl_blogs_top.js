@@ -15,7 +15,7 @@ export function Ctrl_blogs_top() {
                 'Authorization': authHeader
             },
                 //next: { revalidate: 40}, // asi puedo revalidar o hacer que el cache de next se actualice cada cierto tiempo
-                //   next: { tags: ['blogs_top']},
+                  next: { tags: ['blogs_top']},
                 // next: { revalidate: true } // Revalidación bajo demanda
             })
             .then(response => response.json())

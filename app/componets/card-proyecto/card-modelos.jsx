@@ -3,13 +3,25 @@ import "./card-proyecto.css";
 const Card = (props) => {
   const replaceSpaces = (str) => {
     // return encodeURIComponent(str.replace(/\s/g, '-'));
-    return encodeURIComponent(str.replace(/\s/g, '-'));
+    if (str) {
+      return encodeURIComponent(str.replace(/\s/g, '-'));
+    } else {
+      return null;
+    }
   };
 
-  const modelos = props.modelos;
-  const proyecto = props.proyecto;
-  const ciudadProyectoUrl = (replaceSpaces(proyecto.comunaNombre)).toLowerCase();
-  const nombreProyectoUrl = (replaceSpaces(proyecto.nombreWebProyecto)).toLowerCase();
+
+  function formatoNumero(elemento) {
+    return new Intl.NumberFormat("es-CL").format(elemento);
+  }
+
+  const modelos = props?.modelos;
+  const proyecto = props?.proyecto;
+
+  const ciudadProyectoUrl = (replaceSpaces(proyecto?.comunaNombre))?.toLowerCase();
+  const nombreProyectoUrl = (replaceSpaces(proyecto?.nombreWebProyecto))?.toLowerCase();
+  const textColorClass = proyecto.colorEtapa === '--malpo-paleta-de-colores-blanco' ? 'text-black' : 'text-white';
+
 
 
   return (
@@ -23,61 +35,72 @@ const Card = (props) => {
             {/* Degradado de fondo */}
             <div className="absolute inset-0 rounded-b-xl bg-gradient-to-b from-gray-950 to-gray-400"></div>
 
-            <a href={`/proyecto/${nombreProyectoUrl}/${modeloNombreUrl}?val1=${idProyecto}&val2=${idModelo}`} className="">        
-            {/* Imagen de fondo */}
+            <a href={`/proyecto/${nombreProyectoUrl}/${modeloNombreUrl}?val1=${idProyecto}&val2=${idModelo}`} className="">
+              {/* Imagen de fondo */}
               <picture>
                 {/* Imagen de fondo para dispositivos pequeños */}
-                <source
-                  // srcSet="https://c.animaapp.com/3LiIjsbQ/img/rectangle-30-4.png"
-                  src={modelo.Modelos.imagenMiniatura}
-                  media="(max-width: 640px)"
-                />
+                {modelo.Modelos?.imagenMiniatura && (
+                  <source
+                    srcSet={modelo.Modelos.imagenMiniatura}
+                    media="(max-width: 640px)"
+                  />
+                )}
                 {/* Imagen de fondo para dispositivos grandes */}
-                <source
-                  // srcSet="https://c.animaapp.com/3LiIjsbQ/img/rectangle-30-2.png"
-                  src={modelo.Modelos.imagenMiniatura}
-                  media="(min-width: 641px)"
-                />
+                {modelo?.Modelos?.imagenMiniatura && (
+                  <source
+                    srcSet={modelo.Modelos.imagenMiniatura}
+                    media="(min-width: 641px)"
+                  />
+                )}
                 {/* Imagen de fondo por defecto */}
-                <img
-                  className="absolute inset-0 block h-[400px] w-[300px] rounded-b-xl bg-cover bg-center"
-                  //src="https://c.animaapp.com/3LiIjsbQ/img/rectangle-30-2.png" // Ruta de la imagen de fondo por defecto para navegadores que no admiten <picture>
-                  src={modelo.Modelos.imagenMiniatura}
-                  alt=""
-                  style={{ opacity: "0.7" }} // Ajusta la opacidad según sea necesario
-                />
+                {modelo?.Modelos?.imagenMiniatura && (
+                  <img
+                    className="absolute inset-0 block h-[400px] w-[300px] rounded-b-xl bg-cover bg-center"
+                    src={modelo.Modelos.imagenMiniatura}
+                    alt=""
+                    style={{ opacity: "0.7" }} // Ajusta la opacidad según sea necesario
+                  />
+                )}
               </picture>
 
               {/* Contenido */}
               <div className="relative ml-3 mt-3 px-2 py-2">
                 <div className="h-10">
                   <h2 className="text-4xl text-white hover:text-gray-400">
-                    {proyecto.nombreWebProyecto}
+                    {proyecto?.nombreWebProyecto}
                   </h2>
                 </div>
                 <div className="h-16">
+                  <br />
+                  <br />
                   <p className="text-2xl font-bold text-white">{modelo.nombreModelo}</p>
                 </div>
                 <div className="h-16">
+                  <br />
+                  <br />
                   <span
-                    className="inline-flex items-center rounded px-3 py-2 text-white"
+                    className={`inline-flex items-center rounded px-3 py-2 ${textColorClass}`}
                     style={{
                       backgroundColor: `var(${proyecto.colorEtapa})`,
                     }}
                   >
-                    {proyecto.nombreEtapa}
+                    {proyecto?.nombreEtapa}
+
                   </span>
                 </div>
+                <br />
+                <br />
                 <div className="h-10">
                   <ul className="text-white">
                     <li className="flex items-center">
                       <div>
+
                         <img
                           className="img-logo-list rounded-xl"
                           src="https://c.animaapp.com/3LiIjsbQ/img/payments-4@2x.png"
                         />
                       </div>
-                      <div className="ml-2">Desde UF {modelo.valorUfModelo}</div>
+                      <div className="ml-2">Desde UF {formatoNumero(modelo.valorUfModelo)}</div>
                     </li>
                   </ul>
                 </div>
