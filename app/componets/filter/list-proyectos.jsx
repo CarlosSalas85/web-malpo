@@ -90,7 +90,7 @@ export default function List(props) {
         ))
       )}
 
-      <div className="mb-4 h-10 flex w-full justify-center md:justify-start">
+      <div className="mb-4 h-10 flex w-full justify-center">
         <button
           className="mr-2 flex items-center justify-center rounded border border-gray-400 px-4 py-2 text-black hover:bg-gray-400"
           onClick={handleClickPrev}
