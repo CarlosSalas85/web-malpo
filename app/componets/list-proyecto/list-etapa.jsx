@@ -28,7 +28,7 @@ const IconoList = (props) => {
     <>
       <div className="hidden sm:block">
         
-      <a href="#" className="flex flex-col items-center">
+      <a href="#" className="flex flex-col items-center" onClick={props.onClick}>
           <div className="mt-4 flex flex-col items-center">
             <img className="h-10 w-10" alt={`icono`} src={props.icono} />
             <div className="mt-2 flex flex-wrap items-center justify-center">
@@ -69,12 +69,10 @@ const IconoList = (props) => {
 };
 
 const List = (props) => {
-  // console.log("props de props", props);
   const [modalOpen, setModalOpen] = useState(false);
   const [avanceSeleccionado, setAvanceSeleccionado] = useState(null);
 
-  const handleModalToggle = (avance) => {
-    console.log("modal avance:",avance);
+  const handleModalToggle = (avance=null) => {
     setAvanceSeleccionado(avance);
     setModalOpen(!modalOpen);
   };
@@ -141,7 +139,7 @@ const List = (props) => {
                     : iconos_gris[index]
                 }
                 circulo={index === avances.length - 2 ? "block" : "hidden"}
-                onClick={avance.estadoAvance === "1" ? () => handleModalToggle(avances[index]) : null}
+                onClick={avance.estadoAvance === "1" ? () => handleModalToggle(avance) : null}
               />
             ))}
           </div>

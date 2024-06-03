@@ -100,7 +100,7 @@ const List = (props) => {
                     alt="icono"
                     src="https://c.animaapp.com/AuWMAeuM/img/directions-car.svg"
                   />
-                  <span className="text-xl font-semibold">{estacionamientos} estacionamientos</span>
+                  <span className="text-xl font-semibold">estacionamiento</span>
                 </div>
               </li>
             )
