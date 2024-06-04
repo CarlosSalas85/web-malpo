@@ -28,12 +28,13 @@ const Modal = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!captchaToken) {
-      alert("Por favor, completa el captcha.");
+      setErrorMessage("Por favor, completa el captcha.");
+      setSuccessMessage("");
       return;
     }
 
     try {
-      const formDataWithCaptcha = { ...formData, subject: "Denuncia", captchaToken };
+      const formDataWithCaptcha = { ...formData, subject: props.asunto, captchaToken };
       const success = await Ctrl_contacto(formDataWithCaptcha);
 
       if (success) {

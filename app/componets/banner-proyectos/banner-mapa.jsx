@@ -42,6 +42,7 @@ const Banner = (props) => {
               titulo="Contactar ejecutiva"
               imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
               url="#ejecutivas"
+              blank="0"
             />
           )}
         </div>

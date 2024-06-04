@@ -47,7 +47,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
   const nombreCiudad =proyectoData?.datos?.proyecto?.comunaNombre;
   const ejecutivas=proyectoData?.datos?.usuarios;
   const ejecutivasConImagen = ejecutivas?.filter(ejecutiva => ejecutiva.usuarioImagen != null);
-  console.log("Las ejecutivas son:", ejecutivas);
+  // console.log("Las ejecutivas son:", ejecutivas);
 
   const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion}/>;
 
@@ -127,7 +127,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
         <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />
       )}
       {proyectoData?.datos?.proyecto.urlUbicacionProyecto && (
-      <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={ejecutivasConImagen}/>
+      <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={ejecutivas}/>
       )}
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
       <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />

@@ -1,9 +1,10 @@
 "use client";
 import React, { useRef, useState, useEffect } from 'react';
+import { Ctrl_cotizador } from '@/app/controllers/Ctrl_cotizador';
 import { Ctrl_como_te_enteraste } from '@/app/controllers/Ctrl_como_te_enteraste';
 import { Ctrl_atributos_importantes } from '@/app/controllers/Ctrl_atributos_importantes';
 import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa la función generatePDF desde el archivo donde la defines
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Modal = ({ onClose, children }) => {
   return (
@@ -26,6 +27,10 @@ const Modal = ({ onClose, children }) => {
 };
 
 const Page = (props) => {
+  var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
   const proyectoData = props.proyecto;
   const modelosData = props.modelos;
   const nombreProyecto = proyectoData?.datos?.proyecto?.nombreWebProyecto;
@@ -42,8 +47,12 @@ const Page = (props) => {
   const [cotizarDeNuevo, setCotizarDeNuevo] = useState(false);
 
   const handleModalToggle = () => {
-    setModalOpen(!modalOpen); 
-    setCotizarDeNuevo(false);    
+    setModalOpen(!modalOpen);
+    setCotizarDeNuevo(false);
+  };
+
+  const handleCaptchaChange = (value) => {
+    setCaptchaToken(value);
   };
 
 
@@ -84,15 +93,15 @@ const Page = (props) => {
     setPersonName(['TODOS']);
     setErrors({});
   };
-  
-  const handleModalToggle2 = () => {   
+
+  const handleModalToggle2 = () => {
     setModalOpen2(!modalOpen2);
   };
 
   //Volver a Cotizar se muestra en el modal del resultado del dividendo
   //Permite volver a abrir el modal de cotización, sin modificar los inputs
   const volverACotizar = () => {
-    setCotizarDeNuevo(true);  
+    setCotizarDeNuevo(true);
     handleModalToggle2();
     setModalOpen(!modalOpen);
   }
@@ -155,14 +164,14 @@ const Page = (props) => {
   };
 
   const [fechaConsulta, setFechaConsulta] = useState(obtenerFechaActual());
-  
+
   const resetForm = () => {
     setNombre('');
     setRut('');
     setEmail('');
     setTelefono('');
     setCiudad('');
-    setComoTeEnteraste(''); 
+    setComoTeEnteraste('');
     setEdad('');
     setEstadoCivil('');
     setGenero('');
@@ -268,7 +277,7 @@ const Page = (props) => {
       setModeloNombre(selectedModelo.idModelo);
       setValorUFModelo(selectedModelo.valorUfModelo); // Guarda el valorUF correspondiente al modelo_vivienda seleccionado
     }
-  } 
+  }
 
   useEffect(() => {
     if (modalOpen) {
@@ -330,10 +339,10 @@ const Page = (props) => {
     if (!Number.isFinite(number)) {
       return ''; // Retorna una cadena vacía si el número no es válido
     }
-  
+
     // Convierte el número a una cadena y reemplaza los puntos con comas
     const stringWithCommas = number.toString().replace(/\./g, ',');
-  
+
     return stringWithCommas;
   };
 
@@ -345,7 +354,11 @@ const Page = (props) => {
   // Función para manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
-
+    if (!captchaToken) {
+      setErrorMessage("Por favor, completa el captcha.");
+      setSuccessMessage("");
+      return;
+    }
     // Validar el formulario antes de enviar
     const validationErrors = validateForm({
       nombre,
@@ -408,24 +421,26 @@ const Page = (props) => {
 
       try {
         // Enviar el formulario a la API
-        //const response = await Ctrl_cotizador(formData);
+        //  const response = await Ctrl_cotizador(formData);
 
-        //  if (response && !response.ok) {
-        //      throw new Error('Error al enviar el formulario', response);
-        //  }
-
-        // // Realizar cualquier otra acción después de enviar el formulario
-        setModalOpen(false);
-        setModalOpen2(true);
-
+        // if (response && !response.ok) {  
+        //  throw new Error('Error al enviar el formulario');
+        // }   
+      // Realizar cualquier otra acción después de enviar el formulario
+      setModalOpen(false);
+      setModalOpen2(true);
+    
       } catch (error) {
-        // Manejar el error, por ejemplo, mostrar un mensaje de error al usuario
+        console.error('Error al enviar el formulario:', error.message);
+        setErrorMessage("Ha ocurrido un error al enviar el formulario");
+        setSuccessMessage("");
       }
     } else {
       // Mostrar errores si el formulario no es válido
       setErrors(validationErrors);
     }
   };
+
 
 
   // Función para validar el RUT chileno
@@ -585,16 +600,16 @@ const Page = (props) => {
   return (
     <>
 
-<div className="relative">
-      <button
-        onClick={handleModalToggle}
-        className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400 relative"
-        disabled={modelo_vivienda === null}
-        data-tooltip="Proyecto sin modelos disponibles para cotizar"
-      >
-        Cotizar
-      </button>
-      <style jsx>{`
+      <div className="relative">
+        <button
+          onClick={handleModalToggle}
+          className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400 relative"
+          disabled={modelo_vivienda === null}
+          data-tooltip="Proyecto sin modelos disponibles para cotizar"
+        >
+          Cotizar
+        </button>
+        <style jsx>{`
         button[disabled] {
           cursor: not-allowed;
           position: relative;
@@ -620,7 +635,7 @@ const Page = (props) => {
           display: block;
         }
       `}</style>
-    </div>
+      </div>
       {modalOpen && (
         <Modal onClose={handleModalToggle}>
           <div className="container mx-auto px-4 py-2">
@@ -632,7 +647,17 @@ const Page = (props) => {
               />
             </div>
             <h1 className="text-lg font-bold">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
-            <form onSubmit={handleSubmit}  ref={formRef} className="mx-auto max-w-full">
+            {successMessage && (
+              <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                <span className="font-medium"></span> {successMessage}
+              </div>
+            )}
+            {errorMessage && (
+              <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <span className="font-medium">¡ERROR!</span> {errorMessage}
+              </div>
+            )}
+            <form onSubmit={handleSubmit} ref={formRef} className="mx-auto max-w-full">
               <h1 className="text-l flex justify-start py-4 font-bold">
                 1. Tus Datos
               </h1>
@@ -1070,6 +1095,12 @@ const Page = (props) => {
                 </div>
               )}
               <div className="flex justify-center">
+                <ReCAPTCHA
+                  sitekey={captcha_key}
+                  onChange={handleCaptchaChange}
+                  className="mx-auto"
+                /></div>
+              <div className="flex justify-center">
                 <button
                   type="submit"
                   className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
@@ -1094,7 +1125,7 @@ const Page = (props) => {
             </div>
 
             <div className="mx-auto mb-4 mt-4">
-              <p className="text-18px pt-4 sm:text-center">                                                                                                       
+              <p className="text-18px pt-4 sm:text-center">
                 <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF, tasa anual <strong>{formatoNumero(formatNumberWithCommas((tasaMensual * 12).toFixed(1)))} %</strong> y un plazo de <strong>{plazo}</strong> años es:
               </p>
             </div>

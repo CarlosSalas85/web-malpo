@@ -10,27 +10,21 @@ const Page = () => {
     name: "",
     email: "",
     phone: "",
-    project:"",
+    project: "",
     date: "",
-    option: "",
     message: "",
   });
-  const [captchaToken, setCaptchaToken] = useState(""); // State for storing CAPTCHA token
+  const currentDate = new Date().toLocaleDateString('en-CA').split('/').reverse().join('-');
+  const [captchaToken, setCaptchaToken] = useState("");
   var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
   const [errorMessage, setErrorMessage] = useState("");
- 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
- 
   const [proyectos, setProyectos] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(""); // Estado para almacenar el proyecto seleccionado
+  const [selectedProject, setSelectedProject] = useState("");
   const [alert, setAlert] = useState({
     type: "",
     message: "",
   });
- 
+
   useEffect(() => {
     const ids = {
       estadoInversion: 0,
@@ -41,27 +35,33 @@ const Page = () => {
       dormitorioId: 0,
       banoId: 0,
     };
- 
+
     Ctrl_aplicar_filtros(ids)
       .then(data_proyectos => {
         setProyectos(data_proyectos.datos);
-        console.log("Datos de proyectos recibidos por API:", data_proyectos.datos);
       })
       .catch(error => {
         console.error("Error al obtener proyectos:", error);
       });
   }, []);
- 
- 
-  // Función para manejar el cambio de selección del proyecto
-  const handleProjectChange = (e) => {
-    setSelectedProject(e.target.value); // Actualiza el proyecto seleccionado en el estado
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleCaptchaChange = (value) => {
-    setCaptchaToken(value); // Update CAPTCHA token state
+  const handleProjectChange = (e) => {
+    const projectValue = e.target.value;
+    setSelectedProject(projectValue);
+    setFormData({ ...formData, project: projectValue }); // Actualiza formData.project
+    console.log("El valor de formDataProject",formData);
   };
- 
+
+
+  const handleCaptchaChange = (value) => {
+    setCaptchaToken(value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!captchaToken) {
@@ -73,7 +73,7 @@ const Page = () => {
     }
 
     try {
-      const response = await Ctrl_inversionista({ ...formData, captchaToken }); // Include CAPTCHA token in the form data
+      const response = await Ctrl_inversionista({ ...formData, captchaToken });
       console.log('Response:', response);
 
       if (response.success) {
@@ -100,14 +100,14 @@ const Page = () => {
       });
     }
   };
-  
+
   return (
     <>
       <BannerImage
         imagenMobile="https://c.animaapp.com/ldNQXCM1/img/hero-image.png"
         imagenDesktop="https://c.animaapp.com/ldNQXCM1/img/hero-image.png"
       />
- 
+
       <div className="mx-auto mb-4 mt-10 w-11/12 md:w-10/12">
         <h1 className="mb-2 text-3xl sm:text-center">
           Atención virtual para Inversionistas
@@ -119,17 +119,17 @@ const Page = () => {
           pierdas la oportunidad de agendar una videollamada con una ejecutiva
           de asesoramiento de Malpo.
         </p>
- 
+
         <p className="text-18px pt-4 sm:text-center">
           Nuestra ejecutiva te orientará y resolverá todas tus dudas, sin que
           tengas que salir de tu casa u oficina. Solo tienes que ingresar tus
           datos, elegir el día y la hora que más te acomode, y listo.
         </p>
- 
+
         <p className="text-18px pt-4 font-semibold sm:text-center">
-          *confirmaremos la hora mediante llamada telefonica.
+          *confirmaremos la hora mediante llamada telefónica.
         </p>
- 
+
         <div className="mt-6">
           <h1 className="mb-2 text-3xl sm:text-center">
             Formulario de agendamiento
@@ -140,13 +140,11 @@ const Page = () => {
             Por favor, ingrese sus datos en el formulario que aparece a
             continuación.
           </p>
- 
+
           <form onSubmit={handleSubmit} className="mx-auto mt-10 max-w-md">
-          {alert.message && (
+            {alert.message && (
               <div
-                className={`p-4 mb-4 text-sm rounded-lg ${
-                  alert.type === "success" ? "text-green-800 bg-green-50" : "text-red-800 bg-red-50"
-                }`}
+                className={`p-4 mb-4 text-sm rounded-lg ${alert.type === "success" ? "text-green-800 bg-green-50" : "text-red-800 bg-red-50"}`}
                 role="alert"
               >
                 <span className="font-medium"></span> {alert.message}
@@ -194,15 +192,16 @@ const Page = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="datetime" className="mb-2 block">
-                Fecha y hora:
+              <label htmlFor="date" className="mb-2 block">
+                Fecha:
               </label>
               <input
-                type="datetime-local"
-                id="datetime"
-                name="datetime"
-                value={formData.datetime}
+                type="date"
+                id="date"
+                name="date"
+                value={formData.date}
                 onChange={handleChange}
+                min={currentDate}
                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                 required
               />
@@ -228,7 +227,7 @@ const Page = () => {
                   </option>
                 ))}
               </select>
-            </div>;
+            </div>
             <div className="mb-6">
               <label htmlFor="message" className="mb-2 block">
                 Mensaje:
@@ -243,11 +242,11 @@ const Page = () => {
                 required
               ></textarea>
             </div>
-            <ReCAPTCHA 
-            sitekey={captcha_key}
-            onChange={handleCaptchaChange}
-            className="mx-auto"
-          />
+            <ReCAPTCHA
+              sitekey={captcha_key}
+              onChange={handleCaptchaChange}
+              className="mx-auto"
+            />
             <div className="flex justify-center">
               <button
                 type="submit"
@@ -259,10 +258,9 @@ const Page = () => {
           </form>
         </div>
       </div>
- 
-      {/* <BannerBlog /> */}
     </>
   );
 };
- 
+
 export default Page;
+

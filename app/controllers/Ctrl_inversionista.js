@@ -2,14 +2,14 @@
 const nodemailer = require("nodemailer");
 
 export async function Ctrl_inversionista(formData) {
-  // console.log("LOS DATOS QUE LLEGAN A LA FUNCION DE ENVIAR CORREO SON:", formData,formData.email);
+  console.log("LOS DATOS QUE LLEGAN A LA FUNCION DE ENVIAR CORREO SON:", formData,formData.email);
   // console.log("EMAIL:", formData.email); 
   var to=formData.email;
   // console.log("EL VALOR DE TO",to);
   var subject="Inversionista";
   var text='Nombre:' + formData.name + ' Email:' + formData.email; // Ajusta el formato del texto si lo necesitas
   var text2='Nuestro equipo de Malpo se pondrá en contacto contigo';
-  var body = `<div><h1>${subject}</h1><p>Nombre: ${formData.name}</p><p>Email: ${formData.email}</p><p>phone: ${formData.phone}</p><p>Proyecto: ${formData.project}</p><p>Confirmación hora mediante llamada telefonica: ${formData.date}</p></div>`;
+  var body = `<div><h1>${subject}</h1><p>Nombre: ${formData.name}</p><p>Email: ${formData.email}</p><p>Telefono: ${formData.phone}</p><p>Proyecto: ${formData.project}</p><p>Mensaje: ${formData.message}</p><p>Confirmación hora mediante llamada telefonica: ${formData.date}</p></div>`;
   var body2 = `<div>Nuestro equipo de Malpo se pondrá en contacto contigo</div><div>`;
   // console.log(to,subject,body,process.env.SMTP_EMAIL_INVERSIONISTA,process.env.NEXT_PUBLIC_API_URL);
   try {
