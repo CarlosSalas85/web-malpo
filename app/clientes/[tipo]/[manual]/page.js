@@ -91,7 +91,7 @@ const Page = () => {
                   titulo="Descargar Brochure"
                   imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
                   url="https://www.innovamalpo.cl/disco2/web_malpo/pdfs/Manual_casa.pdf"
-                  pdf="1"
+                  blank="1"
                 />
               </div>
             </div>

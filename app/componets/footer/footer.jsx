@@ -6,7 +6,7 @@ import ModalCorreos from "@/app/componets/modal/modal-correos";
 
 import "./styleFooter.css";
 
-const Modal = ({ onClose}) => {
+const Modal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opacity-75">
       <div className="relative m-auto w-full max-w-md rounded bg-white p-8 shadow-lg">
@@ -20,7 +20,9 @@ const Modal = ({ onClose}) => {
             src={`https://c.animaapp.com/o0ROixJd/img/cancel@2x.png`}
           />
         </button>
-        <div className="mt-4"><ModalCorreos titulo="Formulario de Contacto"/></div>
+        <div className="mt-4">
+          <ModalCorreos titulo="Formulario de Contacto" />
+        </div>
       </div>
     </div>
   );
@@ -40,11 +42,13 @@ const Footer = () => {
           <div className="text-left md:mr-8 md:text-center">
             {" "}
             {/* Texto centrado en md */}
-            <img
-              src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
-              className="logo-malpo-blanco mx-0 sm:mx-auto sm:mb-6" // Centrado horizontalmente en sm, alineado a la izquierda en otros tamaños
-              alt="Logo malpo blanco"
-            />
+            <a href="/">
+              <img
+                src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
+                className="logo-malpo-blanco mx-0 sm:mx-auto sm:mb-6" // Centrado horizontalmente en sm, alineado a la izquierda en otros tamaños
+                alt="Logo malpo blanco"
+              />
+            </a>
             <div className="mt-10 flex flex-col items-start sm:flex-row sm:justify-between">
               <div className="text-left sm:mb-0 sm:mr-4 sm:pr-12">
                 <p className="mb-4">
@@ -62,7 +66,10 @@ const Footer = () => {
                   </button>
                 </p>
                 <p className="mb-4">
-                  <a href="/trabaja-con-nosotros" className="hover:text-gray-400">
+                  <a
+                    href="/trabaja-con-nosotros"
+                    className="hover:text-gray-400"
+                  >
                     Trabaja en Malpo
                   </a>
                 </p>
@@ -108,10 +115,7 @@ const Footer = () => {
         </div>
       </footer>
       {/* modal */}
-      {modalOpen && (
-        <Modal onClose={handleModalToggle}>        
-        </Modal>
-      )}
+      {modalOpen && <Modal onClose={handleModalToggle}></Modal>}
       {/* modal */}
     </>
   );

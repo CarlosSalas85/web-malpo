@@ -16,7 +16,7 @@ const Page = ({ datos }) => {
       </div>
 
       <div className="mx-auto mb-3 mt-3 w-11/12 md:w-10/12">
-        <p className="text-18px pt-4 sm:text-center">{datos.informacionBlog}</p>
+        <p className="text-18px pt-4 sm:text-justify">{datos.informacionBlog}</p>
       </div>
 
       <div className="flex items-center justify-center">
@@ -30,13 +30,13 @@ const Page = ({ datos }) => {
       </div>
 
       <div className="mx-auto mb-3 mt-3 w-11/12 md:w-10/12">
-        <p className="text-18px pt-1 sm:text-center">{datos.autorBlog}</p>
-        <p className="text-18px pt-1 sm:text-center">{datos.fechaBlog}</p>
-        <p className="text-18px pt-1 font-semibold text-rojoMalpo hover:text-gray-400 sm:text-center">
+        <p className="text-18px pt-1 sm:text-center font-semibold italic">{datos.autorBlog}</p>
+        <p className="text-18px pt-1 sm:text-center italic">{datos.fechaBlog}</p>
+        {/* <p className="text-18px pt-1 font-semibold text-rojoMalpo hover:text-gray-400 sm:text-center">
           <a href={datos.urlBlog} target="_blank">
             Ver más
           </a>
-        </p>
+        </p> */}
       </div>
     </>
   );
