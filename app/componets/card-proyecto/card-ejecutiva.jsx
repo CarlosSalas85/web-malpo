@@ -31,10 +31,15 @@ const Modal = ({ onClose, children }) => {
 
 const Cards = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
-
+  console.log("Los props de la ejecutiva son:", props);
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
   };
+
+
+  
+  const imageUrl = props.imagen /* || "https://via.placeholder.com/120?text=No+Imagen" */;
+//La etiqueta Image no permite imagenes nulas
 
   return (
     <>
@@ -43,8 +48,8 @@ const Cards = (props) => {
         
         {/* Primera sección */}
         <div className="w-1/3">
-          <Image
-            src={props.imagen}
+          <img
+            src={imageUrl}
             alt="usuario"
             width={120}
             height={120}
@@ -53,7 +58,7 @@ const Cards = (props) => {
         </div>
         {/* Segunda sección */}
         <div className="w-2/3 pl-2">
-        <a href="#">
+        <button>
             <h1 className="text-lg font-semibold">{props.nombre}</h1>
             <span className="mt-4 flex items-center text-center">
               <img
@@ -66,7 +71,7 @@ const Cards = (props) => {
                 Contactar
               </span>
             </span>
-          </a>
+          </button>
         </div>
       </div>
       <>

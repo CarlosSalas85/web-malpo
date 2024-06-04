@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 export function Ctrl_destacados() {
     return new Promise((resolve, reject) => {
         //var url = process.env.NEXT_PUBLIC_API_URL + 'proyectos/ver_ciudades';
@@ -22,6 +23,7 @@ export function Ctrl_destacados() {
                 // console.log('ESTOY EN CTRL_DESTACADOS');
                 // console.log(data);
                 resolve(data); // Resuelve la Promesa con los datos obtenidos
+                revalidateTag('destacados');
             })
             .catch(error => {
                 //console.log(error);

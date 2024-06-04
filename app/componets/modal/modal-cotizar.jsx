@@ -7,7 +7,7 @@ import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa 
 
 const Modal = ({ onClose, children }) => {
   return (
-    <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opaciudad-75">
+    <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opacity-75">
       <div className="relative m-auto w-full max-w-4xl rounded bg-white p-8 shadow-lg">
         <button
           className="absolute right-0 top-0 m-4 text-rojoMalpo hover:text-gray-400"

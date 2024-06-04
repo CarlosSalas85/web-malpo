@@ -1,4 +1,6 @@
 import React from 'react';
+import Button from "../../componets/button/button";
+
 
 function isValidUrl(url) {
   try {
@@ -11,7 +13,6 @@ function isValidUrl(url) {
 
 const Banner = (props) => {
   const { proyecto, ejecutivas } = props;
-  console.log(props);
   return (
     <div className="mb-4 mt-4 flex flex-col justify-center md:flex-row md:px-0">
       {/* Mapa de Google */}
