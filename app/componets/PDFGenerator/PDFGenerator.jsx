@@ -93,7 +93,7 @@ const generatePDF = (fechaConsulta,nombreProyecto,nombre,rut,telefono,email,mode
     doc.setFontSize(12);
     const textWidth = doc.getStringUnitWidth('Financiamiento') * doc.internal.getFontSize() / doc.internal.scaleFactor;
     doc.text('Financiamiento', 10, 170);
-    doc.text('Valor Propiedad: '+ formatoNumero(formatNumberWithCommas(parseFloat(montoCreditoHipotecario)+parseFloat(pieReserva))) + ' UF', pageWidth - textWidth - 34, 170);
+    doc.text('Valor Propiedad: '+ formatoNumero(formatNumberWithCommas(parseFloat(montoCreditoHipotecario)+ parseFloat(pieReserva))) + ' UF', pageWidth - textWidth - 34, 170);
 
     // Agregar una fila con los campos en una tabla
     const fields = ['Monto Subsidio', '% Hipotecario', 'Monto Hipotecario', 'Ahorro Mínimo', 'Pie o Reserva'];

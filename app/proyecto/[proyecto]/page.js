@@ -53,7 +53,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
 
   return (
     <>
-      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto}  imagenCabecera={proyectoData?.datos?.proyecto?.imagenCabecera} imagenMiniatura={proyectoData?.datos?.proyecto?.imagenMiniatura}/>
+      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto}  imagenCabecera={proyectoData?.datos?.proyecto?.imagenCabecera} imagenMobile={proyectoData?.datos?.proyecto?.imagenMobile}/>
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <p className="text-18px sm:text-center">
           {proyectoData?.datos?.proyecto?.informacionProyecto}
@@ -125,7 +125,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
       {proyectoData?.datos?.proyecto.urlLinkProyecto && (
         <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />
       )}
-      {proyectoData?.datos?.proyecto.urlUbicacionProyecto && (
+      {proyectoData?.datos?.proyecto?.urlUbicacionProyecto && (
       <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={ejecutivas}/>
       )}
       {proyectoData?.datos?.proyecto?.imagenLoteo && (

@@ -5,7 +5,7 @@ const Banner = (props) => {
   return (
     <>
     {logos.map((logo, index) => (
-    <div className="mt-6 w-full text-center sm:w-full md:mt-0 md:w-1/3 xl:w-1/5">
+    <div key={index} className="mt-6 w-full text-center sm:w-full md:mt-0 md:w-1/3 xl:w-1/5">
       <Image
         src={logo.imagenLogo}
         alt="logo"

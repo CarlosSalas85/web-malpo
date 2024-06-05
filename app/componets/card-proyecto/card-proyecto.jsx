@@ -25,7 +25,7 @@ export default async function CustomCards() {
   return (
     <>
       {proyectos.map((proyecto, index) => (
-        <div className="relative mr-4 flex w-[240px] flex-shrink-0">
+        <div  key={index} className="relative mr-4 flex w-[240px] flex-shrink-0">
           {/* Degradado de fondo */}
           <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-400"></div>
           <a href={`/proyecto/${(replaceSpaces(proyecto.nombreWebProyecto))}?val=${proyecto.idProyecto}`} className="block w-full h-full">

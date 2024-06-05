@@ -37,15 +37,13 @@ const Cards = (props) => {
   };
 
 
-  
+
   const imageUrl = props.imagen /* || "https://via.placeholder.com/120?text=No+Imagen" */;
-//La etiqueta Image no permite imagenes nulas
+  //La etiqueta Image no permite imagenes nulas
 
   return (
     <>
-      <div className="mx-2 my-2 flex w-full justify-center border shadow md:my-0 md:w-1/3 dark:border-gray-700 dark:bg-gray-800">
-        
-        
+      <button onClick={handleModalToggle} className="mx-2 my-2 flex w-full justify-center border shadow md:my-0 md:w-1/3 dark:border-gray-700 dark:bg-gray-800">
         {/* Primera sección */}
         <div className="w-1/3">
           <img
@@ -58,21 +56,20 @@ const Cards = (props) => {
         </div>
         {/* Segunda sección */}
         <div className="w-2/3 pl-2">
-        <button   onClick={handleModalToggle}>
-            <h1 className="text-lg font-semibold">{props.nombre}</h1>
-            <span className="mt-4 flex items-center text-center">
-              <img
-                className="mr-3 h-8 w-8"
-                alt={`icono`}
-                src={`https://c.animaapp.com/DeOuMZYz/img/touch-app@2x.png`}
-              />
-              <span className="text-l text-rojoMalpo hover:text-gray-400">
-                Contactar
-              </span>
+          <h1 className="text-lg font-semibold">{props.nombre}</h1>
+          <span className="mt-4 flex items-center text-center">
+            <img
+              className="mr-3 h-8 w-8"
+              alt={`icono`}
+              src={`https://c.animaapp.com/DeOuMZYz/img/touch-app@2x.png`}
+            />
+            <span className="text-l text-rojoMalpo hover:text-gray-400">
+              Contactar
             </span>
-          </button>
+          </span>
         </div>
-      </div>
+      </button>
+
       <>
         {modalOpen && (
           <Modal onClose={handleModalToggle}>
@@ -95,33 +92,33 @@ const Cards = (props) => {
               </div>
             </div>
             <div className="mt-4 flex justify-around">
-                  {/* Enlace para enviar correo electrónico */}
-                  <a href={`mailto:${props.email}`} target="_blank">
-                    <img
-                      className="h-8 w-8"
-                      alt={`icono`}
-                      src={`../../iconos/ejecutivas/mail.png`}
-                    />
-                  </a>
-                  {/* Enlace para llamar */}
-                  <a href={`tel:+56${props.telefono}`} target="_blank">
-                    <img
-                      className="h-8 w-8"
-                      alt={`icono`}
-                      src={`../../iconos/ejecutivas/llamar.png`}
-                    />
-                  </a>
-                  {/* Enlace de WhatsApp */}
-                  <a href={`https://api.whatsapp.com/send?phone=56${props.telefono}`} target="_blank">
-                    {/* Sustituye {icon} con el icono de WhatsApp si es necesario */}
-                    {/* {icon} */}
-                    <img
-                      className="h-8 w-8"
-                      alt={`icono`}
-                      src={`../../iconos/ejecutivas/whatssap.png`}
-                    />
-                  </a>
-                </div>
+              {/* Enlace para enviar correo electrónico */}
+              <a href={`mailto:${props.email}`} target="_blank">
+                <img
+                  className="h-8 w-8"
+                  alt={`icono`}
+                  src={`../../iconos/ejecutivas/mail.png`}
+                />
+              </a>
+              {/* Enlace para llamar */}
+              <a href={`tel:+56${props.telefono}`} target="_blank">
+                <img
+                  className="h-8 w-8"
+                  alt={`icono`}
+                  src={`../../iconos/ejecutivas/llamar.png`}
+                />
+              </a>
+              {/* Enlace de WhatsApp */}
+              <a href={`https://api.whatsapp.com/send?phone=56${props.telefono}`} target="_blank">
+                {/* Sustituye {icon} con el icono de WhatsApp si es necesario */}
+                {/* {icon} */}
+                <img
+                  className="h-8 w-8"
+                  alt={`icono`}
+                  src={`../../iconos/ejecutivas/whatssap.png`}
+                />
+              </a>
+            </div>
             <div className="flex justify-center mt-4">
               <button
                 onClick={handleModalToggle}

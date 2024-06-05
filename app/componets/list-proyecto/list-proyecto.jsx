@@ -31,8 +31,7 @@ const List = (props) => {
   const estacionamientos = isModelo ? estacionamientoModelo : `${estacionamientosMinimo} - ${estacionamientosMaximo}`;
   const precioUf = isModelo ? valorUfModelo : ufMinimo;
   const precioUfFormateado = formatoNumero(parseInt(precioUf));
-  // console.log("precioUf:", precioUf); // Utiliza el formato de miles para español de Chile
-  // console.log("precio Formateado: ", precioUfFormateado);
+
   
 
 

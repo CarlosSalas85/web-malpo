@@ -78,6 +78,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
   const modeloData = modelosData?.filter(modelo => modelo.idModelo === idModelo);
   const filtroDecodificado = modelo ? decodeURIComponent(modelo) : "";
   const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} proyectoNombreUrl={nombreProyectoUrl} idProyecto={val1} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion}/>;
+  const ejecutivas=proyectoData?.datos?.usuarios;
   var tour360Modelo = modeloData && modeloData.length > 0 ? modeloData[0]?.Modelos?.tour360Modelo : null;  // console.log("El valor de modelosData es:", modelosData,nombreProyectoUrl,proyecto);
   if (tour360Modelo && /^(http|https):\/\/\S+$/i.test(tour360Modelo)) {
     // console.log('Es un enlace URL válido:', tour360Modelo);
@@ -85,7 +86,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
     // console.log('No es un enlace URL válido o es nulo.');
   }
   tour360Modelo = null;
-
+  console.log("modelosData",modelosData);
   // const [currentImage, setCurrentImage] = useState(0);
 
   // const nextImage = () => {
@@ -116,7 +117,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
     nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto}
     proyecto={proyectoData?.datos?.proyecto}
     imagenCabecera={modelosData[0]?.Modelos.imagenCabecera}
-    imagenMiniatura={modelosData[0]?.Modelos.imagenMiniatura}
+    imagenMobile={modelosData[0]?.Modelos.imagenMobile}
   />
 )}
 
@@ -295,8 +296,8 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
       {proyectoData?.datos?.proyecto && (
         <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />
       )}
-      {proyectoData?.datos?.proyecto && (
-        <BannerMapa proyecto={proyectoData?.datos?.proyecto} />
+     {proyectoData?.datos?.proyecto.urlUbicacionProyecto && (
+      <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={ejecutivas}/>
       )}
       {/* <BannerEjecutivas /> */}
       {proyectoData?.datos?.proyecto?.imagenLoteo && (

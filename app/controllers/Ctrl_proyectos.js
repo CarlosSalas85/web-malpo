@@ -20,7 +20,7 @@ export async function Ctrl_proyectos(idProyecto) {
           .then(data => {
               resolve(data); // Resuelve la Promesa con los datos obtenidos
             //   revalidateTag(`proyectos/${idProyecto}`);
-              //  console.log(url,data);
+              console.log("data",data);
           })
           .catch(error => {
               //console.log(error);

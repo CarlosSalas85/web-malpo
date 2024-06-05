@@ -176,7 +176,7 @@ const Page = (props) => {
       }).format(elemento);
     } else {
       // Si el número es entero, simplemente lo devuelve sin formato
-      return elemento.toLocaleString("es-CL");
+      return parseInt(elemento.toLocaleString("es-CL"));
     }
   }
 
@@ -334,7 +334,6 @@ const Page = (props) => {
   // Función para manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
-    console.log("El valor captchaToken es:", captchaToken);
     if (!captchaToken && seccionFormulario != 1 && seccionFormulario != 2
     ) {
       setErrorMessage("Por favor, completa el captcha.");
@@ -1214,8 +1213,9 @@ const Page = (props) => {
           <div className="container mx-auto w-full px-4 py-2">
             <div className="mx-auto mb-4 mt-4">
               <p className="text-18px pt-4 sm:text-center">
-                Estimado(a): <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong>, con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF,</p>
-              <p>
+              Estimado(a): <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong>, con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF,
+            </p>              
+                <p>
                 <span className="text-lg"><strong>tasa anual {formatoNumero(formatNumberWithCommas((tasaMensual * 12).toFixed(1)))}% </strong></span>
                 <i>("tasa referencial de <strong>{proyectoData?.datos?.proyecto?.bancoTasa}")</strong></i>
               </p>

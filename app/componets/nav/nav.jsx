@@ -81,7 +81,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="/invertir/todos"
+                href="/invertir/proyectos"
                 className="block px-3 py-2 hover:text-gray-400"
               >
                 Invertir

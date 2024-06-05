@@ -21,7 +21,7 @@ const Modal = ({ onClose }) => {
           />
         </button>
         <div className="mt-4">
-          <ModalCorreos titulo="Formulario de Contacto" />
+          <ModalCorreos titulo="Formulario de Contacto" asunto="Contacto"/>
         </div>
       </div>
     </div>
