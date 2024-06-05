@@ -49,6 +49,9 @@ const Page = (props) => {
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
+    if(modalOpen){
+      setSeccionFormulario(1);
+    }
     setCotizarDeNuevo(false);
   };
 
@@ -392,7 +395,7 @@ const Page = (props) => {
       try {
         // Enviar el formulario a la API
         //  const response = await Ctrl_cotizador(formData);
-        console.log("Los datos son:", formData);
+        // console.log("Los datos son:", formData);
         // if (response && !response.ok) {  
         //  throw new Error('Error al enviar el formulario');
         // }   
