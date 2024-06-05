@@ -8,10 +8,16 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 const Modal = ({ onClose, children }) => {
   return (
-    <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opacity-75">
-      <div className="relative m-auto w-full max-w-4xl rounded bg-white p-8 shadow-lg">
+    <div className="fixed inset-0 z-50 flex justify-center items-center overflow-auto bg-gray-800 bg-opacity-75">
+    <div className="relative w-full max-w-4xl rounded bg-white p-8 shadow-lg">
+      <div className="flex justify-between items-center">
+        <img
+          src="/logos/logoRojoMalpo.png"
+          alt="Logo"
+          className="h-6 w-auto"
+        />
         <button
-          className="absolute right-0 top-0 m-4 text-rojoMalpo hover:text-gray-400"
+          className="text-rojoMalpo hover:text-gray-400"
           onClick={onClose}
         >
           <img
@@ -20,9 +26,12 @@ const Modal = ({ onClose, children }) => {
             src={`https://c.animaapp.com/o0ROixJd/img/cancel@2x.png`}
           />
         </button>
-        <div className="mt-4">{children}</div>
       </div>
+            <span className="text-rojoMalpo font-bold text-lg">Cotización</span>
+      <div className="mt-4">{children}</div>
     </div>
+  </div>
+  
   );
 };
 
@@ -36,11 +45,12 @@ const Page = (props) => {
   const modelosData = props.modelos;
   const nombreProyecto = proyectoData?.datos?.proyecto?.nombreWebProyecto;
   const tasa = proyectoData?.datos?.proyecto?.valorTasa;
+  const fechaTasa = proyectoData?.datos?.proyecto?.fechaTasa;
   const [tasaAnual, setTasaAnual] = useState(parseFloat(tasa));
   const formRef = useRef(null);
   const [pdfUrl, setPdfUrl] = useState(null);
   const handleDownloadPDF = async () => {
-    await generatePDF(fechaConsulta, nombreProyecto, nombre, rut_cliente, telefono, email, modelosData[0].Modelos.nombreModelo, montoSubsidio, porcentajeCredito, montoCreditoHipotecario, ahorroMinimo, pieReserva, tasaAnual / 12, plazo, cotizacionCLP); // Llama a la función generatePDF para generar el PDF
+    await generatePDF(fechaConsulta, nombreProyecto, nombre, rut_cliente, telefono, email, modelosData[0].Modelos.nombreModelo, montoSubsidio, porcentajeCredito, montoCreditoHipotecario, ahorroMinimo, pieReserva, tasaAnual / 12, plazo, cotizacionCLP, fechaTasa); // Llama a la función generatePDF para generar el PDF
     setPdfUrl('/cotizacion.pdf'); // Establece la URL del PDF generado
   };
   const [modalOpen, setModalOpen] = useState(false);
@@ -49,7 +59,7 @@ const Page = (props) => {
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
-    if(modalOpen){
+    if (modalOpen) {
       setSeccionFormulario(1);
     }
     setCotizarDeNuevo(false);
@@ -80,7 +90,6 @@ const Page = (props) => {
   const NumeroFormateado = ({ numero }) => {
     const numeroFormateado = numero.toLocaleString(); // Formatea el número con separadores de miles
   }
-
   const [optionsComoTeEnteraste, setOptionsComoTeEnteraste] = useState([]);
   const [optionsAtributosImportantes, setOptionsAtributosImportantes] = useState([]);
   const [isSelectDisabledOtrosAtributos, setIsSelectDisabledOtrosAtributos] = useState(false);
@@ -93,13 +102,13 @@ const Page = (props) => {
   const [cod_unysoft, setCodUnysoft] = useState(proyectoData?.datos?.proyecto?.codigoUnisoft);
   const [modelo_vivienda, setModeloNombre] = useState(modelosData ? modelosData[0]?.Modelos?.idModelo : null);
   const [valorUFModelo, setValorUFModelo] = useState(modelosData ? modelosData[0]?.Modelos?.valorUfModelo : 0);
-  const [subsidio, setTipoSubsidio] = useState(proyectoData?.datos?.proyecto?.nombreSubsidio);
-  const [montoSubsidio, setMontoSubsidio] = useState(proyectoData?.datos?.proyecto?.ufSubsidio);
+  const [subsidio, setTipoSubsidio] = useState(modelosData ? modelosData[0].nombreSubsidio : null);
+  const [montoSubsidio, setMontoSubsidio] = useState(modelosData ? modelosData[0].ufSubsidio : null);
   const [porcentajeCredito, setPorcentajeCredito] = useState('80');
   const [plazo, setPlazoCredito] = useState('');
   const [montoCreditoHipotecario, setMontoCreditoHipotecario] = useState(0);
   const [enteroMontoCreditoHipotecario, setEnteroMontoCreditoHipotecario] = useState(Math.floor(montoCreditoHipotecario));
-  const [ahorroMinimo, setAhorroMinimo] = useState(proyectoData?.datos?.proyecto?.ahorroMinimo);
+  const [ahorroMinimo, setAhorroMinimo] = useState(modelosData ? modelosData[0].ahorroMinimo : null);
   const [pieReserva, setPieReserva] = useState('');
   const [edad, setEdad] = useState('');
   const [estado_civil, setEstadoCivil] = useState('');
@@ -193,7 +202,7 @@ const Page = (props) => {
   // Definir la función para calcular el monto del crédito hipotecario
   function calcularMontoCreditoHipotecario() {
     // Calcula el monto del crédito hipotecario y lo retorna
-    if (proyectoData?.datos?.proyecto?.nombreSubsidio === "Sin Subsidio") {
+    if (subsidio === "Sin Subsidio") {
       return (((((valorUFModelo) * (80)) / 100)));
     } else {
       var porcentaje = parseFloat((((valorUFModelo) - montoSubsidio - ahorroMinimo) / valorUFModelo) * 100).toFixed(2);
@@ -222,7 +231,7 @@ const Page = (props) => {
 
   function calcularPieReserva() {
     // Calcula el monto del pie Reserva
-    if (proyectoData?.datos?.proyecto?.nombreSubsidio === "Sin Subsidio") {
+    if (subsidio === "Sin Subsidio") {
       return (((((valorUFModelo)) - (montoCreditoHipotecario))));
     } else {
       const pieReserva = valorUFModelo - montoCreditoHipotecario - montoSubsidio - ahorroMinimo;
@@ -241,12 +250,12 @@ const Page = (props) => {
   // Función para manejar el cambio en la selección del modelo_vivienda
   const handleModeloChange = (event, opcion) => {
     const selectedModeloNombre = event.target.value;
-
-
     const selectedModelo = modelosData.find(modelo_vivienda => modelo_vivienda.idModelo === selectedModeloNombre);
     if (selectedModelo) {
       setModeloNombre(selectedModelo.idModelo);
       setValorUFModelo(selectedModelo.valorUfModelo); // Guarda el valorUF correspondiente al modelo_vivienda seleccionado
+      setTipoSubsidio(selectedModelo.nombreSubsidio);
+      setMontoSubsidio(selectedModelo.ufSubsidio);
     }
   }
 
@@ -693,25 +702,22 @@ const Page = (props) => {
       {modalOpen && (
         <Modal onClose={handleModalToggle}>
           <div className="container mx-auto px-4 py-2">
-            <div className="mb-3">
-              <img
-                src="/logos/logoRojoMalpo.png"
-                alt="Logo"
-                className="mr-4 h-6 w-auto"
-              />
-            </div>
-            <h1 className="text-lg font-bold">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
+
+            <p className="mb-8 mt-8">
+              <h1 className="text-lg font-bold bg-rojoMalpo text-white">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
+            </p>
             <div className="flex justify-between">
-              <span className={`flex items-center justify-center w-6 h-6 rounded-full ${seccionFormulario === 1 ? 'bg-red-500' : 'bg-gray-500'}`}>
-              <span className="text-white font-bold">1</span>
+              <span className={`flex items-center justify-center px-2 py-1 rounded-md ${seccionFormulario === 1 ? 'bg-red-800' : 'bg-gray-900'}`}>
+                <span className="text-white font-bold">Tus Datos</span>
               </span>
-              <span className={`flex items-center justify-center w-6 h-6 rounded-full ${seccionFormulario === 2 ? 'bg-red-500' : 'bg-gray-500'}`}>
-              <span className="text-white font-bold">2</span>
+              <span className={`flex items-center justify-center px-2 py-1 rounded-md ${seccionFormulario === 2 ? 'bg-red-800' : 'bg-gray-900'}`}>
+                <span className="text-white font-bold">Simula</span>
               </span>
-              <span className={`flex items-center justify-center w-6 h-6 rounded-full ${seccionFormulario === 3 ? 'bg-red-500' : 'bg-gray-500'}`}>
-              <span className="text-white font-bold">3</span>
+              <span className={`flex items-center justify-center px-2 py-1 rounded-md ${seccionFormulario === 3 ? 'bg-red-800' : 'bg-gray-900'}`}>
+                <span className="text-white font-bold">Tu Dividendo</span>
               </span>
             </div>
+
             {successMessage && (
               <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                 <span className="font-medium"></span> {successMessage}
@@ -862,7 +868,7 @@ const Page = (props) => {
                       </label>
                       <input
                         input type="text" id="valorUF" name="valorUF"
-                        value={valorUFModelo} onChange={(e) => setValorUFModelo(e.target.value)}
+                        value={formatoNumero(formatNumberWithCommas(valorUFModelo))} onChange={(e) => setValorUFModelo(e.target.value)}
                         className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         disabled
                       />
@@ -876,9 +882,7 @@ const Page = (props) => {
                         id="subsidio"
                         name="subsidio"
                         className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                        value={proyectoData?.datos?.proyecto?.idSubsidio === "1" ? 'DS1' :
-                          proyectoData?.datos?.proyecto?.idSubsidio === "4" ? 'DS19' :
-                            proyectoData?.datos?.proyecto?.idSubsidio === "5" ? 'Sin subsidio' : ''}
+                        value={subsidio}
                         onChange={(e) => setTipoSubsidio(e.target.value)} disabled
                       />
                     </div>
@@ -1208,21 +1212,12 @@ const Page = (props) => {
       {modalOpen2 && (
         <Modal onClose={handleModalToggle2}>
           <div className="container mx-auto w-full px-4 py-2">
-            <div className="mb-3 flex items-center justify-between">
-              <h1 className="text-lg font-bold">Cotización</h1>
-              <img
-                src="/logos/logoRojoMalpo.png"
-                alt="Logo"
-                className="h-6 w-auto"
-              />
-            </div>
-
             <div className="mx-auto mb-4 mt-4">
               <p className="text-18px pt-4 sm:text-center">
-                <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong>, con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF,</p>
+                Estimado(a): <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong>, con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF,</p>
               <p>
                 <span className="text-lg"><strong>tasa anual {formatoNumero(formatNumberWithCommas((tasaMensual * 12).toFixed(1)))}% </strong></span>
-                <i>("asociada a <strong>{proyectoData?.datos?.proyecto?.bancoTasa}")</strong></i>
+                <i>("tasa referencial de <strong>{proyectoData?.datos?.proyecto?.bancoTasa}")</strong></i>
               </p>
               <p className="text-18px pt-2 sm:text-center">
                 y un plazo de <strong>{plazo}</strong> años es:

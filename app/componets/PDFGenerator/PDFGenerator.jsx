@@ -1,7 +1,7 @@
 import {jsPDF} from 'jspdf';
 
 
-const generatePDF = (fechaConsulta,nombreProyecto,nombre,rut,telefono,email,modeloNombre,montoSubsidio,porcentajeCredito,montoCreditoHipotecario,ahorroMinimo,pieReserva,tasaMensual,plazoCredito,cotizacionCLP) => {
+const generatePDF = (fechaConsulta,nombreProyecto,nombre,rut,telefono,email,modeloNombre,montoSubsidio,porcentajeCredito,montoCreditoHipotecario,ahorroMinimo,pieReserva,tasaMensual,plazoCredito,cotizacionCLP,fechaTasa) => {
     // console.log("datos Tabla", montoSubsidio,porcentajeCredito,0,ahorroMinimo,pieReserva);
 
     function formatoNumero(elemento) {
@@ -55,7 +55,7 @@ const generatePDF = (fechaConsulta,nombreProyecto,nombre,rut,telefono,email,mode
     // Agregar la fecha en letras negras sobre el rectángulo del título
     doc.setTextColor(0); // Texto negro
     doc.setFontSize(10);
-    const formattedDate ='Fecha:' + fechaConsulta.toString();
+    const formattedDate =fechaConsulta.toString();
     const dateWidth = doc.getStringUnitWidth(formattedDate) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     doc.text(formattedDate, pageWidth - dateWidth - 10, 14);
 
@@ -181,6 +181,8 @@ en este folleto son solo una referencia visual y no necesariamente concuerdan co
 definitivas.`;
 positionY=275
 doc.text(textoDebajo2, marginHorizontal-5, positionY, { maxWidth: pageWidth - 2 * marginHorizontal+10 });
+// doc.text(`Fecha tasa: ${fechaTasa}`, 5 , doc.internal.pageSize.getHeight()-10); // Agregar el texto "Fecha"
+
     // Guardar el PDF
     doc.save('cotizacion.pdf');
 };
