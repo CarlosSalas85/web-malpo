@@ -45,14 +45,21 @@ const BottonBanner = () => {
 
 const Banner = () => {
   return (
-    <>
-      <div className="imagen-fondo bg-cover bg-center hidden md:block">
-        <BottonBanner />
-      </div>
-      <div className="imagen-fondo bg-cover bg-center block md:hidden">
-        <BottonBanner />
-      </div>
-    </>
+    <div className="relative h-[500px]">
+      <picture>
+        {/* Imagen de fondo para dispositivos pequeños */}
+        <source srcSet="../../home/banner_mobile.webp" media="(max-width: 640px)" />
+        {/* Imagen de fondo para dispositivos grandes */}
+        <source srcSet="../../home/banner-desktop.webp" media="(min-width: 641px)" />
+        {/* Imagen de fondo por defecto */}
+        <img
+          className="absolute inset-0 block h-[500px] w-[100%] bg-cover bg-center"
+          src="../../home/banner-desktop.webp" // Ruta de la imagen de fondo por defecto para navegadores que no admiten <picture>
+          alt=""
+        />
+      </picture>
+      <BottonBanner />
+    </div>
   );
 };
 
