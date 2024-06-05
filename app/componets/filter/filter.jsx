@@ -45,12 +45,6 @@ const validar = (p1, p2) => {
 const validarCasa = (opcion, proyectoTipo) => {
   if (opcion == 0) {
     return true
-  } else if (opcion == 4) {
-    if (proyectoTipo == 1 || proyectoTipo == 2) {
-      return true
-    } else {
-      return false
-    }
   } else if (opcion == proyectoTipo) {
     return true
   } else {
@@ -60,8 +54,8 @@ const validarCasa = (opcion, proyectoTipo) => {
 const validacionBanos = (opcion, rangoInf, rangoSup) => {
   if (opcion == 0) {
     return true
-  } else if (opcion == 99) {
-    if (rangoInf >= 3) {
+  } else if (opcion == 2) {
+    if (rangoInf >= 2) {
       return true
     } else {
       return false
@@ -75,8 +69,8 @@ const validacionBanos = (opcion, rangoInf, rangoSup) => {
 const validacionDormitorios = (opcion, rangoInf, rangoSup) => {
   if (opcion == 0) {
     return true
-  } else if (opcion == 99) {
-    if (rangoInf >= 4) {
+  } else if (opcion == 3) {
+    if (rangoInf >= 3) {
       return true
     } else {
       return false
