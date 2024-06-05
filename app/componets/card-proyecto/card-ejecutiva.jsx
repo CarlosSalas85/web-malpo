@@ -31,7 +31,7 @@ const Modal = ({ onClose, children }) => {
 
 const Cards = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
-  console.log("Los props de la ejecutiva son:", props);
+  // console.log("Los props de la ejecutiva son:", props);
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
   };
@@ -58,14 +58,13 @@ const Cards = (props) => {
         </div>
         {/* Segunda sección */}
         <div className="w-2/3 pl-2">
-        <button>
+        <button   onClick={handleModalToggle}>
             <h1 className="text-lg font-semibold">{props.nombre}</h1>
             <span className="mt-4 flex items-center text-center">
               <img
                 className="mr-3 h-8 w-8"
                 alt={`icono`}
                 src={`https://c.animaapp.com/DeOuMZYz/img/touch-app@2x.png`}
-                onClick={handleModalToggle}
               />
               <span className="text-l text-rojoMalpo hover:text-gray-400">
                 Contactar

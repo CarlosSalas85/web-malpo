@@ -10,6 +10,9 @@ const Function = () => {
       try {
         const response = await Ctrl_regiones();
         const result = await response.datos;
+        result.forEach((item) => {
+          item.url = `proyectos/${item.id}/0`;
+        });
         setData(result);
       } catch (error) {
       } finally {
@@ -22,7 +25,7 @@ const Function = () => {
   return (
     <>
        <BannerProyectos
-        texto="Proyectos por région"       
+        texto="Proyectos por región"       
         filtro="region"
         datos={data}
       />

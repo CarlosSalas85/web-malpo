@@ -1,9 +1,10 @@
 import "./banner-proyectos.css";
 
-const CustomButton = ({ texto ,region,comuna}) => {
+const CustomButton = ({ texto, url}) => {
+  // console.log("LA URL DEL PROYECTO ES:", url);
   return (
     <a
-      href={`/proyectos/${region}/${comuna}`}
+      href={url}
       className="mb-2 mr-2 w-full rounded-lg border border-white bg-transparent px-4 py-2 text-white hover:border-gray-400 hover:text-gray-400"
     >
       {texto}
@@ -27,8 +28,7 @@ const Banner = (props) => {
               >
                 <CustomButton
                   texto={elemento.nombre}
-                  comuna={elemento.idComuna?elemento.idComuna:0}
-                  region={elemento.idRegion?elemento.idRegion:0}
+                  url={elemento.url}
                 />
               </div>
             ))}

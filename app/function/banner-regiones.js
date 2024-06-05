@@ -4,6 +4,9 @@ import { Ctrl_regiones } from "@/app/controllers/Ctrl_regiones";
 
 const data = await Ctrl_regiones();
 const datos = data.datos;
+datos.forEach((item) => {
+  item.url = `/proyectos/${item.id}/0`;
+});
 
 const Function = () => {
   return (

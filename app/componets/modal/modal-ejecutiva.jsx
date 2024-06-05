@@ -95,13 +95,12 @@ const Page = (props) => {
                   </Link>
                 </div>
                 <div className="mt-4">
-                  <LinkConBorde
-                    baseClassName="design-component-instance-node"
-                    className="link-con-borde-instance"
-                    divClassName="link-con-borde-3"
-                    property1="default"
-                    text="Cerrar"
-                  />
+                <button
+                  type="submit"
+                  className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
+                >
+                  Cerrar
+                </button>
                 </div>
               </div>
             )}

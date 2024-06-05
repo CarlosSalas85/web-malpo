@@ -68,7 +68,12 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
     ...modelo,
     id: modelo.idModelo,
     nombre: modelo.nombreModelo,
+    val1: val1,
+    val2: modelo.idModelo, // Se cambia el nombre de la propiedad
+    url:`/proyecto/${decodeURIComponent(proyecto)}/${replaceSpaces(modelo.nombreModelo).toLowerCase()}?val1=${val1}&val2=${modelo.idModelo}`
   }));
+  
+
   const modelosData = proyectoData?.datos?.modelos;
   const modeloData = modelosData?.filter(modelo => modelo.idModelo === idModelo);
   const filtroDecodificado = modelo ? decodeURIComponent(modelo) : "";
@@ -116,9 +121,9 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
 )}
 
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
-        <h1 className="mb-4 text-3xl sm:text-center">{modeloData[0].Modelos.nombreModelo}</h1>
+        <h1 className="mb-4 text-3xl sm:text-center">{modeloData[0]?.Modelos.nombreModelo}</h1>
         <p className="text-18px sm:text-center">
-          {modeloData[0].Modelos.informacionModelo}
+          {modeloData[0]?.Modelos.informacionModelo}
         </p>
       </div>
 
@@ -274,7 +279,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
       </div> */}
 
 
-      {/* <div id="tourvirtual" className="pb-6 pt-6">
+      <div id="tourvirtual" className="pb-6 pt-6">
         <h1 className="ml-4 text-3xl sm:text-center">Tour Virtual</h1>
         <div className="mt-4 flex justify-center">
           <iframe
@@ -285,7 +290,7 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
             allowFullScreen=""
           ></iframe>
         </div>
-      </div> */}
+      </div>
 
       {proyectoData?.datos?.proyecto && (
         <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />

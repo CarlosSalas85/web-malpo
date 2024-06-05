@@ -28,6 +28,7 @@ const Modal = ({ onClose, children }) => {
 
 const Page = (props) => {
   var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
+  const [seccionFormulario, setSeccionFormulario] = useState(1);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
@@ -56,44 +57,6 @@ const Page = (props) => {
   };
 
 
-  const resetFormStates = () => {
-    setNombre('');
-    setRut('');
-    setEmail('');
-    setTelefono('');
-    setCiudad('');
-    setComoTeEnteraste([]);
-    setModeloNombre(modelosData ? modelosData[0]?.Modelos?.idModelo : null);
-    setValorUFModelo(modelosData ? modelosData[0]?.Modelos?.valorUfModelo : 0);
-    setTipoSubsidio(proyectoData?.datos?.proyecto?.nombreSubsidio);
-    setMontoSubsidio(proyectoData?.datos?.proyecto?.ufSubsidio);
-    setPorcentajeCredito('80');
-    setPlazo('');
-    setMontoCreditoHipotecario(0);
-    setAhorroMinimo(proyectoData?.datos?.proyecto?.ahorroMinimo);
-    setPieReserva('');
-    setEdad('');
-    setEstadoCivil('');
-    setGenero('');
-    setTieneHijos('');
-    setAtributosImportantes(['']);
-    setAtributos([]);
-    setOtrosAtributos('');
-    setMotivoCompra('');
-    setIsSelectDisabledMotivoCompra(false);
-    setOtroMotivoCompra('');
-    setQuienesHabitaran('');
-    setOtroQuienesHabitaran('');
-    setTasaMensual(0);
-    setCotizacionUF(0);
-    setCotizacionCLP('');
-    setFormularioEnviado(false);
-    setRutValido(true);
-    setSelectedEtapa(0);
-    setPersonName(['TODOS']);
-    setErrors({});
-  };
-
   const handleModalToggle2 = () => {
     setModalOpen2(!modalOpen2);
   };
@@ -101,9 +64,14 @@ const Page = (props) => {
   //Volver a Cotizar se muestra en el modal del resultado del dividendo
   //Permite volver a abrir el modal de cotización, sin modificar los inputs
   const volverACotizar = () => {
+    setSeccionFormulario(1);
     setCotizarDeNuevo(true);
     handleModalToggle2();
     setModalOpen(!modalOpen);
+    setErrors({});
+    setSuccessMessage("");
+    setErrorMessage("");
+    setCaptchaToken("");
   }
 
   const NumeroFormateado = ({ numero }) => {
@@ -354,7 +322,9 @@ const Page = (props) => {
   // Función para manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
-    if (!captchaToken) {
+    console.log("El valor captchaToken es:", captchaToken);
+    if (!captchaToken && seccionFormulario != 1 && seccionFormulario != 2
+    ) {
       setErrorMessage("Por favor, completa el captcha.");
       setSuccessMessage("");
       return;
@@ -422,14 +392,15 @@ const Page = (props) => {
       try {
         // Enviar el formulario a la API
         //  const response = await Ctrl_cotizador(formData);
-
+        console.log("Los datos son:", formData);
         // if (response && !response.ok) {  
         //  throw new Error('Error al enviar el formulario');
         // }   
-      // Realizar cualquier otra acción después de enviar el formulario
-      setModalOpen(false);
-      setModalOpen2(true);
-    
+        // Realizar cualquier otra acción después de enviar el formulario
+        setModalOpen(false);
+        setErrorMessage("");
+        setModalOpen2(true);
+
       } catch (error) {
         console.error('Error al enviar el formulario:', error.message);
         setErrorMessage("Ha ocurrido un error al enviar el formulario");
@@ -597,6 +568,86 @@ const Page = (props) => {
     return emailPattern.test(email);
   };
 
+
+  //VALIDAR FORMULARIO POR SECCION:
+
+
+  // Función para validar los campos del formulario
+  const validarCampos = (seccion) => {
+
+    const errors = {}; // Objeto para almacenar los errores
+
+    // Realiza la validación según la sección del formulario
+    switch (seccion) {
+      case 1:
+        // Realiza todas las validaciones necesarias aquí
+        if (!nombre.trim()) {
+          errors.nombre = 'El nombre es requerido';
+        }
+        if (!rut_cliente.trim()) {
+          errors.rut_cliente = 'El RUT es requerido';
+        } else if (!validarRut(rut_cliente)) {
+          errors.rut_cliente = 'El RUT ingresado es inváaaaalido';
+        }
+        if (!email.trim()) {
+          errors.email = 'El correo electrónico es requerido';
+        } else if (!isValidEmail(email)) {
+          errors.email = 'El correo electrónico es inválido';
+        }
+        if (!telefono.trim()) {
+          errors.telefono = 'El teléfono es requerido';
+        } else if (!/^[0-9]*$/.test(telefono.trim())) {
+          errors.telefono = 'El teléfono solo puede contener números';
+        }
+        if (!ciudad.trim()) {
+          errors.ciudad = 'La ciudad es requerida';
+        }
+        // Repite este proceso para todos los campos del formulario
+
+        // Actualiza el estado de los errores
+
+        // Si no hay errores, realiza la acción deseada (en este caso, avanzar a la siguiente sección)
+        if (Object.keys(errors).length === 0) {
+          setSeccionFormulario(2);
+        }
+        break;
+      case 2:
+        // Realiza todas las validaciones necesarias aquí
+        if (typeof plazo === 'undefined' || !plazo.trim()) {
+          errors.plazo = 'Plazo de crédito es requerido';
+        }
+        if (Object.keys(errors).length === 0) {
+          setSeccionFormulario(3);
+        }
+        break;
+      case 3:
+        if (typeof edad === 'undefined' || !edad.trim()) {
+          errors.edad = 'Edad es requerida';
+        }
+        if (typeof estado_civil === 'undefined' || !estado_civil.trim()) {
+          errors.estado_civil = 'Estado civil es requerido';
+        }
+        if (typeof genero === 'undefined' || !genero.trim()) {
+          errors.genero = 'Género es requerido';
+        }
+        if (typeof hijos === 'undefined' || !hijos.trim()) {
+          errors.hijos = 'Campo requerido';
+        }
+        if (!NombresAtributos || NombresAtributos.length === 0) {
+          errors.NombresAtributos = 'Campo requerido';
+        }
+        if (!NombresAtributos || NombresAtributos.length > 3) {
+          errors.NombresAtributos = 'Por favor solo seleccione hasta 3 NombresAtributos';
+        }
+        break;
+      default:
+        break;
+    }
+
+    return errors;
+  };
+
+
   return (
     <>
 
@@ -647,6 +698,17 @@ const Page = (props) => {
               />
             </div>
             <h1 className="text-lg font-bold">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
+            <div className="flex justify-between">
+              <span className={`flex items-center justify-center w-6 h-6 rounded-full ${seccionFormulario === 1 ? 'bg-red-500' : 'bg-gray-500'}`}>
+              <span className="text-white font-bold">1</span>
+              </span>
+              <span className={`flex items-center justify-center w-6 h-6 rounded-full ${seccionFormulario === 2 ? 'bg-red-500' : 'bg-gray-500'}`}>
+              <span className="text-white font-bold">2</span>
+              </span>
+              <span className={`flex items-center justify-center w-6 h-6 rounded-full ${seccionFormulario === 3 ? 'bg-red-500' : 'bg-gray-500'}`}>
+              <span className="text-white font-bold">3</span>
+              </span>
+            </div>
             {successMessage && (
               <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                 <span className="font-medium"></span> {successMessage}
@@ -658,456 +720,484 @@ const Page = (props) => {
               </div>
             )}
             <form onSubmit={handleSubmit} ref={formRef} className="mx-auto max-w-full">
-              <h1 className="text-l flex justify-start py-4 font-bold">
-                1. Tus Datos
-              </h1>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div className="mb-4">
-                  <label htmlFor="name" className="mb-2 flex justify-start">
-                    Nombre:
-                  </label>
-                  <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="rut_cliente" className="mb-2 flex justify-start">
-                    Rut:
-                  </label>
-                  <input
-                    type="text"
-                    id="rut_cliente"
-                    name="rut_cliente"
-                    value={rut_cliente} onChange={handleRutChange}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    required
-                  />
-                  {errors.rut_cliente && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.rut_cliente}</span>}
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="email" className="mb-2 flex justify-start">
-                    Correo electrónico:
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={email} onChange={(e) => setEmail(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="telefono" className="mb-2 flex justify-start">
-                    Teléfono:
-                  </label>
-                  <input
-                    type="tel"
-                    id="telefono"
-                    name="telefono"
-                    value={telefono}
-                    onChange={(e) => setTelefono(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="ciudad" className="mb-2 flex justify-start">
-                    Ciudad:
-                  </label>
-                  <input
-                    type="text"
-                    id="ciudad"
-                    name="ciudad"
-                    value={ciudad} onChange={(e) => setCiudad(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="referral" className="mb-2 flex justify-start">
-                    ¿Cómo te enteraste?
-                  </label>
-                  <select
-                    id="referral"
-                    name="referral"
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    value={contacto}
-                    onChange={handleContactoChange}
-                    required // El atributo required se coloca aquí
-                  >
-                    <option value="" disabled>
-                      Seleccione una opción
-                    </option>
-                    {optionsComoTeEnteraste.map((opcion, index) => (
-                      <option key={index} value={opcion.cod_contacto}>{opcion.nombre}</option>
-                    ))}
-                  </select>
-                </div>
-                <input
-                  type="text"
-                  id="codigoUnisoft"
-                  name="codigoUnisoft"
-                  className="form-control" // O la clase que corresponda en tu CSS
-                  defaultValue={cod_unysoft}
-                  hidden
-                />
-              </div>
-
-              <h1 className="text-l flex justify-start py-4 font-bold">
-                2. Simula
-              </h1>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div className="mb-4">
-                  <label htmlFor="modelo_vivienda" className="mb-2 flex justify-start">
-                    Modelo:
-                  </label>
-                  <select
-                    id="modelo_vivienda"
-                    name="modelo_vivienda"
-                    value={modelo_vivienda}
-                    onChange={(event) => handleModeloChange(event, modelo_vivienda)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                  > {modelosData?.map(modelo_vivienda => (
-                    <option key={modelo_vivienda.idModelo} value={modelo_vivienda.idModelo} onChange={(e) => handleModeloChange(e)}>{modelo_vivienda.nombreModelo}</option>
-                  ))}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="valorUF" className="mb-2 flex justify-start">
-                    Valor (UF)
-                  </label>
-                  <input
-                    input type="text" id="valorUF" name="valorUF"
-                    value={valorUFModelo} onChange={(e) => setValorUFModelo(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    disabled
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="subsidio" className="mb-2 flex justify-start">
-                    Tipo Subsidio
-                  </label>
-                  <input
-                    type="text"
-                    id="subsidio"
-                    name="subsidio"
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    value={proyectoData?.datos?.proyecto?.idSubsidio === "1" ? 'DS1' :
-                      proyectoData?.datos?.proyecto?.idSubsidio === "4" ? 'DS19' :
-                        proyectoData?.datos?.proyecto?.idSubsidio === "5" ? 'Sin subsidio' : ''}
-                    onChange={(e) => setTipoSubsidio(e.target.value)} disabled
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="montoSubsidio" className="mb-2 flex justify-start">
-                    Monto Subsidio
-                  </label>
-                  <input
-                    type="text"
-                    id="montoSubsidio"
-                    name="montoSubsidio"
-                    value={montoSubsidio}
-                    onChange={(e) => setMontoSubsidio(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    disabled
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="porcentajeCredito" className="mb-2 flex justify-start">
-                    % Crédito Hipotecario
-                  </label>
-                  <input
-                    id="porcentajeCredito"
-                    name="porcentajeCredito"
-                    type="text"
-                    value={proyectoData?.datos?.proyecto?.nombreSubsidio === "Sin Subsidio" ? "80%" : `${porcentajeCredito}%`}
-                    onChange={(e) => setPorcentajeCredito(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    disabled
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="referral" className="mb-2 flex justify-start">
-                    Plazo del Crédito (años):
-                  </label>
-                  <select
-                    id="plazo"
-                    name="plazo"
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    value={plazo} onChange={(e) => setPlazoCredito(e.target.value)}
-                    required>
-                    <option value="" disabled>Selecciona una opción</option>
-                    <option value="20">20 años</option>
-                    <option value="25">25 años</option>
-                    <option value="30">30 años</option>
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="montoCreditoHipotecario" className="mb-2 flex justify-start">
-                    Monto Crédito Hipotecario
-                  </label>
-                  <input
-                    type="text"
-                    id="montoCreditoHipotecario"
-                    name="montoCreditoHipotecario"
-                    value={parseInt(montoCreditoHipotecario)}
-                    onChange={(e) => setMontoCreditoHipotecario(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    disabled
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="ahorroMinimo" className="mb-2 flex justify-start">
-                    Ahorro Minimo
-                  </label>
-                  <input
-                    type="text" id="ahorroMinimo" name="ahorroMinimo"
-                    value={ahorroMinimo}
-                    onChange={(e) => setAhorroMinimo(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    disabled
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="pieReserva" className="mb-2 flex justify-start">
-                    Pie o Reserva
-                  </label>
-                  <input
-                    type="email"
-                    id="pieReserva"
-                    name="pieReserva"
-                    value={pieReserva}
-                    onChange={(e) => setPieReserva(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <h1 className="text-l flex justify-start py-4 font-bold">
-                3. Tu Dividendo
-              </h1>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="mb-4">
-                  <label htmlFor="edad" className="mb-2 flex justify-start">
-                    Edad
-                  </label>
-                  <select
-                    id="edad"
-                    name="edad"
-                    value={edad}
-                    onChange={(e) => setEdad(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    required
-                  >
-                    <option value="" disabled>
-                      Seleccione una opción
-                    </option>
-                    <option value="hasta24">Hasta 24 años</option>
-
-                    <option value="entre24y35">Entre 24 y 35 años</option>
-
-                    <option value="masde35">Más de 35 años</option>
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="estado civil" className="mb-2 flex justify-start">
-                    Estado Civil
-                  </label>
-                  <select
-                    type="text" id="estado_civil" name="estado_civil"
-                    value={estado_civil}
-                    onChange={(e) => setEstadoCivil(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                  > <option value="" disabled>Selecciona una opción</option>
-
-                    <option value="soltero">Soltero/a</option>
-
-                    <option value="solteroConPareja">Soltero/a con pareja estable</option>
-
-                    <option value="divorciado">Divorciado/a</option>
-
-                    <option value="casado">Casado/a</option> </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-
-                <div className="mb-4">
-                  <label htmlFor="genero" className="mb-2 flex justify-start">
-                    Género
-                  </label>
-                  <select
-                    id="genero"
-                    name="genero"
-                    value={genero}
-                    onChange={(e) => setGenero(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                  > <option value="">Selecciona una opción</option>
-                    <option value="Hombre">Hombre</option>
-                    <option value="Mujer">Mujer</option>
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="hijos" className="mb-2 flex justify-start">
-                    Hijos
-                  </label>
-                  <select
-                    id="hijos"
-                    name="hijos"
-                    value={hijos}
-                    onChange={(e) => setTieneHijos(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                  >  <option value="" disabled>Selecciona una opción</option>
-
-                    <option value="no">No</option>
-
-                    <option value="1">1</option>
-
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4 o más</option>
-                  </select>
-                </div>
-
-              </div>
-
-
-
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
-                <div className="mb-4">
-                  <label htmlFor="NombresAtributos" className="mb-2 flex justify-start">
-                    Atributos para elegir vivienda
-                  </label>
-                  <select
-                    id="atributos"
-                    name="atributos"
-                    value={NombresAtributos}
-                    onChange={handleSelectChangeAtributos}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    // disabled={isSelectDisabledOtrosAtributos}
-                    required
-                  >
-                    <option value="" disabled>
-                      Seleccione una opción
-                    </option>
-                    {optionsAtributosImportantes.map((atributo) => (
-                      <option key={atributo.id} value={atributo.nombre}>
-                        {atributo.nombre}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-
-                {NombresAtributos == "OTRO" && (
-                  <div className="mb-4">
-                    <label htmlFor="otros_atributos" className="mb-2 flex justify-start">Ingrese otro atributo importante:</label>
-                    <textarea
-                      id="otros_atributos"
-                      name="otros_atributos"
-                      className="form-textarea w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                      value={otros_atributos}
-                      onChange={handleOtrosAtributosChange}
-                    ></textarea>
+              {seccionFormulario == 1 && (
+                <>
+                  <h1 className="text-l flex justify-start py-4 font-bold">
+                    1. Tus Datos
+                  </h1>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="mb-4">
+                      <label htmlFor="name" className="mb-2 flex justify-start">
+                        Nombre:
+                      </label>
+                      <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        value={nombre}
+                        onChange={(e) => setNombre(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="rut_cliente" className="mb-2 flex justify-start">
+                        Rut:
+                      </label>
+                      <input
+                        type="text"
+                        id="rut_cliente"
+                        name="rut_cliente"
+                        value={rut_cliente} onChange={handleRutChange}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      />
+                      {errors.rut_cliente && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.rut_cliente}</span>}
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="email" className="mb-2 flex justify-start">
+                        Correo electrónico:
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={email} onChange={(e) => setEmail(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="telefono" className="mb-2 flex justify-start">
+                        Teléfono:
+                      </label>
+                      <input
+                        type="tel"
+                        id="telefono"
+                        name="telefono"
+                        value={telefono}
+                        onChange={(e) => setTelefono(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      />
+                      {errors.telefono && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.telefono}</span>}
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="ciudad" className="mb-2 flex justify-start">
+                        Ciudad:
+                      </label>
+                      <input
+                        type="text"
+                        id="ciudad"
+                        name="ciudad"
+                        value={ciudad} onChange={(e) => setCiudad(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="referral" className="mb-2 flex justify-start">
+                        ¿Cómo te enteraste?
+                      </label>
+                      <select
+                        id="referral"
+                        name="referral"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        value={contacto}
+                        onChange={handleContactoChange}
+                        required // El atributo required se coloca aquí
+                      >
+                        <option value="" disabled>
+                          Seleccione una opción
+                        </option>
+                        {optionsComoTeEnteraste.map((opcion, index) => (
+                          <option key={index} value={opcion.cod_contacto}>{opcion.nombre}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <input
+                      type="text"
+                      id="codigoUnisoft"
+                      name="codigoUnisoft"
+                      className="form-control" // O la clase que corresponda en tu CSS
+                      defaultValue={cod_unysoft}
+                      hidden
+                    />
                   </div>
-                )}
-
-
-              </div>
-
-
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
-                <div className="mb-4">
-                  <label htmlFor="motivo_compra" className="mb-2 flex justify-start">Motivo de la Compra:</label>
-                  <select
-                    id="motivo_compra"
-                    name="motivo_compra"
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    value={motivo_compra}
-                    // disabled={isSelectDisabledMotivoCompra}
-                    onChange={(e) => setMotivoCompra(e.target.value)}
-                    required
+                  <button
+                    onClick={() => validarCampos(1)} // Aquí envuelve la llamada a validarCampos(1) en una función
+                    className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
                   >
-                    <option value="" disabled>Selecciona una opción</option>
-                    <option value="habitar (vivir usted o un familiar)">Habitar (vivir usted o un familiar)</option>
-                    <option value="invertir (para arriendo)">Invertir (para arriendo)</option>
-                    <option value="segunda vivienda (vacaciones)">Segunda Vivienda (vacaciones)</option>
-                    <option value="otro">Otro (por favor especifique)</option>
-                  </select>
-                  {/* {errors.motivo_compra && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.motivo_compra}</span>} */}
-                </div>
-                {motivo_compra === "otro" && (
-                  <div className="form-group">
-                    <label htmlFor="otroMotivoCompra" className="mb-2 flex justify-start">Especifique otro motivo de compra:</label>
-                    <br></br>
-                    <textarea
-                      id="otroMotivoCompra"
-                      name="otroMotivoCompra"
-                      className="form-textarea w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                      value={otroMotivoCompra}
-                      onChange={handleOtrosMotivosChange}
-                    ></textarea>
-                    {errors.otroMotivoCompra && <span className="error">{errors.otroMotivoCompra}</span>}
-                  </div>
-                )}
-
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
-                <div className="mb-4">
-
-                  <label htmlFor="residente_vivienda" className="mb-2 flex justify-start">¿Quiénes Habitarán la Propiedad?</label>
-
-                  <select id="residente_vivienda" name="residente_vivienda" className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none" value={residente_vivienda} onChange={(e) => setQuienesHabitaran(e.target.value)} required>
-
-                    <option value="" disabled>Selecciona una opción</option>
-
-                    <option value="solo/a usted">Solo/a usted</option>
-
-                    <option value="usted y su pareja">Usted y su pareja</option>
-
-                    <option value="Usted, su pareja e hijos">Usted, su pareja e hijos</option>
-
-                    <option value="un familiar o amigo">Un familiar o amigo</option>
-
-                    <option value="otro">Otro (por favor nombrar)</option>
-
-                  </select>
-
-                  {/* {errors.residente_vivienda && <span className="error">{errors.residente_vivienda}</span>} */}
-
-                </div>
-
-              </div>
-
-              {residente_vivienda === "otro" && (
-                <div className="form-group">
-                  <label htmlFor="otroQuienesHabitaran" className="mb-2 flex justify-start">Especifique quién(es) habitarán:</label>
-                  <textarea id="otroQuienesHabitaran" name="otroQuienesHabitaran" className="form-textarea w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none" value={otroQuienesHabitaran} onChange={(e) => setOtroQuienesHabitaran(e.target.value)}></textarea>
-                  {errors.otroQuienesHabitaran && <span className="error">{errors.otroQuienesHabitaran}</span>}
-                </div>
+                    Siguiente
+                  </button>
+                </>
               )}
-              <div className="flex justify-center">
-                <ReCAPTCHA
-                  sitekey={captcha_key}
-                  onChange={handleCaptchaChange}
-                  className="mx-auto"
-                /></div>
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
-                >
-                  Enviar
-                </button>
-              </div>
+              {seccionFormulario == 2 && (
+                <>
+                  <h1 className="text-l flex justify-start py-4 font-bold">
+                    2. Simula
+                  </h1>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="mb-4">
+                      <label htmlFor="modelo_vivienda" className="mb-2 flex justify-start">
+                        Modelo:
+                      </label>
+                      <select
+                        id="modelo_vivienda"
+                        name="modelo_vivienda"
+                        value={modelo_vivienda}
+                        onChange={(event) => handleModeloChange(event, modelo_vivienda)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                      > {modelosData?.map(modelo_vivienda => (
+                        <option key={modelo_vivienda.idModelo} value={modelo_vivienda.idModelo} onChange={(e) => handleModeloChange(e)}>{modelo_vivienda.nombreModelo}</option>
+                      ))}
+                      </select>
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="valorUF" className="mb-2 flex justify-start">
+                        Valor (UF)
+                      </label>
+                      <input
+                        input type="text" id="valorUF" name="valorUF"
+                        value={valorUFModelo} onChange={(e) => setValorUFModelo(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="subsidio" className="mb-2 flex justify-start">
+                        Tipo Subsidio
+                      </label>
+                      <input
+                        type="text"
+                        id="subsidio"
+                        name="subsidio"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        value={proyectoData?.datos?.proyecto?.idSubsidio === "1" ? 'DS1' :
+                          proyectoData?.datos?.proyecto?.idSubsidio === "4" ? 'DS19' :
+                            proyectoData?.datos?.proyecto?.idSubsidio === "5" ? 'Sin subsidio' : ''}
+                        onChange={(e) => setTipoSubsidio(e.target.value)} disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="montoSubsidio" className="mb-2 flex justify-start">
+                        Monto Subsidio
+                      </label>
+                      <input
+                        type="text"
+                        id="montoSubsidio"
+                        name="montoSubsidio"
+                        value={montoSubsidio}
+                        onChange={(e) => setMontoSubsidio(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="porcentajeCredito" className="mb-2 flex justify-start">
+                        % Crédito Hipotecario
+                      </label>
+                      <input
+                        id="porcentajeCredito"
+                        name="porcentajeCredito"
+                        type="text"
+                        value={proyectoData?.datos?.proyecto?.nombreSubsidio === "Sin Subsidio" ? "80%" : `${porcentajeCredito}%`}
+                        onChange={(e) => setPorcentajeCredito(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="referral" className="mb-2 flex justify-start">
+                        Plazo del Crédito (años):
+                      </label>
+                      <select
+                        id="plazo"
+                        name="plazo"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        value={plazo} onChange={(e) => setPlazoCredito(e.target.value)}
+                        required>
+                        <option value="" disabled>Selecciona una opción</option>
+                        <option value="20">20 años</option>
+                        <option value="25">25 años</option>
+                        <option value="30">30 años</option>
+                      </select>
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="montoCreditoHipotecario" className="mb-2 flex justify-start">
+                        Monto Crédito Hipotecario
+                      </label>
+                      <input
+                        type="text"
+                        id="montoCreditoHipotecario"
+                        name="montoCreditoHipotecario"
+                        value={parseInt(montoCreditoHipotecario)}
+                        onChange={(e) => setMontoCreditoHipotecario(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="ahorroMinimo" className="mb-2 flex justify-start">
+                        Ahorro Minimo
+                      </label>
+                      <input
+                        type="text" id="ahorroMinimo" name="ahorroMinimo"
+                        value={ahorroMinimo}
+                        onChange={(e) => setAhorroMinimo(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="pieReserva" className="mb-2 flex justify-start">
+                        Pie o Reserva
+                      </label>
+                      <input
+                        type="email"
+                        id="pieReserva"
+                        name="pieReserva"
+                        value={pieReserva}
+                        onChange={(e) => setPieReserva(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        disabled
+                      />
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => validarCampos(2)}
+                    className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
+                  >
+                    Siguiente
+                  </button>
+                </>
+              )}
+              {seccionFormulario == 3 && (
+                <>
+                  <h1 className="text-l flex justify-start py-4 font-bold">
+                    3. Tu Dividendo
+                  </h1>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="mb-4">
+                      <label htmlFor="edad" className="mb-2 flex justify-start">
+                        Edad
+                      </label>
+                      <select
+                        id="edad"
+                        name="edad"
+                        value={edad}
+                        onChange={(e) => setEdad(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      >
+                        <option value="" disabled>
+                          Seleccione una opción
+                        </option>
+                        <option value="hasta24">Hasta 24 años</option>
+
+                        <option value="entre24y35">Entre 24 y 35 años</option>
+
+                        <option value="masde35">Más de 35 años</option>
+                      </select>
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="estado civil" className="mb-2 flex justify-start">
+                        Estado Civil
+                      </label>
+                      <select
+                        type="text" id="estado_civil" name="estado_civil"
+                        value={estado_civil}
+                        onChange={(e) => setEstadoCivil(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      > <option value="" disabled>Selecciona una opción</option>
+
+                        <option value="soltero">Soltero/a</option>
+
+                        <option value="solteroConPareja">Soltero/a con pareja estable</option>
+
+                        <option value="divorciado">Divorciado/a</option>
+
+                        <option value="casado">Casado/a</option> </select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+                    <div className="mb-4">
+                      <label htmlFor="genero" className="mb-2 flex justify-start">
+                        Género
+                      </label>
+                      <select
+                        id="genero"
+                        name="genero"
+                        value={genero}
+                        onChange={(e) => setGenero(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      > <option value="">Selecciona una opción</option>
+                        <option value="Hombre">Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                      </select>
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="hijos" className="mb-2 flex justify-start">
+                        Hijos
+                      </label>
+                      <select
+                        id="hijos"
+                        name="hijos"
+                        value={hijos}
+                        onChange={(e) => setTieneHijos(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        required
+                      >  <option value="" disabled>Selecciona una opción</option>
+
+                        <option value="no">No</option>
+
+                        <option value="1">1</option>
+
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4 o más</option>
+                      </select>
+                    </div>
+
+                  </div>
+
+
+
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
+                    <div className="mb-4">
+                      <label htmlFor="NombresAtributos" className="mb-2 flex justify-start">
+                        Atributos para elegir vivienda
+                      </label>
+                      <select
+                        id="atributos"
+                        name="atributos"
+                        value={NombresAtributos}
+                        onChange={handleSelectChangeAtributos}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        // disabled={isSelectDisabledOtrosAtributos}
+                        required
+                      >
+                        <option value="" disabled>
+                          Seleccione una opción
+                        </option>
+                        {optionsAtributosImportantes.map((atributo) => (
+                          <option key={atributo.id} value={atributo.nombre}>
+                            {atributo.nombre}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+
+                    {NombresAtributos == "OTRO" && (
+                      <div className="mb-4">
+                        <label htmlFor="otros_atributos" className="mb-2 flex justify-start">Ingrese otro atributo importante:</label>
+                        <textarea
+                          id="otros_atributos"
+                          name="otros_atributos"
+                          className="form-textarea w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                          value={otros_atributos}
+                          onChange={handleOtrosAtributosChange}
+                        ></textarea>
+                      </div>
+                    )}
+
+
+                  </div>
+
+
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
+                    <div className="mb-4">
+                      <label htmlFor="motivo_compra" className="mb-2 flex justify-start">Motivo de la Compra:</label>
+                      <select
+                        id="motivo_compra"
+                        name="motivo_compra"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        value={motivo_compra}
+                        // disabled={isSelectDisabledMotivoCompra}
+                        onChange={(e) => setMotivoCompra(e.target.value)}
+                        required
+                      >
+                        <option value="" disabled>Selecciona una opción</option>
+                        <option value="habitar (vivir usted o un familiar)">Habitar (vivir usted o un familiar)</option>
+                        <option value="invertir (para arriendo)">Invertir (para arriendo)</option>
+                        <option value="segunda vivienda (vacaciones)">Segunda Vivienda (vacaciones)</option>
+                        <option value="otro">Otro (por favor especifique)</option>
+                      </select>
+                      {/* {errors.motivo_compra && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.motivo_compra}</span>} */}
+                    </div>
+                    {motivo_compra === "otro" && (
+                      <div className="form-group">
+                        <label htmlFor="otroMotivoCompra" className="mb-2 flex justify-start">Especifique otro motivo de compra:</label>
+                        <br></br>
+                        <textarea
+                          id="otroMotivoCompra"
+                          name="otroMotivoCompra"
+                          className="form-textarea w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                          value={otroMotivoCompra}
+                          onChange={handleOtrosMotivosChange}
+                        ></textarea>
+                        {errors.otroMotivoCompra && <span className="error">{errors.otroMotivoCompra}</span>}
+                      </div>
+                    )}
+
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
+                    <div className="mb-4">
+
+                      <label htmlFor="residente_vivienda" className="mb-2 flex justify-start">¿Quiénes Habitarán la Propiedad?</label>
+
+                      <select id="residente_vivienda" name="residente_vivienda" className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none" value={residente_vivienda} onChange={(e) => setQuienesHabitaran(e.target.value)} required>
+
+                        <option value="" disabled>Selecciona una opción</option>
+
+                        <option value="solo/a usted">Solo/a usted</option>
+
+                        <option value="usted y su pareja">Usted y su pareja</option>
+
+                        <option value="Usted, su pareja e hijos">Usted, su pareja e hijos</option>
+
+                        <option value="un familiar o amigo">Un familiar o amigo</option>
+
+                        <option value="otro">Otro (por favor nombrar)</option>
+
+                      </select>
+
+                      {/* {errors.residente_vivienda && <span className="error">{errors.residente_vivienda}</span>} */}
+
+                    </div>
+
+                  </div>
+
+                  {residente_vivienda === "otro" && (
+                    <div className="form-group">
+                      <label htmlFor="otroQuienesHabitaran" className="mb-2 flex justify-start">Especifique quién(es) habitarán:</label>
+                      <textarea id="otroQuienesHabitaran" name="otroQuienesHabitaran" className="form-textarea w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none" value={otroQuienesHabitaran} onChange={(e) => setOtroQuienesHabitaran(e.target.value)}></textarea>
+                      {errors.otroQuienesHabitaran && <span className="error">{errors.otroQuienesHabitaran}</span>}
+                    </div>
+                  )}
+
+
+                  <div className="flex justify-center">
+                    <ReCAPTCHA
+                      sitekey={captcha_key}
+                      onChange={handleCaptchaChange}
+                      className="mx-auto"
+                    /></div>
+                  <div className="flex justify-center">
+                    <button
+                      type="submit"
+                      className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
+                    >
+                      Enviar
+                    </button>
+                  </div>
+                </>
+              )}
             </form>
           </div>
         </Modal>
@@ -1126,7 +1216,13 @@ const Page = (props) => {
 
             <div className="mx-auto mb-4 mt-4">
               <p className="text-18px pt-4 sm:text-center">
-                <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong> ,con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF, tasa anual <strong>{formatoNumero(formatNumberWithCommas((tasaMensual * 12).toFixed(1)))} %</strong> y un plazo de <strong>{plazo}</strong> años es:
+                <strong>{nombre}</strong> el dividendo de tu cotización para el modelo <strong>{modelosData[0].Modelos.nombreModelo}</strong>, con un pie de <strong>{formatoNumero(formatNumberWithCommas(pieReserva))}</strong> UF,</p>
+              <p>
+                <span className="text-lg"><strong>tasa anual {formatoNumero(formatNumberWithCommas((tasaMensual * 12).toFixed(1)))}% </strong></span>
+                <i>("asociada a <strong>{proyectoData?.datos?.proyecto?.bancoTasa}")</strong></i>
+              </p>
+              <p className="text-18px pt-2 sm:text-center">
+                y un plazo de <strong>{plazo}</strong> años es:
               </p>
             </div>
 
