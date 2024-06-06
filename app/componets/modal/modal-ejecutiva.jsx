@@ -49,7 +49,6 @@ const Page = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes agregar la lógica para enviar los datos del formulario
-    console.log(formData);
   };
 
   return (

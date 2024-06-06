@@ -5,19 +5,12 @@ import { Ctrl_como_te_enteraste } from '@/app/controllers/Ctrl_como_te_enteraste
 import { Ctrl_atributos_importantes } from '@/app/controllers/Ctrl_atributos_importantes';
 import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa la función generatePDF desde el archivo donde la defines
 import ReCAPTCHA from "react-google-recaptcha";
-
 const Modal = ({ onClose, children }) => {
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-center overflow-auto bg-gray-800 bg-opacity-75">
-    <div className="relative w-full max-w-4xl rounded bg-white p-8 shadow-lg">
-      <div className="flex justify-between items-center">
-        <img
-          src="/logos/logoRojoMalpo.png"
-          alt="Logo"
-          className="h-6 w-auto"
-        />
+    <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opacity-75">
+      <div className="relative m-auto w-full max-w-4xl rounded bg-white p-8 shadow-lg">
         <button
-          className="text-rojoMalpo hover:text-gray-400"
+          className="absolute right-0 top-0 m-4 text-rojoMalpo hover:text-gray-400"
           onClick={onClose}
         >
           <img
@@ -26,14 +19,12 @@ const Modal = ({ onClose, children }) => {
             src={`https://c.animaapp.com/o0ROixJd/img/cancel@2x.png`}
           />
         </button>
+        <div className="mt-4">{children}</div>
       </div>
-            <span className="text-rojoMalpo font-bold text-lg">Cotización</span>
-      <div className="mt-4">{children}</div>
     </div>
-  </div>
-  
   );
 };
+
 
 const Page = (props) => {
   var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
@@ -402,11 +393,10 @@ const Page = (props) => {
 
       try {
         // Enviar el formulario a la API
-        //  const response = await Ctrl_cotizador(formData);
-        // console.log("Los datos son:", formData);
-        // if (response && !response.ok) {  
-        //  throw new Error('Error al enviar el formulario');
-        // }   
+         const response = await Ctrl_cotizador(formData);
+        if (response && !response.ok) {  
+         throw new Error('Error al enviar el formulario');
+        }   
         // Realizar cualquier otra acción después de enviar el formulario
         setModalOpen(false);
         setErrorMessage("");
@@ -701,7 +691,13 @@ const Page = (props) => {
       {modalOpen && (
         <Modal onClose={handleModalToggle}>
           <div className="container mx-auto px-4 py-2">
-
+          <div className="mb-3">
+              <img
+                src="/logos/logoRojoMalpo.png"
+                alt="Logo"
+                className="mr-4 h-6 w-auto"
+              />
+            </div>
             <p className="mb-8 mt-8">
               <h1 className="text-lg font-bold bg-rojoMalpo text-white">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
             </p>

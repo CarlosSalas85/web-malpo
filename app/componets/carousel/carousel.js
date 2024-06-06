@@ -27,7 +27,7 @@ const Carousel = (props) => {
 if (filteredImages.length === 0) {
  return null;
 }
-//   console.log("Imagenes Filtradas:", filteredImages);
+
 
   const [currentImage, setCurrentImage] = useState(0);
 

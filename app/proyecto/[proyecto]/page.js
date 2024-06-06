@@ -47,7 +47,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
   const nombreCiudad =proyectoData?.datos?.proyecto?.comunaNombre;
   const ejecutivas=proyectoData?.datos?.usuarios;
   const ejecutivasConImagen = ejecutivas?.filter(ejecutiva => ejecutiva.usuarioImagen != null);
-  // console.log("Las ejecutivas son:", ejecutivas);
+  const urlEficienciaEnergetica = proyectoData?.datos?.recursos?.idTipo === "2" ? "https://web.malpo.cl/minisitios/departamento/"  : "https://web.malpo.cl/minisitios/casa/";
 
   const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion}/>;
 
@@ -141,7 +141,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
       <BannerEjecutivas usuarios={proyectoData?.datos?.usuarios} />
        )} 
        </div>
-      <BannerAccesos/>
+       <BannerAccesos url={urlEficienciaEnergetica} />
    <BannerRegiones/>
     </>
   );

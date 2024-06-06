@@ -21,7 +21,6 @@ export function Ctrl_como_te_enteraste() {
                 // No necesitas invalidar la caché o realizar otras acciones aquí
             })
             .catch(error => {
-                //console.log(error);
                 reject(error); // Rechaza la Promesa si hay algún error
             });
     });

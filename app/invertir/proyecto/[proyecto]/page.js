@@ -57,7 +57,7 @@ const nombreTipo = modelosData[0]?.nombreTipo;
   const arriendo =formatNumberWithThousandSeparator(parseInt(proyectosInversionista[0].arriendo));
   const imagenCabecera=proyectoInversionistaData?.datos?.proyecto?.imagenCabecera;
   const imagenMiniatura=proyectoInversionistaData?.datos?.proyecto.imagenMiniatura;
-  // console.log("proyectosTodos,proyectoInversionista",proyectosTodos,proyectoInversionistaData);
+  const urlEficienciaEnergetica = proyectoInversionistaData?.datos?.recursos?.idTipo == "2" ? "https://web.malpo.cl/minisitios/departamento/"  : "https://web.malpo.cl/minisitios/casa/";
   const url = <UrlBanner nombre={nombre} /* idRegion={proyectoInversionistaData?.datos?.proyecto?.idRegion} nombreRegion={proyectoInversionistaData?.datos?.proyecto?.regionNombre} idComuna={proyectoInversionistaData?.datos?.proyecto?.idComuna} comunaNombre={proyectoInversionistaData?.datos?.proyecto?.comunaNombre} *//>;
 
   return (
@@ -138,7 +138,8 @@ const nombreTipo = modelosData[0]?.nombreTipo;
         </div>
       </div>
 
-      <BannerAccesos />
+      <BannerAccesos url={urlEficienciaEnergetica} />
+
     </>
   );
 };

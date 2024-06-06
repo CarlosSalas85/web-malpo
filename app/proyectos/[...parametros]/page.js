@@ -26,7 +26,7 @@ export default async function Page({ params }) {
   const data2 = await Ctrl_aplicar_filtros(ids);
   const proyectosIniciales = data2.datos;
 
-  // console.log("Proyectos Iniciales",proyectosIniciales);
+
 
   // Mapeo de los filtros en arrays separados
   const contenidoFiltros = {

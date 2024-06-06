@@ -19,13 +19,11 @@ export function Ctrl_redes_sociales() {
         })
             .then(response => response.json())
             .then(data => {
-                // console.log(data);
                 resolve(data);
                 revalidateTag('redes_sociales'); // Invalida y actualiza la caché para la etiqueta 'ciudades'
                 // Resuelve la Promesa con los datos obtenidos
             })
             .catch(error => {
-                //console.log(error);
                 reject(error); // Rechaza la Promesa si hay algún error
             });
     });

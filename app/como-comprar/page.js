@@ -9,7 +9,7 @@ import ButtonComoComprar from "@/app/componets/banner-como-comprar/button-como-c
 import BannerRegiones from "@/app/function/banner-regiones-cliente";
 
 import ModalCorreos from "@/app/componets/modal/modal-correos";
-import {useGoogleReCaptcha} from "react-google-recaptcha";
+
 
 
 

@@ -22,13 +22,10 @@ export function Ctrl_aplicar_filtros(ids) {
         })
         .then(response => response.json())
         .then(data => {
-            // console.log('ESTOY EN CTRL_APLICAR_FILTROS');
-            // console.log(data);
             resolve(data); // Resuelve la Promesa con los datos obtenidos
             revalidateTag('filtros');
         })
         .catch(error => {
-            //console.log(error);
             reject(error); // Rechaza la Promesa si hay algún error
         });
 });

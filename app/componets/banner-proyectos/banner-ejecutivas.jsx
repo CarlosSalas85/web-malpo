@@ -3,7 +3,6 @@ import CardEjecutiva from "../card-proyecto/card-ejecutiva";
 
 const Banner = (props) => {
   const ejecutivas = props.usuarios;
-  // console.log("LAS EJECUTAS DEL BANNER EJECUTIVAS SON:", ejecutivas);
   // const ejecutivasConImagen = ejecutivas.filter(ejecutiva => ejecutiva.usuarioImagen != null);
   return (
     <>

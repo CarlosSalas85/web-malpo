@@ -330,7 +330,6 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
     if (!proyectos || !Array.isArray(proyectos)) {
       return;
     }
-    console.log('estos son todos los proyecots', proyectos)
     const proyectosFiltrados = proyectos.filter(proyecto => {
       // Verificar si algún parámetro de proyecto es igual a cero
       let filtroTipo = false;

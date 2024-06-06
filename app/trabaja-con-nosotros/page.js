@@ -92,7 +92,7 @@ const page = () => {
         </div>
       </div>
       {/* modal */}
-      {modalOpen && <Modal onClose={handleModalToggle}></Modal>}
+      {/* {modalOpen && <Modal onClose={handleModalToggle}></Modal>} */}
       {/* modal */}
     </>
   );

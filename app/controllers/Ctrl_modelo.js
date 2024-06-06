@@ -20,11 +20,9 @@ export function Ctrl_modelo(id) {
             .then(response => response.json())
             .then(data => {
                 resolve(data); // Resuelve la Promesa con los datos obtenidos
-                // console.log(data);
                 revalidateTag(`${id}`);
             })
             .catch(error => {
-                //console.log(error);
                 reject(error); // Rechaza la Promesa si hay algún error
             });
     });

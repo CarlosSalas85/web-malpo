@@ -54,7 +54,6 @@ const FormularioAgendamientoInversionista = () => {
     const projectValue = e.target.value;
     setSelectedProject(projectValue);
     setFormData({ ...formData, project: projectValue }); // Actualiza formData.project
-    console.log("El valor de formDataProject",formData);
   };
 
 
@@ -74,7 +73,7 @@ const FormularioAgendamientoInversionista = () => {
 
     try {
       const response = await Ctrl_inversionista({ ...formData, captchaToken });
-      console.log('Response:', response);
+
 
       if (response.success) {
         setAlert({

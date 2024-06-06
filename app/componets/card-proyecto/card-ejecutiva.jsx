@@ -31,7 +31,6 @@ const Modal = ({ onClose, children }) => {
 
 const Cards = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
-  // console.log("Los props de la ejecutiva son:", props);
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
   };

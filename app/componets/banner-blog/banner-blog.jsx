@@ -9,7 +9,6 @@ const apiBlogs = await Ctrl_blogs();
 const datosBlogs = apiBlogs;
 
 const Banner = () => {
-  console.log(datosBlogs);
   return (
     <div className="pb-6 pt-10">
       <div className="mb-4 ml-4">

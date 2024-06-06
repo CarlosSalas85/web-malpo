@@ -25,7 +25,6 @@ export function Ctrl_regiones() {
         revalidateTag('regiones'); 
       })
       .catch((error) => {
-        //console.log(error);
         reject(error); // Rechaza la Promesa si hay algún error
       });
   });

@@ -7,7 +7,7 @@ export function Ctrl_atributos_importantes() {
         const username = process.env.NEXT_PUBLIC_SMTP_API_USERNAME;
         const password = process.env.NEXT_PUBLIC_SMTP_API_PASSWORD;
         const authHeader = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
-        // console.log("LA URL es:", url);
+
         fetch(url, {
             method: 'GET',
             headers: {
@@ -18,13 +18,10 @@ export function Ctrl_atributos_importantes() {
         })
             .then(response => response.json())
             .then(data => {
-                // console.log('ESTAS EN EL Ctrl_como_te_enteraste');
-                // console.log(data);
                 resolve(data); // Resuelve la Promesa con los datos obtenidos
                 // No necesitas invalidar la caché o realizar otras acciones aquí
             })
             .catch(error => {
-                //console.log(error);
                 reject(error); // Rechaza la Promesa si hay algún error
             });
     });

@@ -24,7 +24,6 @@ export function Ctrl_blogs_top() {
                 revalidateTag('blogs_top');  // Resuelve la Promesa con los datos obtenidos
             })
             .catch(error => {
-                //console.log(error);
                 reject(error); // Rechaza la Promesa si hay algún error
             });
     });

@@ -2,7 +2,6 @@ import {jsPDF} from 'jspdf';
 
 
 const generatePDF = (fechaConsulta,nombreProyecto,nombre,rut,telefono,email,modeloNombre,montoSubsidio,porcentajeCredito,montoCreditoHipotecario,ahorroMinimo,pieReserva,tasaMensual,plazoCredito,cotizacionCLP,fechaTasa) => {
-    // console.log("datos Tabla", montoSubsidio,porcentajeCredito,0,ahorroMinimo,pieReserva);
 
     function formatoNumero(elemento) {
         return new Intl.NumberFormat("es-CL").format(elemento);

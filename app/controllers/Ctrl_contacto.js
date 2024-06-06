@@ -7,13 +7,11 @@ export async function Ctrl_contacto(formData) {
   var subject= formData.subject;
   var to=process.env.SMTP_EMAIL_CONTACTO;
   var to2=formData.email;
-  // console.log("EL VALOR DE TO",to);
   var text='Nombre:' + formData.name + ' Email:' + formData.email; // Ajusta el formato del texto si lo necesitas
   var text2='Nuestro equipo de Malpo se pondrá en contacto contigo';
   var body = `<div><h1>${subject}</h1><p>Nombre: ${formData.name}</p><p>Email: ${formData.email}</p><p>phone: ${formData.phone}</p><p>Mensaje: ${formData.message}</p></div>`;
   // var body2 = `<div>Nuestro equipo de Malpo se pondrá en contacto contigo</div><div><img src="public/banners/logo-correo"/></div>`;
   var body2 = `<div>Nuestro equipo de Malpo se pondrá en contacto contigo</div><div>`;
-  // console.log(to,subject,body,process.env.SMTP_EMAIL_CONTACTO,process.env.NEXT_PUBLIC_API_URL);
   try {
     const { SMTP_EMAIL_CONTACTO, SMTP_PASSWORD } = process.env;
     if (!process.env.SMTP_EMAIL_CONTACTO || !process.env.SMTP_PASSWORD) {
@@ -47,9 +45,9 @@ export async function Ctrl_contacto(formData) {
       text, // Puedes incluir el texto plano si lo deseas
       html: body, // Aquí se pasa el contenido HTML
     });
-    console.log("Correo electrónico enviado exitosamente:", sendResult1);
+
     
-    console.log('Formulario enviado con éxito');
+
 
     const sendResult2 = await transport.sendMail({
       from: "contacto@malpo.cl",
@@ -59,9 +57,9 @@ export async function Ctrl_contacto(formData) {
       html: body2, // Aquí se pasa el contenido HTML
     });
 
-    console.log("Correo electrónico  a usuario enviado exitosamente:", sendResult2);
+
     
-    console.log('Formulario enviado con éxito');
+
     return true;
 
 
