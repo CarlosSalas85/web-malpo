@@ -34,8 +34,19 @@ const List = (props) => {
   // const precioUfFormateado = formatoNumero(parseInt(precioUf));
 
     const mt2Construidos = isModelo ? m2Contruidos : `${mt2Minimo} - ${mt2Maximo}`;
-    const habitaciones = isModelo ? cantidadDormitorios : habitacionesMinimo=='0' ? habitacionesMaximo : `${habitacionesMinimo} - ${habitacionesMaximo}`;
-    const banos = isModelo ? cantidadBanos : banosMinimo=='0' ? banosMaximo : `${banosMinimo} - ${banosMaximo}`;
+    const habitaciones =
+    isModelo
+      ? cantidadDormitorios
+      : habitacionesMinimo == '0'
+      ? habitacionesMaximo
+      : habitacionesMinimo == habitacionesMaximo
+      ? habitacionesMaximo
+      : `${habitacionesMinimo} - ${habitacionesMaximo}`;
+  const banos = 
+    isModelo ? 
+        cantidadBanos : banosMinimo=='0' 
+        ? banosMaximo : banosMinimo==banosMaximo ? banosMaximo :
+        `${banosMinimo} - ${banosMaximo}` ;
   const estacionamientos = isModelo ? estacionamientoModelo : `${estacionamientosMinimo} - ${estacionamientosMaximo}`;
   const precioUf = isModelo ? valorUfModelo : ufMinimo;
   const precioUfFormateado = formatoNumero(parseInt(precioUf));
@@ -59,7 +70,7 @@ const List = (props) => {
               <img
                 className="mr-3 h-8 w-8"
                 alt="icono"
-                src={idTipo === "2" ? "/iconos/departamento/departamento.png" : "https://c.animaapp.com/AuWMAeuM/img/house.svg"}
+                src={idTipo === "2" ? "/iconos/caracteristicas_proyecto/departamento.png" : "/iconos/caracteristicas_proyecto/house.png"}
                 />
             
               <span className="text-xl font-semibold">  {idTipo === "2" ? "Departamento" : "Casa"}
@@ -71,7 +82,7 @@ const List = (props) => {
               <img
                 className="mr-3 h-8 w-8"
                 alt="icono"
-                src="https://c.animaapp.com/z2K26Tdh/img/group-1@2x.png"
+                src="/iconos/caracteristicas_proyecto/mt2Cons.png"
               />
               <span className="text-xl font-semibold">
                 {mt2Construidos}  m2 Construidos
@@ -83,7 +94,7 @@ const List = (props) => {
               <img
                 className="mr-3 h-8 w-8"
                 alt="icono"
-                src="https://c.animaapp.com/AuWMAeuM/img/king-bed.svg"
+                src="/iconos/caracteristicas_proyecto/king-bed.png"
               />
               <span className="text-xl font-semibold">
                 {habitaciones} habitaciones
@@ -95,7 +106,7 @@ const List = (props) => {
               <img
                 className="mr-3 h-8 w-8"
                 alt="icono"
-                src="https://c.animaapp.com/AuWMAeuM/img/bathtub.svg"
+                src="/iconos/caracteristicas_proyecto/bano.png"
               />
               <span className="text-xl font-semibold">{banos} baños</span>
             </div>
@@ -107,7 +118,7 @@ const List = (props) => {
                   <img
                     className="mr-3 h-8 w-8"
                     alt="icono"
-                    src="https://c.animaapp.com/AuWMAeuM/img/directions-car.svg"
+                    src="/iconos/caracteristicas_proyecto/directions-car.png"
                   />
                   <span className="text-xl font-semibold">estacionamiento</span>
                 </div>
@@ -121,7 +132,7 @@ const List = (props) => {
                   <img
                     className="mr-3 h-8 w-8"
                     alt="icono"
-                    src="https://c.animaapp.com/AuWMAeuM/img/laptop-chromebook.svg"
+                    src="/iconos/caracteristicas_proyecto/laptop-chromebook.png"
                   />
                   <span className="text-xl font-semibold">Home Office</span>
                 </div>

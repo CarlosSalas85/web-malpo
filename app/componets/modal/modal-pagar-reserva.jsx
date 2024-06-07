@@ -1,10 +1,12 @@
 "use client";
 import React, { useRef, useState, useEffect } from 'react';
 import { Ctrl_cotizador } from '@/app/controllers/Ctrl_cotizador';
+import { Ctrl_codigo_web_pay } from '@/app/controllers/Ctrl_codigo_web_pay';
 import { Ctrl_como_te_enteraste } from '@/app/controllers/Ctrl_como_te_enteraste';
 import { Ctrl_atributos_importantes } from '@/app/controllers/Ctrl_atributos_importantes';
 import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa la función generatePDF desde el archivo donde la defines
 import ReCAPTCHA from "react-google-recaptcha";
+import { Ctrl_email_pagar_reserva } from '@/app/controllers/Ctrl_email_pagar_reserva';
 
 
 const Modal = ({ onClose, children }) => {
@@ -37,9 +39,9 @@ const Page = (props) => {
     setModalOpen(!modalOpen);
   };
 
-  const handleCaptchaChange = (value) => {
-    setCaptchaToken(value);
-  };
+  // const handleCaptchaChange = (value) => {
+  //   setCaptchaToken(value);
+  // };
 
 
 
@@ -52,27 +54,66 @@ const Page = (props) => {
     setErrors({});
     setSuccessMessage("");
     setErrorMessage("");
-    setCaptchaToken("");
+    // setCaptchaToken("");
   }
 
   const NumeroFormateado = ({ numero }) => {
     const numeroFormateado = numero.toLocaleString(); // Formatea el número con separadores de miles
   }
 
-  const [rut_cliente, setRut] = useState('');
+
+  // console.log("props de Pagar Reserva",props.ejecutivas);
+  const [codigoWebpay, setCodigoWebpay] = useState('');
+  const [showCodigoWebpay, setShowCodigoWebpay] = useState(false);
+  const [nombre, setNombre] = useState('');
+  const [rut_cliente, setRutCliente] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [ciudad, setCiudad] = useState('');
-  const [contacto, setComoTeEnteraste] = useState('');
-  
+  const [nombreProyecto, setNombreProyecto] = useState('');
+  const [ejecutivas, setEjecutivas] = useState([]);
+  const [nombreEjecutiva, setNombreEjecutiva] = useState('');
+  const [lote, setLote] = useState('');
+  const [habilitarCampos, setHabilitarCampos] = useState(false);
+  const [errors, setErrors] = useState({});
+  // Función para validar codigoWebPay
+  const handleLupaClick = async (event) => {
+    event.preventDefault();
+    try {
+      // Enviar el formulario a la API
+      const response = await Ctrl_codigo_web_pay(codigoWebpay);
+      console.log("La respuesta de la API es:", response);
+      // if (response && !response.ok) {
+      //   throw new Error('Error');
+      // }
+      setHabilitarCampos(true);
+      setEjecutivas(response?.datos?.ejecutivas);
+      setNombreProyecto(response?.datos?.nombreWebProyecto);
+      console.log("habilitarCampos", "ejecutivas", habilitarCampos, ejecutivas);
+      // Ctrl_email_pagar_reserva();
+      // Realizar cualquier otra acción después de enviar el formulario
+    } catch (error) {
+      console.error('Error al enviar el formularioooo:', error.message);
+      setErrorMessage("Ha ocurrido un error al enviar el formulario");
+      // setSuccessMessage("");
+    }
+
+    // Mostrar errores si el formulario no es válido
+    // setErrors(validationErrors);
+
+    console.log("Lupa clickeada, código Webpay:", codigoWebpay);
+  };
+
+
+
   // Función para manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
-    if (!captchaToken) {
-      setErrorMessage("Por favor, completa el captcha.");
-      setSuccessMessage("");
-      return;
-    }
+    // if (!captchaToken) {
+    //   setErrorMessage("Por favor, completa el captcha.");
+    //   setSuccessMessage("");
+    //   return;
+    // }
     // Validar el formulario antes de enviar
     const validationErrors = validateForm({
       nombre,
@@ -80,26 +121,6 @@ const Page = (props) => {
       email,
       telefono,
       ciudad,
-      contacto,
-      cod_unysoft,
-      modelo_vivienda,
-      valorUFModelo,
-      subsidio,
-      montoSubsidio,
-      NombresAtributos,
-      porcentajeCredito,
-      plazo,
-      montoCreditoHipotecario,
-      ahorroMinimo,
-      pieReserva,
-      edad,
-      estado_civil,
-      genero,
-      hijos,
-      motivo_compra,
-      otroMotivoCompra,
-      residente_vivienda,
-      otroQuienesHabitaran
     });
 
     if (Object.keys(validationErrors).length === 0) {
@@ -135,10 +156,10 @@ const Page = (props) => {
 
       try {
         // Enviar el formulario a la API
-         const response = await Ctrl_cotizador(formData);
-        if (response && !response.ok) {  
-         throw new Error('Error al enviar el formulario');
-        }   
+        const response = await Ctrl_cotizador(formData);
+        if (response && !response.ok) {
+          throw new Error('Error al enviar el formulario');
+        }
         // Realizar cualquier otra acción después de enviar el formulario
         setModalOpen(false);
         setErrorMessage("");
@@ -387,133 +408,177 @@ const Page = (props) => {
   return (
     <>
       <div className="mt-4 w-full px-4 md:mt-0 md:w-2/3 xl:w-1/3">
-     <button 
-     onClick={handleModalToggle}>
-        <div className="flex h-36 items-center justify-between rounded-xl border bg-grisMalpo px-2 text-white shadow-xl">
-          <span className="text-3xl font-normal hover:text-gray-400">
-            Pagar Reserva
-          </span>
-          <img className="h-12 w-12" alt="icono" src="https://c.animaapp.com/K6aqUhg9/img/real-estate-agent@2x.png" />
-        </div>
-      </button>
-    </div>
+        <a className="cursor-pointer"
+          onClick={handleModalToggle}>
+          <div className="flex h-36 items-center justify-between rounded-xl border bg-grisMalpo px-2 text-white shadow-xl">
+            <span className="text-3xl font-normal hover:text-gray-400">
+              Pagar Reserva
+            </span>
+            <img className="h-12 w-12" alt="icono" src="https://c.animaapp.com/K6aqUhg9/img/real-estate-agent@2x.png" />
+          </div>
+        </a>
+      </div>
       {modalOpen && (
         <Modal onClose={handleModalToggle}>
           <div className="container mx-auto px-4 py-2">
-          <div className="mb-3">
+            <div className="mb-3">
               <img
                 src="/logos/logoRojoMalpo.png"
                 alt="Logo"
                 className="mr-4 h-6 w-auto"
               />
             </div>
-            <p className="mb-8 mt-8">
-              <h1 className="text-lg font-bold bg-rojoMalpo text-white">PAGAR RESERVA</h1>
-            </p>
-            <div className="flex justify-between">
-              <span className={`flex items-center justify-center px-2 py-1 rounded-md`}>
-                <span className="text-white font-bold">Tus Datos</span>
-              </span>
-              <span className={`flex items-center justify-center px-2 py-1 rounded-md`}>
-                <span className="text-white font-bold">Simula</span>
-              </span>
-              <span className={`flex items-center justify-center px-2 py-1 rounded-md`}>
-                <span className="text-white font-bold">Tu Dividendo</span>
-              </span>
-            </div>
-
-            {/* {successMessage && (
-              <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                <span className="font-medium"></span> {successMessage}
-              </div>
-            )}
-            {errorMessage && (
-              <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                <span className="font-medium">¡ERROR!</span> {errorMessage}
-              </div>
-            )} */}
             <form onSubmit={handleSubmit} className="mx-auto max-w-full">
-                <>
-                  <h1 className="text-l flex justify-start py-4 font-bold">
-                    1. Tus Datos
-                  </h1>
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <div className="mb-4">
-                      <label htmlFor="name" className="mb-2 flex justify-start">
-                        Nombre Proyecto:
-                      </label>
-                      <input
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        // value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label htmlFor="rut_cliente" className="mb-2 flex justify-start">
-                        Rut:
-                      </label>
-                      <input
-                        type="text"
-                        id="rut_cliente"
-                        name="rut_cliente"
-                        // value={rut_cliente} onChange={handleRutChange}
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label htmlFor="email" className="mb-2 flex justify-start">
-                        Correo electrónico:
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        // value={email} onChange={(e) => setEmail(e.target.value)}
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label htmlFor="telefono" className="mb-2 flex justify-start">
-                        Teléfono:
-                      </label>
-                      <input
-                        type="tel"
-                        id="telefono"
-                        name="telefono"
-                        // value={telefono}
-                        onChange={(e) => setTelefono(e.target.value)}
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                        required
-                      />
-                      {/* {errors.telefono && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.telefono}</span>} */}
-                    </div>
-                    <div className="mb-4">
-                      <label htmlFor="ciudad" className="mb-2 flex justify-start">
-                        Ciudad:
-                      </label>
-                      <input
-                        type="text"
-                        id="ciudad"
-                        name="ciudad"
-                        // value={ciudad} onChange={(e) => setCiudad(e.target.value)}
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                        required
-                      />
-                    </div>
-                  </div>
+              <div className="mb-4">
+                <label htmlFor="codigoWebpay" className="mb-2 flex justify-start">
+                  {/* Código Webpay: ("En caso de no contar con codigo webpay, contactar ejecutiva") */}
+                </label>
+                <div className="relative">
+                  <input
+                    type={showCodigoWebpay ? 'text' : 'password'}
+                    id="codigoWebpay"
+                    name="codigoWebpay"
+                    value={codigoWebpay}
+                    onChange={(e) => setCodigoWebpay(e.target.value)}
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    required
+                  />
                   <button
-                    type="submit" // Aquí envuelve la llamada a validarCampos(1) en una función
-                    className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
+                    type="button"
+                    className="absolute inset-y-0 right-8 flex items-center pr-3 cursor-pointer"
+                    onClick={handleLupaClick} // Quita los paréntesis ()
                   >
-                    Enviar
+                    🔍
                   </button>
-                </>
+                  <span
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                    onClick={() => setShowCodigoWebpay(!showCodigoWebpay)}
+                  >
+                    {showCodigoWebpay ? '👁️' : '👁️‍🗨️'}
+                  </span>
+                </div>
+              </div>
+              <div className="mb-8 mt-8 text-center">
+                <h1 className="text-lg font-bold">Pagar Reserva</h1>
+              </div>
+              <h1 className="text-l flex justify-start py-4 font-bold">
+                1. Datos del comprador
+              </h1>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div className="mb-4">
+                  <label htmlFor="rut_cliente" className="mb-2 flex justify-start">
+                    Rut:
+                  </label>
+                  <input
+                    type="text"
+                    id="rut_cliente"
+                    name="rut_cliente"
+                    value={rut_cliente}
+                    onChange={(e) => setRutCliente(e.target.value)}
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    // disabled={!habilitarCampos}
+                    required
+                  />
+                  {errors.rut_cliente && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.rut_cliente}</span>}
+
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="ciudad" className="mb-2 flex justify-start">
+                    Ciudad:
+                  </label>
+                  <input
+                    type="text"
+                    id="ciudad"
+                    name="ciudad"
+                    value={ciudad}
+                    onChange={(e) => setCiudad(e.target.value)}
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    // disabled={!habilitarCampos}
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="telefono" className="mb-2 flex justify-start">
+                    Teléfono:
+                  </label>
+                  <input
+                    type="tel"
+                    id="telefono"
+                    name="telefono"
+                    value={telefono}
+                    onChange={(e) => setTelefono(e.target.value)}
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    // disabled={!habilitarCampos}
+                    required
+                  />
+                  {errors.telefono && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.telefono}</span>}
+                </div>
+              </div>
+              <h1 className="text-l flex justify-start py-4 font-bold">
+                2. Datos del proyecto
+              </h1>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div className="mb-4">
+                  <label htmlFor="rut_cliente" className="mb-2 flex justify-start">
+                    Nombre del proyecto
+                  </label>
+                  <input
+                    type="text"
+                    id="nombreProyecto"
+                    name="nombreProyecto"
+                    value={nombreProyecto}
+                    onChange={(e) => setRutCliente(e.target.value)}
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    disabled
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="nombreEjecutiva" className="mb-2 flex justify-start">
+                    Nombre Ejecutiva:
+                  </label>
+                  <select
+                    id="nombreEjecutiva"
+                    name="nombreEjecutiva"
+                    value={nombreEjecutiva}
+                    onChange={(e) => setNombreEjecutiva(e.target.value)}
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    // disabled={!habilitarCampos}
+                    required
+                  >
+                    <option value="" disabled>Seleccione una ejecutiva</option>
+                    {ejecutivas.length > 0 && ejecutivas.map((ejecutiva) => (
+                      <option key={ejecutiva.idUsuarioInnova} value={ejecutiva.usuarioNombre}>
+                        {ejecutiva.usuarioNombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="telefono" className="mb-2 flex justify-start">
+                    Manzana o Lote
+                  </label>
+                  <input
+                    type="text"
+                    id="lote"
+                    name="lote"
+                    value={lote}
+                    onChange={(e) => setLote(e.target.value)}
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    // disabled={!habilitarCampos}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="text-center">
+                <button
+                  type="submit"
+                  className={`focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white focus:outline-none ${habilitarCampos ? 'hover:bg-gray-400' : 'cursor-not-allowed opacity-50'}`}
+                  disabled={!habilitarCampos}
+                >
+                  Enviar
+                </button>
+              </div>
             </form>
           </div>
         </Modal>
@@ -523,3 +588,48 @@ const Page = (props) => {
 };
 
 export default Page;
+
+
+//ROUTES.PHP : $route['pagarReserva/(:any)']['get'] = 'proyectos/pagarReserva/$a';
+
+//FUNCION EN PROYECTOS.PHP
+
+
+// public function pagarReserva_get($codWebPay)
+// {
+//     $datos = new stdClass();
+
+//     $datos->proyecto = $this->proyectos_model->listarProyecto($idProyecto);
+// }
+
+
+/* ARCHIVO PROYECTOSMODEL public function ProyectopagarReserva($codWebPay)
+    {
+        $this->db->select('
+            A.nombreWebProyecto,
+            A.imagenCabecera,
+            A.imagenMobile,
+            A.imagenLoteo,
+            A.imagenMiniatura,
+            A.urlUbicacionProyecto,
+            A.urlLinkProyecto,
+            A.direccionProyecto,
+            A.tituloProyecto,
+            A.informacionProyecto,
+            A.idComuna,
+            A.idRegion,
+            A.idEtapa,  
+            A.idSubsidio,
+            A.codigoUnisoft,
+            B.nombreEtapa,
+            B.colorEtapa,         
+            C.valorTasa,         
+            C.bancoTasa,         
+            C.fechaTasa      
+        ')
+            ->from('proyecto A')
+            ->where('idProyecto', $idProyecto);
+
+        $consulta = $this->db->get();
+        return $consulta->num_rows() > 0 ? $consulta->row() : null;
+    }*/
