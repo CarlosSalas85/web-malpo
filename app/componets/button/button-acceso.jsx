@@ -6,7 +6,6 @@ const Button = (props) => {
           <span className="text-3xl font-normal hover:text-gray-400">
             {props.nombre}
           </span>
-
           <img className="h-12 w-12" alt="icono" src={props.icono} />
         </div>
       </a>

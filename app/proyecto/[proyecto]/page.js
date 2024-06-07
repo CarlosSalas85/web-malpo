@@ -16,6 +16,7 @@ import ModalCotizador from "@/app/componets/modal/modal-cotizar";
 import ListEtapa from "@/app/componets/list-proyecto/list-etapa";
 import { Ctrl_proyectos } from "@/app/controllers/Ctrl_proyectos";
 
+
 const UrlBanner = (props) => {
   return (
     <>
@@ -48,7 +49,6 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
   const ejecutivas=proyectoData?.datos?.usuarios;
   const ejecutivasConImagen = ejecutivas?.filter(ejecutiva => ejecutiva.usuarioImagen != null);
   const urlEficienciaEnergetica = proyectoData?.datos?.recursos?.idTipo === "2" ? "https://web.malpo.cl/minisitios/departamento/"  : "https://web.malpo.cl/minisitios/casa/";
-
   const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion}/>;
 
   return (
@@ -90,8 +90,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
           <h1 className="ml-4 text-3xl sm:text-center">
             Características generales del proyecto
           </h1>
-          <ListProyecto caracteristicas={proyectoData?.datos?.recursos} tipo="proyecto"
-          />
+          <ListProyecto caracteristicas={proyectoData?.datos?.recursos} tipo="proyecto" />
         </div>
       )}
 
@@ -106,7 +105,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
     {proyectoData?.datos?.modelos && (
       <div id="modelos">
         {proyectoData?.datos?.modelos && (
-          <CardModelos texto="Modelos de Casas" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto} />
+          <CardModelos texto="Modelos de" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto}  idTipo={proyectoData?.datos?.recursos?.idTipo}/>
         )}
       </div>
     )}

@@ -21,13 +21,21 @@ const List = (props) => {
     cantidadBanos,
     estacionamientoModelo,
     valorUfModelo,
+    idTipo,
   } = props.caracteristicas;
 
   const isModelo = props.tipo === "modelos";
 
-  const mt2Construidos = isModelo ? m2Contruidos : `${mt2Minimo} - ${mt2Maximo}`;
-  const habitaciones = isModelo ? cantidadDormitorios : `${habitacionesMinimo} - ${habitacionesMaximo}`;
-  const banos = isModelo ? cantidadBanos : `${banosMinimo} - ${banosMaximo}`;
+  // const mt2Construidos = isModelo ? m2Contruidos : `${mt2Minimo} - ${mt2Maximo}`;
+  // const habitaciones = isModelo ? cantidadDormitorios : `${habitacionesMinimo} - ${habitacionesMaximo}`;
+  // const banos = isModelo ? cantidadBanos : `${banosMinimo} - ${banosMaximo}`;
+  // const estacionamientos = isModelo ? estacionamientoModelo : `${estacionamientosMinimo} - ${estacionamientosMaximo}`;
+  // const precioUf = isModelo ? valorUfModelo : ufMinimo;
+  // const precioUfFormateado = formatoNumero(parseInt(precioUf));
+
+    const mt2Construidos = isModelo ? m2Contruidos : `${mt2Minimo} - ${mt2Maximo}`;
+    const habitaciones = isModelo ? cantidadDormitorios : habitacionesMinimo=='0' ? habitacionesMaximo : `${habitacionesMinimo} - ${habitacionesMaximo}`;
+    const banos = isModelo ? cantidadBanos : banosMinimo=='0' ? banosMaximo : `${banosMinimo} - ${banosMaximo}`;
   const estacionamientos = isModelo ? estacionamientoModelo : `${estacionamientosMinimo} - ${estacionamientosMaximo}`;
   const precioUf = isModelo ? valorUfModelo : ufMinimo;
   const precioUfFormateado = formatoNumero(parseInt(precioUf));
@@ -51,9 +59,11 @@ const List = (props) => {
               <img
                 className="mr-3 h-8 w-8"
                 alt="icono"
-                src="https://c.animaapp.com/AuWMAeuM/img/house.svg"
-              />
-              <span className="text-xl font-semibold">Casa</span>
+                src={idTipo === "2" ? "/iconos/departamento/departamento.png" : "https://c.animaapp.com/AuWMAeuM/img/house.svg"}
+                />
+            
+              <span className="text-xl font-semibold">  {idTipo === "2" ? "Departamento" : "Casa"}
+            </span>
             </div>
           </li>
           <li className="mb-4 w-full md:w-1/2 lg:w-2/5">
@@ -64,7 +74,7 @@ const List = (props) => {
                 src="https://c.animaapp.com/z2K26Tdh/img/group-1@2x.png"
               />
               <span className="text-xl font-semibold">
-                {mt2Construidos}  m2 útiles
+                {mt2Construidos}  m2 Construidos
               </span>
             </div>
           </li>

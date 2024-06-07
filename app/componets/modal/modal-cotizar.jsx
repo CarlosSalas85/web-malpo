@@ -5,6 +5,8 @@ import { Ctrl_como_te_enteraste } from '@/app/controllers/Ctrl_como_te_enteraste
 import { Ctrl_atributos_importantes } from '@/app/controllers/Ctrl_atributos_importantes';
 import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa la función generatePDF desde el archivo donde la defines
 import ReCAPTCHA from "react-google-recaptcha";
+
+
 const Modal = ({ onClose, children }) => {
   return (
     <div className="fixed inset-0 z-50 flex overflow-auto bg-gray-800 bg-opacity-75">

@@ -124,9 +124,9 @@ const Cards = (props) => {
   return (
     <div className="pb-6 pt-6">
       <div className="mb-4 ml-4">
-        <h1 className="mb-2 text-3xl sm:text-center">{props.texto}</h1>
+        <h1 className="mb-2 text-3xl sm:text-center">{props.texto} {props.idTipo=="2" ? "Departamentos" : "Casas"}</h1>
         <div className="flex justify-start overflow-x-auto xl:justify-center">
-          <Card modelos={modelos} proyecto={proyecto} />
+          <Card modelos={modelos} proyecto={proyecto}/>
         </div>
       </div>
     </div>

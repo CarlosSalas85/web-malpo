@@ -458,6 +458,9 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
           </button> */}
         </div>
 
+        <h2 className="text-2xl">Ciudad</h2>
+        <CustomSelect options={optionsCiudad} optionDefault={selectedOptionCiudad} handle={handleCiudad} />
+
         <h2 className="text-2xl">Tipo de proyecto</h2>
 
         <div className="mb-6 mt-3 flex flex-wrap gap-1 rounded-md ">
@@ -517,8 +520,6 @@ const Filter = ({ filtros, filtroUrl, proyectos, setFiltrarProyectos, pagina }) 
 
         <CustomSelect options={options} optionDefault={0} handle={handleEtapa} />
 
-        <h2 className="text-2xl">Ciudad</h2>
-        <CustomSelect options={optionsCiudad} optionDefault={selectedOptionCiudad} handle={handleCiudad} />
       </div>
     </div>
   );
