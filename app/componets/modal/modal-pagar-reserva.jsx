@@ -36,19 +36,6 @@ const Page = (props) => {
   var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
   const [captchaToken, setCaptchaToken] = useState("");
 
-  const handleModalToggle = () => {
-    setModalOpen(!modalOpen);
-    if (modalOpen === true) {
-      setSuccessMessage(null);
-      setErrorMessage(null);
-    }
-  };
-
-  const handleCaptchaChange = (value) => {
-    setCaptchaToken(value);
-  };
-
-
   const [codigoWebpay, setCodigoWebpay] = useState(null);
   const [showCodigoWebpay, setShowCodigoWebpay] = useState(false);
   const [rut_cliente, setRutCliente] = useState('');
@@ -61,6 +48,27 @@ const Page = (props) => {
   const [linkGetnet, setLinkGetnet] = useState(null);
   const [habilitarCampos, setHabilitarCampos] = useState(false);
   const [errors, setErrors] = useState({});
+
+
+  const handleModalToggle = () => {
+    setModalOpen(!modalOpen);
+    if (modalOpen === true) {
+      setSuccessMessage(null);
+      setLinkGetnet(null);
+      setRutCliente(null);
+      setCiudad(null);
+      setTelefono(null);
+      setNombreProyecto(null);
+      setNombreEjecutiva(null);
+      setLote(null);
+      setErrorMessage(null);
+    }
+  };
+
+  const handleCaptchaChange = (value) => {
+    setCaptchaToken(value);
+  };
+
 
   const handleInputChange = (setter) => (e) => {
     setter(e.target.value);
@@ -75,7 +83,8 @@ const Page = (props) => {
     try {
       // Enviar el formulario a la API
       const response = await Ctrl_codigo_web_pay(codigoWebpay);
-      if (response === null) {
+      console.log(response);
+      if (!response.datos) {
         throw new Error('Error con el codigo de Reserva');
         setErrorMessage("Ha ocurrido un con el código para realizar el pago de la reserva");
       } else {
@@ -83,9 +92,9 @@ const Page = (props) => {
         setEjecutivas(response?.datos?.ejecutivas);
         setNombreProyecto(response?.datos?.nombreWebProyecto);
         setLinkGetnet(response?.datos?.urlReservaProyecto);
+        console.log(habilitarCampos,ejecutivas,nombreProyecto,linkGetnet);
         if (linkGetnet === null) {
           setErrorMessage("Este formulario no tiene link de Getnet asociado");
-          setLinkGetnet(null);
           setEjecutivas(null);
           setNombreProyecto(null);
           setHabilitarCampos(false);

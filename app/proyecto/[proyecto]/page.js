@@ -130,13 +130,15 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
         <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} imagenLoteoZoom={proyectoData?.datos?.proyecto?.imagenLoteoZoom} />
       )}
-      <div id="ejecutivas">
+      <div id="ejecutivas" className="mt-4">
         {proyectoData?.datos?.usuarios ? (
           <BannerEjecutivas usuarios={proyectoData?.datos?.usuarios} />
         ) : (
-          <p className="text-3xl font-semibold text-rojoMalpo">
-            No hay Ejecutivas asociadas a este proyecto
-          </p>
+          <div className="flex justify-center items-center mt-4">
+            <p className="text-3xl font-semibold text-rojoMalpo text-center">
+              No hay ejecutivas asociadas a este proyecto
+            </p>
+          </div>
         )}
       </div>
       <BannerAccesos />
