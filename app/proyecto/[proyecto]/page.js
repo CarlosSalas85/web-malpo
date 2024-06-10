@@ -29,13 +29,13 @@ const UrlBanner = (props) => {
       </a>
       /
       <a href={`/proyectos/0/${props.idCiudad}`} className="mx-1 hover:text-gray-400">
-        {props.nombreCiudad} 
+        {props.nombreCiudad}
       </a>
     </>
   );
 };
 
-const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => { 
+const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
   const filtroDecodificado = proyecto ? decodeURIComponent(proyecto) : "";
   const nombre = filtroDecodificado;
   const idProyecto = val;
@@ -45,15 +45,15 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
   const idRegion = proyectoData?.datos?.proyecto?.idRegion;
   const nombreRegion = proyectoData?.datos?.proyecto?.regionNombre;
   const idCiudad = proyectoData?.datos?.proyecto?.idComuna;
-  const nombreCiudad =proyectoData?.datos?.proyecto?.comunaNombre;
-  const ejecutivas=proyectoData?.datos?.usuarios;
+  const nombreCiudad = proyectoData?.datos?.proyecto?.comunaNombre;
+  const ejecutivas = proyectoData?.datos?.usuarios;
   const ejecutivasConImagen = ejecutivas?.filter(ejecutiva => ejecutiva.usuarioImagen != null);
-  const urlEficienciaEnergetica = proyectoData?.datos?.recursos?.idTipo === "2" ? "https://web.malpo.cl/minisitios/departamento/"  : "https://web.malpo.cl/minisitios/casa/";
-  const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion}/>;
+  const urlEficienciaEnergetica = proyectoData?.datos?.recursos?.idTipo === "2" ? "https://web.malpo.cl/minisitios/departamento/" : "https://web.malpo.cl/minisitios/casa/";
+  const url = <UrlBanner nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} idCiudad={idCiudad} nombreCiudad={nombreCiudad} idRegion={idRegion} nombreRegion={nombreRegion} />;
 
   return (
     <>
-      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto}  imagenCabecera={proyectoData?.datos?.proyecto?.imagenCabecera} imagenMobile={proyectoData?.datos?.proyecto?.imagenMobile}/>
+      <BannerProyecto url={url} nombre={proyectoData?.datos?.proyecto?.nombreWebProyecto} imagenCabecera={proyectoData?.datos?.proyecto?.imagenCabecera} imagenMobile={proyectoData?.datos?.proyecto?.imagenMobile} />
       <div className="mx-auto mb-4 mt-4 w-11/12 md:w-10/12">
         <p className="text-18px sm:text-center">
           {proyectoData?.datos?.proyecto?.informacionProyecto}
@@ -62,10 +62,10 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
 
       <div className="mb-6 mt-6 flex justify-center">
         <div className="flex w-3/4 flex-col items-center justify-between text-center xl:w-2/3 xl:flex-row">
-          
+
           <ModalCotizador proyecto={proyectoData} modelos={modelosData} />
-          
-          
+
+
           <Button
             titulo="Ver modelos de casas"
             imagen="https://c.animaapp.com/sQwZVHMV/img/vector.svg"
@@ -73,7 +73,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
             blank="0"
           />
 
-     
+
           <Button
             titulo="Descargar Brochure"
             imagen="https://c.animaapp.com/unMEM02m/img/picture-as-pdf-1.svg"
@@ -81,7 +81,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
             url={proyectoData?.datos?.recursos?.pdfBrochure ? proyectoData.datos.recursos.pdfBrochure : 'about:blank'}
             blank="1"
           />
-    
+
         </div>
       </div>
 
@@ -102,13 +102,13 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
         </div>
       )}
 
-    {proyectoData?.datos?.modelos && (
-      <div id="modelos">
-        {proyectoData?.datos?.modelos && (
-          <CardModelos texto="Modelos de" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto}  nombreTipo={proyectoData?.datos?.recursos?.nombreTipo}/>
-        )}
-      </div>
-    )}
+      {proyectoData?.datos?.modelos && (
+        <div id="modelos">
+          {proyectoData?.datos?.modelos && (
+            <CardModelos texto="Modelos de" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto} nombreTipo={proyectoData?.datos?.recursos?.nombreTipo} />
+          )}
+        </div>
+      )}
 
       {proyectoData?.datos?.avances && (
         <div className="pb-6 pt-6">
@@ -125,23 +125,22 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
         <BannerUbicacion proyecto={proyectoData?.datos?.proyecto} />
       )}
       {proyectoData?.datos?.proyecto?.urlUbicacionProyecto && (
-      <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={ejecutivas}/>
+        <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={ejecutivas} />
       )}
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
-      <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} imagenLoteoZoom={proyectoData?.datos?.proyecto?.imagenLoteoZoom} />
+        <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} imagenLoteoZoom={proyectoData?.datos?.proyecto?.imagenLoteoZoom} />
       )}
-      {/* <div id="ejecutivas">
-       {proyectoData?.datos?.usuarios && (
-      <ModalEjecutivas proyecto={proyectoData} />
-       )} 
-       </div>*/}
-       <div id="ejecutivas">
-       {proyectoData?.datos?.usuarios && (
-      <BannerEjecutivas usuarios={proyectoData?.datos?.usuarios} />
-       )} 
-       </div>
-       <BannerAccesos />
-   <BannerRegiones/>
+      <div id="ejecutivas">
+        {proyectoData?.datos?.usuarios ? (
+          <BannerEjecutivas usuarios={proyectoData?.datos?.usuarios} />
+        ) : (
+          <p className="text-3xl font-semibold text-rojoMalpo">
+            No hay Ejecutivas asociadas a este proyecto
+          </p>
+        )}
+      </div>
+      <BannerAccesos />
+      <BannerRegiones />
     </>
   );
 };

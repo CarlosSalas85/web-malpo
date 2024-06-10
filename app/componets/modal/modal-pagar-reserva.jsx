@@ -31,8 +31,6 @@ const Modal = ({ onClose, children }) => {
 
 const Page = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalOpen2, setModalOpen2] = useState(false);
-  const [cotizarDeNuevo, setCotizarDeNuevo] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
@@ -40,6 +38,10 @@ const Page = (props) => {
 
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
+    if (modalOpen === true) {
+      setSuccessMessage(null);
+      setErrorMessage(null);
+    }
   };
 
   const handleCaptchaChange = (value) => {
@@ -47,15 +49,9 @@ const Page = (props) => {
   };
 
 
-
-
-  // console.log("props de Pagar Reserva",props.ejecutivas);
   const [codigoWebpay, setCodigoWebpay] = useState(null);
   const [showCodigoWebpay, setShowCodigoWebpay] = useState(false);
-  const [nombre, setNombre] = useState('');
-  const router = useRouter();
   const [rut_cliente, setRutCliente] = useState('');
-  const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [nombreProyecto, setNombreProyecto] = useState('');
@@ -79,7 +75,6 @@ const Page = (props) => {
     try {
       // Enviar el formulario a la API
       const response = await Ctrl_codigo_web_pay(codigoWebpay);
-      // console.log("La respuesta de la API es:", response);
       if (response === null) {
         throw new Error('Error con el codigo de Reserva');
         setErrorMessage("Ha ocurrido un con el código para realizar el pago de la reserva");
@@ -96,20 +91,11 @@ const Page = (props) => {
           setHabilitarCampos(false);
         }
       }
-      console.log("linkGetNet en lupa:", linkGetnet, response?.datos.urlReservaProyecto);
-      console.log("habilitarCampos", "ejecutivas", habilitarCampos, ejecutivas);
-      // Ctrl_email_pagar_reserva();
       // Realizar cualquier otra acción después de enviar el formulario
     } catch (error) {
-      // console.error('Error al enviar el formulario:', error.message);
       setErrorMessage("Ha ocurrido un error al ingresar el código de la reserva, sino cuenta con uno, por favor,contacte con ejecutiva");
       // setSuccessMessage("");
     }
-
-    // Mostrar errores si el formulario no es válido
-    // setErrors(validationErrors);
-
-    // console.log("Lupa clickeada, código Webpay:", codigoWebpay);
   };
 
 
@@ -145,7 +131,6 @@ const Page = (props) => {
 
       try {
         // Enviar el formulario a la API
-        // console.log("Datos de email pagar reserva:", formData);
         const response = await Ctrl_email_pagar_reserva(formData);
         if (!response) {
           throw new Error('Error al enviar el formulario');
@@ -160,9 +145,9 @@ const Page = (props) => {
         setNombreProyecto("");
         setNombreEjecutiva("");
         setLote("");
-        console.log("linkGetnet en Enviar", linkGetnet);
-        if (linkGetnet)
+        if (linkGetnet) {
           window.open(linkGetnet, '_blank')
+        }
       } catch (error) {
         // console.error('Error al enviar el formulario:', error.message);
         setErrorMessage("Ha ocurrido un error al enviar el formulario");
@@ -240,12 +225,6 @@ const Page = (props) => {
     return errors;
   };
 
-  // Función para validar el correo electrónico
-  const isValidEmail = (email) => {
-    // Validación simple de dirección de correo electrónico
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  };
 
 
 
@@ -465,48 +444,3 @@ const Page = (props) => {
 };
 
 export default Page;
-
-
-//ROUTES.PHP : $route['pagarReserva/(:any)']['get'] = 'proyectos/pagarReserva/$a';
-
-//FUNCION EN PROYECTOS.PHP
-
-
-// public function pagarReserva_get($codWebPay)
-// {
-//     $datos = new stdClass();
-
-//     $datos->proyecto = $this->proyectos_model->listarProyecto($idProyecto);
-// }
-
-
-/* ARCHIVO PROYECTOSMODEL public function ProyectopagarReserva($codWebPay)
-    {
-        $this->db->select('
-            A.nombreWebProyecto,
-            A.imagenCabecera,
-            A.imagenMobile,
-            A.imagenLoteo,
-            A.imagenMiniatura,
-            A.urlUbicacionProyecto,
-            A.urlLinkProyecto,
-            A.direccionProyecto,
-            A.tituloProyecto,
-            A.informacionProyecto,
-            A.idComuna,
-            A.idRegion,
-            A.idEtapa,  
-            A.idSubsidio,
-            A.codigoUnisoft,
-            B.nombreEtapa,
-            B.colorEtapa,         
-            C.valorTasa,         
-            C.bancoTasa,         
-            C.fechaTasa      
-        ')
-            ->from('proyecto A')
-            ->where('idProyecto', $idProyecto);
-
-        $consulta = $this->db->get();
-        return $consulta->num_rows() > 0 ? $consulta->row() : null;
-    }*/

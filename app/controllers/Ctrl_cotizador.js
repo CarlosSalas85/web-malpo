@@ -11,7 +11,7 @@ export function Ctrl_cotizador(formData) {
     const url = process.env.NEXT_PUBLIC_API_URL + `crm/cotizador`;
     const authHeader = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
     // const url = `http://localhost/api_master/api_crm/crm/insertar_cotizacion`;
-    // console.log("Estoy en Ctrl_cotizador:", url,formData);
+    console.log("Estoy en Ctrl_cotizador:", url,formData);
     return fetch(url, {
         method: 'POST',
         headers: {
@@ -28,14 +28,16 @@ export function Ctrl_cotizador(formData) {
             return response.json();
         })
         .then(data => {
-            // console.log('Formulario enviado con éxito:', data);
+            console.log('Formulario enviado con éxito:', data);
             // return  /* message: */ 'Formulario de de denuncias enviado con éxito' ;
+         return data;
         })
         .catch(error => {
             // console.error('Error al enviar el formulario:', /* error.message */);
             throw new Error('Error al enviar el formulario');
         });
 }
+
 
 
 

@@ -6,8 +6,6 @@ export function Ctrl_codigo_web_pay(codigoWebpay) {
     const password = process.env.NEXT_PUBLIC_SMTP_API_PASSWORD;
     const url = process.env.NEXT_PUBLIC_API_URL + `proyectos/webpay/${codigoWebpay}`;
     const authHeader = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
-    // const url = `http://localhost/api_master/api_crm/crm/insertar_cotizacion`;
-    console.log("Estoy en Ctrl_cod_web_pay:",url,codigoWebpay);
     return fetch(url, {
         method: 'GET',
         headers: {

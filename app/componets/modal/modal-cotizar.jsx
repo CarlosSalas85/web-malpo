@@ -31,8 +31,8 @@ const Modal = ({ onClose, children }) => {
 const Page = (props) => {
   var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
   const [seccionFormulario, setSeccionFormulario] = useState(1);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [captchaToken, setCaptchaToken] = useState("");
   const proyectoData = props.proyecto;
   const modelosData = props.modelos.filter(modelo => modelo.disponiblidadModelo === "1");
@@ -48,6 +48,7 @@ const Page = (props) => {
   };
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
+  const [modalOpen3, setModalOpen3] = useState(false);
   const [cotizarDeNuevo, setCotizarDeNuevo] = useState(false);
 
   const handleModalToggle = () => {
@@ -60,11 +61,16 @@ const Page = (props) => {
 
   const handleCaptchaChange = (value) => {
     setCaptchaToken(value);
+    setErrorMessage("");
   };
 
 
   const handleModalToggle2 = () => {
     setModalOpen2(!modalOpen2);
+  };
+
+  const handleModalToggle3 = () => {
+    setModalOpen3(!modalOpen3);
   };
 
   //Volver a Cotizar se muestra en el modal del resultado del dividendo
@@ -92,7 +98,7 @@ const Page = (props) => {
   const [telefono, setTelefono] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [contacto, setComoTeEnteraste] = useState('');
-  const [cod_unysoft, setCodUnysoft] = useState(proyectoData?.datos?.proyecto?.codigoUnisoft);
+  const [cod_unysoft, setCodUnysoft] = useState(proyectoData?.datos?.proyecto?.codigoUnisoft ?? null);
   const [modelo_vivienda, setModeloNombre] = useState(modelosData ? modelosData[0]?.Modelos?.idModelo : null);
   const [valorUFModelo, setValorUFModelo] = useState(modelosData ? modelosData[0]?.Modelos?.valorUfModelo : 0);
   const [subsidio, setTipoSubsidio] = useState(modelosData ? modelosData[0]?.nombreSubsidio : null);
@@ -392,18 +398,20 @@ const Page = (props) => {
         residente_vivienda,
         otroQuienesHabitaran
       };
-
+      
+      console.log("formData",formData);
       try {
         // Enviar el formulario a la API
          const response = await Ctrl_cotizador(formData);
-        if (response && !response.ok) {  
-         throw new Error('Error al enviar el formulario');
+         console.log("response,!response.ok",response,!response.ok);
+        if (!response.datos) {  
+          setErrorMessage("Código del proyecto no ha sido ingresado en el CRM");
+        //  throw new Error('Error al enviar el formulario');
+         return; // Salir de la función inmediatamente
         }   
         // Realizar cualquier otra acción después de enviar el formulario
         setModalOpen(false);
-        setErrorMessage("");
         setModalOpen2(true);
-
       } catch (error) {
         console.error('Error al enviar el formulario:', error.message);
         setErrorMessage("Ha ocurrido un error al enviar el formulario");
@@ -690,7 +698,7 @@ const Page = (props) => {
         }
       `}</style>
       </div>
-      {modalOpen && (
+      {modalOpen && cod_unysoft!=null && (
         <Modal onClose={handleModalToggle}>
           <div className="container mx-auto px-4 py-2">
           <div className="mb-3">
@@ -701,7 +709,7 @@ const Page = (props) => {
               />
             </div>
             <p className="mb-8 mt-8">
-              <h1 className="text-lg font-bold bg-rojoMalpo text-white">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
+              <h1 className="text-center text-lg font-bold">Proyecto {proyectoData?.datos?.proyecto?.nombreWebProyecto}</h1>
             </p>
             <div className="flex justify-between">
               <span className={`flex items-center justify-center px-2 py-1 rounded-md ${seccionFormulario === 1 ? 'bg-red-800' : 'bg-gray-900'}`}>
@@ -714,7 +722,7 @@ const Page = (props) => {
                 <span className="text-white font-bold">Tu Dividendo</span>
               </span>
             </div>
-
+            <div className="mt-4">
             {successMessage && (
               <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                 <span className="font-medium"></span> {successMessage}
@@ -725,6 +733,7 @@ const Page = (props) => {
                 <span className="font-medium">¡ERROR!</span> {errorMessage}
               </div>
             )}
+            </div>
             <form onSubmit={handleSubmit} ref={formRef} className="mx-auto max-w-full">
               {seccionFormulario == 1 && (
                 <>
@@ -1186,7 +1195,7 @@ const Page = (props) => {
                   )}
 
 
-                  <div className="flex justify-center">
+                  <div className="flex justify-center mt-4">
                     <ReCAPTCHA
                       sitekey={captcha_key}
                       onChange={handleCaptchaChange}
@@ -1195,7 +1204,7 @@ const Page = (props) => {
                   <div className="flex justify-center">
                     <button
                       type="submit"
-                      className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none"
+                      className="focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white hover:bg-gray-400 focus:outline-none mt-4"
                     >
                       Enviar
                     </button>
@@ -1206,7 +1215,7 @@ const Page = (props) => {
           </div>
         </Modal>
       )}
-      {modalOpen2 && (
+      {modalOpen2 && cod_unysoft!=null && (
         <Modal onClose={handleModalToggle2}>
           <div className="container mx-auto w-full px-4 py-2">
             <div className="mx-auto mb-4 mt-4">
