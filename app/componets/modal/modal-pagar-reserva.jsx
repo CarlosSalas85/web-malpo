@@ -1,12 +1,10 @@
 "use client";
 import React, { useRef, useState, useEffect } from 'react';
-import { Ctrl_cotizador } from '@/app/controllers/Ctrl_cotizador';
 import { Ctrl_codigo_web_pay } from '@/app/controllers/Ctrl_codigo_web_pay';
-import { Ctrl_como_te_enteraste } from '@/app/controllers/Ctrl_como_te_enteraste';
-import { Ctrl_atributos_importantes } from '@/app/controllers/Ctrl_atributos_importantes';
-import generatePDF from '@/app/componets/PDFGenerator/PDFGenerator'; // Importa la función generatePDF desde el archivo donde la defines
-import ReCAPTCHA from "react-google-recaptcha";
 import { Ctrl_email_pagar_reserva } from '@/app/controllers/Ctrl_email_pagar_reserva';
+import ReCAPTCHA from "react-google-recaptcha";
+import { useRouter } from 'next/navigation';
+
 
 
 const Modal = ({ onClose, children }) => {
@@ -34,7 +32,9 @@ const Page = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
   const [cotizarDeNuevo, setCotizarDeNuevo] = useState(false);
-
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
   };
@@ -66,6 +66,7 @@ const Page = (props) => {
   const [codigoWebpay, setCodigoWebpay] = useState('');
   const [showCodigoWebpay, setShowCodigoWebpay] = useState(false);
   const [nombre, setNombre] = useState('');
+  const router = useRouter();
   const [rut_cliente, setRutCliente] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
@@ -74,6 +75,7 @@ const Page = (props) => {
   const [ejecutivas, setEjecutivas] = useState([]);
   const [nombreEjecutiva, setNombreEjecutiva] = useState('');
   const [lote, setLote] = useState('');
+  const [linkGetnet, setLinkGetnet] = useState('');
   const [habilitarCampos, setHabilitarCampos] = useState(false);
   const [errors, setErrors] = useState({});
   // Función para validar codigoWebPay
@@ -83,18 +85,23 @@ const Page = (props) => {
       // Enviar el formulario a la API
       const response = await Ctrl_codigo_web_pay(codigoWebpay);
       console.log("La respuesta de la API es:", response);
-      // if (response && !response.ok) {
-      //   throw new Error('Error');
-      // }
+      if (!response) {
+        throw new Error('Error');
+        setErrorMessage("Ha ocurrido un con el código para realizar el pago de la reserva");
+      }else{
       setHabilitarCampos(true);
       setEjecutivas(response?.datos?.ejecutivas);
       setNombreProyecto(response?.datos?.nombreWebProyecto);
-      console.log("habilitarCampos", "ejecutivas", habilitarCampos, ejecutivas);
+      setLinkGetnet(response?.datos?.urlReservaProyecto);
+      setErrorMessage("");
+
+      }
+      // console.log("habilitarCampos", "ejecutivas", habilitarCampos, ejecutivas);
       // Ctrl_email_pagar_reserva();
       // Realizar cualquier otra acción después de enviar el formulario
     } catch (error) {
-      console.error('Error al enviar el formularioooo:', error.message);
-      setErrorMessage("Ha ocurrido un error al enviar el formulario");
+      // console.error('Error al enviar el formulario:', error.message);
+      setErrorMessage("Ha ocurrido un con el código para realizar el pago de la reserva, sino cuenta con uno, por favor,contacte con ejecutiva");
       // setSuccessMessage("");
     }
 
@@ -116,55 +123,44 @@ const Page = (props) => {
     // }
     // Validar el formulario antes de enviar
     const validationErrors = validateForm({
-      nombre,
       rut_cliente,
-      email,
-      telefono,
       ciudad,
+      telefono,
+      nombreProyecto,
+      nombreEjecutiva,
+      lote,
     });
 
     if (Object.keys(validationErrors).length === 0) {
       // Crear un objeto con todos los datos del formulario
       const formData = {
-        nombre,
-        email,
-        telefono,
         rut_cliente,
         ciudad,
-        contacto,
-        cod_unysoft,
-        modelo_vivienda,
-        valorUFModelo,
-        subsidio,
-        montoSubsidio,
-        atributos,
-        otros_atributos,
-        porcentajeCredito,
-        plazo,
-        montoCreditoHipotecario,
-        ahorroMinimo,
-        pieReserva,
-        edad,
-        estado_civil,
-        genero,
-        hijos,
-        motivo_compra,
-        otroMotivoCompra,
-        residente_vivienda,
-        otroQuienesHabitaran
+        telefono,
+        nombreProyecto,
+        nombreEjecutiva,
+        lote,
       };
 
       try {
         // Enviar el formulario a la API
-        const response = await Ctrl_cotizador(formData);
-        if (response && !response.ok) {
+        console.log("Datos de email pagar reserva:", formData);
+        const response = await Ctrl_email_pagar_reserva(formData);
+        if (!response) {
           throw new Error('Error al enviar el formulario');
         }
         // Realizar cualquier otra acción después de enviar el formulario
-        setModalOpen(false);
+        setSuccessMessage("¡El correo se ha enviado con éxitoo!");
         setErrorMessage("");
-        setModalOpen2(true);
-
+        // setModalOpen(false);
+        setRutCliente("");
+        setCiudad("");
+        setTelefono("");
+        setNombreProyecto("");
+        setNombreEjecutiva("");
+        setLote("");
+        console.log(linkGetnet);
+        router.push(linkGetnet);
       } catch (error) {
         console.error('Error al enviar el formulario:', error.message);
         setErrorMessage("Ha ocurrido un error al enviar el formulario");
@@ -269,59 +265,28 @@ const Page = (props) => {
   // Función para validar el formulario
   const validateForm = (data) => {
     const errors = {};
-    if (!data.nombre.trim()) {
-      errors.nombre = 'El nombre es requerido';
-    }
     if (!data.rut_cliente.trim()) {
       errors.rut_cliente = 'El RUT es requerido';
     } else if (!validarRut(data.rut_cliente)) {
       errors.rut_cliente = 'El RUT ingresado es inválido';
     }
-    if (!data.email.trim()) {
-      errors.email = 'El correo electrónico es requerido';
-    } else if (!isValidEmail(data.email)) {
-      errors.email = 'El correo electrónico es inválido';
-    }
-    if (!/^[0-9]*$/.test(data.telefono.trim())) {
-      errors.telefono = 'El teléfono solo puede contener números';
-    }
-    if (!data.telefono.trim()) {
-      errors.telefono = 'El teléfono es requerido';
-    }
     if (!data.ciudad.trim()) {
       errors.ciudad = 'La ciudad es requerida';
     }
-    if (!data.contacto || data.contacto.length === 0) {
-      errors.contacto = 'Selecciona al menos una opción de cómo te enteraste';
+    if (!data.telefono.trim()) {
+      errors.telefono = 'El teléfono es requerido';
+    } else if (!/^[0-9]*$/.test(data.telefono.trim())) {
+      errors.telefono = 'El teléfono solo puede contener números';
     }
-
-    if (typeof data.plazo === 'undefined' || !data.plazo.trim()) {
-      errors.plazo = 'Plazo de crédito es requerido';
+    if (!data.nombreProyecto.trim()) {
+      errors.nombreProyecto = 'El nombre del proyecto es requerido';
     }
-    if (typeof data.edad === 'undefined' || !data.edad.trim()) {
-      errors.edad = 'Edad es requerida';
+    if (!data.nombreEjecutiva.trim()) {
+      errors.nombreEjecutiva = 'El nombre de la ejecutiva es requerida';
     }
-    if (typeof data.estado_civil === 'undefined' || !data.estado_civil.trim()) {
-      errors.estado_civil = 'Estado civil es requerido';
+    if (!data.lote) {
+      errors.lote = 'Selecciona al menos un lote';
     }
-    if (typeof data.genero === 'undefined' || !data.genero.trim()) {
-      errors.genero = 'Género es requerido';
-    }
-    if (typeof data.hijos === 'undefined' || !data.hijos.trim()) {
-      errors.hijos = 'Campo requerido';
-    }
-    if (!data.NombresAtributos || data.NombresAtributos.length === 0) {
-      errors.NombresAtributos = 'Campo requerido';
-    }
-    if (!data.NombresAtributos || data.NombresAtributos.length > 3) {
-      errors.NombresAtributos = 'Por favor solo seleccione hasta 3 NombresAtributos';
-    }
-    // if (typeof data.motivo_compra === 'undefined' || !data.motivo_compra.trim()) {
-    //   errors.motivo_compra = 'Motivo de compra es requerido';
-    // }
-    // if (typeof data.residente_vivienda === 'undefined' || !data.residente_vivienda.trim()) {
-    //   errors.residente_vivienda = 'Campo requerido';
-    // }
     return errors;
   };
 
@@ -430,6 +395,11 @@ const Page = (props) => {
             </div>
             <form onSubmit={handleSubmit} className="mx-auto max-w-full">
               <div className="mb-4">
+                {!habilitarCampos && errorMessage && (
+                  <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                    <span className="font-medium">¡ERROR!</span> {errorMessage}
+                  </div>
+                )}
                 <label htmlFor="codigoWebpay" className="mb-2 flex justify-start">
                   {/* Código Webpay: ("En caso de no contar con codigo webpay, contactar ejecutiva") */}
                 </label>
@@ -461,6 +431,16 @@ const Page = (props) => {
               <div className="mb-8 mt-8 text-center">
                 <h1 className="text-lg font-bold">Pagar Reserva</h1>
               </div>
+              {habilitarCampos && successMessage && (
+                <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                  <span className="font-medium"></span> {successMessage}
+                </div>
+              )}
+              {habilitarCampos && errorMessage && (
+                <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                  <span className="font-medium">¡ERROR!</span> {errorMessage}
+                </div>
+              )}
               <h1 className="text-l flex justify-start py-4 font-bold">
                 1. Datos del comprador
               </h1>
@@ -547,7 +527,7 @@ const Page = (props) => {
                     required
                   >
                     <option value="" disabled>Seleccione una ejecutiva</option>
-                    {ejecutivas.length > 0 && ejecutivas.map((ejecutiva) => (
+                    {ejecutivas?.length > 0 && ejecutivas.map((ejecutiva) => (
                       <option key={ejecutiva.idUsuarioInnova} value={ejecutiva.usuarioNombre}>
                         {ejecutiva.usuarioNombre}
                       </option>
@@ -555,7 +535,7 @@ const Page = (props) => {
                   </select>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="telefono" className="mb-2 flex justify-start">
+                  <label htmlFor="lote" className="mb-2 flex justify-start">
                     Manzana o Lote
                   </label>
                   <input

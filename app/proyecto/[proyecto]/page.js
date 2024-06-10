@@ -140,7 +140,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
       <BannerEjecutivas usuarios={proyectoData?.datos?.usuarios} />
        )} 
        </div>
-       <BannerAccesos url={urlEficienciaEnergetica} nombreProyecto={proyectoData?.datos?.proyecto?.nombreWebProyecto} usuarios={proyectoData?.datos?.usuarios} />
+       <BannerAccesos />
    <BannerRegiones/>
     </>
   );
