@@ -105,7 +105,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
     {proyectoData?.datos?.modelos && (
       <div id="modelos">
         {proyectoData?.datos?.modelos && (
-          <CardModelos texto="Modelos de" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto}  idTipo={proyectoData?.datos?.recursos?.idTipo}/>
+          <CardModelos texto="Modelos de" modelos={proyectoData?.datos?.modelos} proyecto={proyectoData?.datos?.proyecto}  nombreTipo={proyectoData?.datos?.recursos?.nombreTipo}/>
         )}
       </div>
     )}
@@ -128,7 +128,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
       <BannerMapa proyecto={proyectoData?.datos?.proyecto} ejecutivas={ejecutivas}/>
       )}
       {proyectoData?.datos?.proyecto?.imagenLoteo && (
-      <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} />
+      <BannerLoteo imagenLoteo={proyectoData?.datos?.proyecto?.imagenLoteo} imagenLoteoZoom={proyectoData?.datos?.proyecto?.imagenLoteoZoom} />
       )}
       {/* <div id="ejecutivas">
        {proyectoData?.datos?.usuarios && (

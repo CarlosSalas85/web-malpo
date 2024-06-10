@@ -63,7 +63,9 @@ export default async function Modelos({ params: { proyecto, modelo }, searchPara
   const idModelo = val2;
   const nombreProyectoUrl = replaceSpaces(proyectoData?.datos?.proyecto?.nombreWebProyecto);
   // const nombreProyectoUrl= decodeURIComponent(proyecto);
-  const datosModelo = proyectoData?.datos?.modelos.map(modelo => ({
+  const datosModelo = proyectoData?.datos?.modelos
+  .filter(modelo => modelo.disponiblidadModelo === "1") // Filtrar solo los modelos con disponiblidadModelo === "1"
+  .map(modelo => ({
     ...modelo,
     id: modelo.idModelo,
     nombre: modelo.nombreModelo,

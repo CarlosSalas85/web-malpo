@@ -35,7 +35,7 @@ const Page = (props) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
   const proyectoData = props.proyecto;
-  const modelosData = props.modelos;
+  const modelosData = props.modelos.filter(modelo => modelo.disponiblidadModelo === "1");
   const nombreProyecto = proyectoData?.datos?.proyecto?.nombreWebProyecto;
   const tasa = proyectoData?.datos?.proyecto?.valorTasa;
   const fechaTasa = proyectoData?.datos?.proyecto?.fechaTasa;
@@ -95,13 +95,13 @@ const Page = (props) => {
   const [cod_unysoft, setCodUnysoft] = useState(proyectoData?.datos?.proyecto?.codigoUnisoft);
   const [modelo_vivienda, setModeloNombre] = useState(modelosData ? modelosData[0]?.Modelos?.idModelo : null);
   const [valorUFModelo, setValorUFModelo] = useState(modelosData ? modelosData[0]?.Modelos?.valorUfModelo : 0);
-  const [subsidio, setTipoSubsidio] = useState(modelosData ? modelosData[0].nombreSubsidio : null);
-  const [montoSubsidio, setMontoSubsidio] = useState(modelosData ? modelosData[0].ufSubsidio : null);
+  const [subsidio, setTipoSubsidio] = useState(modelosData ? modelosData[0]?.nombreSubsidio : null);
+  const [montoSubsidio, setMontoSubsidio] = useState(modelosData ? modelosData[0]?.ufSubsidio : null);
   const [porcentajeCredito, setPorcentajeCredito] = useState('80');
   const [plazo, setPlazoCredito] = useState('');
   const [montoCreditoHipotecario, setMontoCreditoHipotecario] = useState(0);
   const [enteroMontoCreditoHipotecario, setEnteroMontoCreditoHipotecario] = useState(Math.floor(montoCreditoHipotecario));
-  const [ahorroMinimo, setAhorroMinimo] = useState(modelosData ? modelosData[0].ahorroMinimo : null);
+  const [ahorroMinimo, setAhorroMinimo] = useState(modelosData ? modelosData[0]?.ahorroMinimo : null);
   const [pieReserva, setPieReserva] = useState('');
   const [edad, setEdad] = useState('');
   const [estado_civil, setEstadoCivil] = useState('');
@@ -321,7 +321,7 @@ const Page = (props) => {
 
   // Función para formatear un número con separadores de miles
   const formatNumberWithCommas = (number) => {
-    return number.toLocaleString('es-ES'); // Puedes ajustar 'es-ES' según tu preferencia de idioma
+    return number?.toLocaleString('es-ES'); // Puedes ajustar 'es-ES' según tu preferencia de idioma
   };
 
   // Función para manejar el envío del formulario
@@ -658,10 +658,10 @@ const Page = (props) => {
         <button
           onClick={handleModalToggle}
           className="fondo-malpo-rojo text-l my-2 w-[270px] rounded py-5 text-white hover:text-gray-400 relative"
-          disabled={modelo_vivienda === null}
+          disabled={modelosData.length === 0}
           data-tooltip="Proyecto sin modelos disponibles para cotizar"
         >
-          Cotizar
+          Cotizar 
         </button>
         <style jsx>{`
         button[disabled] {

@@ -22,6 +22,7 @@ const List = (props) => {
     estacionamientoModelo,
     valorUfModelo,
     idTipo,
+    nombreTipo
   } = props.caracteristicas;
 
   const isModelo = props.tipo === "modelos";
@@ -70,10 +71,10 @@ const List = (props) => {
               <img
                 className="mr-3 h-8 w-8"
                 alt="icono"
-                src={idTipo === "2" ? "/iconos/caracteristicas_proyecto/departamento.png" : "/iconos/caracteristicas_proyecto/house.png"}
+                src={nombreTipo === "Departamento" ? "/iconos/caracteristicas_proyecto/departamento.png" : "/iconos/caracteristicas_proyecto/house.png"}
                 />
             
-              <span className="text-xl font-semibold">  {idTipo === "2" ? "Departamento" : "Casa"}
+              <span className="text-xl font-semibold"> {nombreTipo === "Departamento" ? nombreTipo : nombreTipo==="Casa y Dpto" ? nombreTipo : "Casa"}
             </span>
             </div>
           </li>

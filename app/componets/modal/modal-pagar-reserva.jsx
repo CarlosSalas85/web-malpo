@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Ctrl_codigo_web_pay } from '@/app/controllers/Ctrl_codigo_web_pay';
 import { Ctrl_email_pagar_reserva } from '@/app/controllers/Ctrl_email_pagar_reserva';
 import ReCAPTCHA from "react-google-recaptcha";
+import Image from "next/image";
 import { useRouter } from 'next/navigation';
 
 
@@ -32,38 +33,24 @@ const Page = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
   const [cotizarDeNuevo, setCotizarDeNuevo] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
   const [captchaToken, setCaptchaToken] = useState("");
+
   const handleModalToggle = () => {
     setModalOpen(!modalOpen);
   };
 
-  // const handleCaptchaChange = (value) => {
-  //   setCaptchaToken(value);
-  // };
+  const handleCaptchaChange = (value) => {
+    setCaptchaToken(value);
+  };
 
 
-
-  //Volver a Cotizar se muestra en el modal del resultado del dividendo
-  //Permite volver a abrir el modal de cotización, sin modificar los inputs
-  const volverACotizar = () => {
-    setCotizarDeNuevo(true);
-    handleModalToggle2();
-    setModalOpen(!modalOpen);
-    setErrors({});
-    setSuccessMessage("");
-    setErrorMessage("");
-    // setCaptchaToken("");
-  }
-
-  const NumeroFormateado = ({ numero }) => {
-    const numeroFormateado = numero.toLocaleString(); // Formatea el número con separadores de miles
-  }
 
 
   // console.log("props de Pagar Reserva",props.ejecutivas);
-  const [codigoWebpay, setCodigoWebpay] = useState('');
+  const [codigoWebpay, setCodigoWebpay] = useState(null);
   const [showCodigoWebpay, setShowCodigoWebpay] = useState(false);
   const [nombre, setNombre] = useState('');
   const router = useRouter();
@@ -75,40 +62,54 @@ const Page = (props) => {
   const [ejecutivas, setEjecutivas] = useState([]);
   const [nombreEjecutiva, setNombreEjecutiva] = useState('');
   const [lote, setLote] = useState('');
-  const [linkGetnet, setLinkGetnet] = useState('');
+  const [linkGetnet, setLinkGetnet] = useState(null);
   const [habilitarCampos, setHabilitarCampos] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+    setSuccessMessage('');
+  };
+
+
   // Función para validar codigoWebPay
   const handleLupaClick = async (event) => {
     event.preventDefault();
+    setErrorMessage("");
     try {
       // Enviar el formulario a la API
       const response = await Ctrl_codigo_web_pay(codigoWebpay);
-      console.log("La respuesta de la API es:", response);
-      if (!response) {
-        throw new Error('Error');
+      // console.log("La respuesta de la API es:", response);
+      if (response === null) {
+        throw new Error('Error con el codigo de Reserva');
         setErrorMessage("Ha ocurrido un con el código para realizar el pago de la reserva");
-      }else{
-      setHabilitarCampos(true);
-      setEjecutivas(response?.datos?.ejecutivas);
-      setNombreProyecto(response?.datos?.nombreWebProyecto);
-      setLinkGetnet(response?.datos?.urlReservaProyecto);
-      setErrorMessage("");
-
+      } else {
+        setHabilitarCampos(true);
+        setEjecutivas(response?.datos?.ejecutivas);
+        setNombreProyecto(response?.datos?.nombreWebProyecto);
+        setLinkGetnet(response?.datos?.urlReservaProyecto);
+        if (linkGetnet === null) {
+          setErrorMessage("Este formulario no tiene link de Getnet asociado");
+          setLinkGetnet(null);
+          setEjecutivas(null);
+          setNombreProyecto(null);
+          setHabilitarCampos(false);
+        }
       }
-      // console.log("habilitarCampos", "ejecutivas", habilitarCampos, ejecutivas);
+      console.log("linkGetNet en lupa:", linkGetnet, response?.datos.urlReservaProyecto);
+      console.log("habilitarCampos", "ejecutivas", habilitarCampos, ejecutivas);
       // Ctrl_email_pagar_reserva();
       // Realizar cualquier otra acción después de enviar el formulario
     } catch (error) {
       // console.error('Error al enviar el formulario:', error.message);
-      setErrorMessage("Ha ocurrido un con el código para realizar el pago de la reserva, sino cuenta con uno, por favor,contacte con ejecutiva");
+      setErrorMessage("Ha ocurrido un error al ingresar el código de la reserva, sino cuenta con uno, por favor,contacte con ejecutiva");
       // setSuccessMessage("");
     }
 
     // Mostrar errores si el formulario no es válido
     // setErrors(validationErrors);
 
-    console.log("Lupa clickeada, código Webpay:", codigoWebpay);
+    // console.log("Lupa clickeada, código Webpay:", codigoWebpay);
   };
 
 
@@ -116,11 +117,11 @@ const Page = (props) => {
   // Función para manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
-    // if (!captchaToken) {
-    //   setErrorMessage("Por favor, completa el captcha.");
-    //   setSuccessMessage("");
-    //   return;
-    // }
+    if (!captchaToken) {
+      setErrorMessage("Por favor, completa el captcha.");
+      setSuccessMessage("");
+      return;
+    }
     // Validar el formulario antes de enviar
     const validationErrors = validateForm({
       rut_cliente,
@@ -144,13 +145,13 @@ const Page = (props) => {
 
       try {
         // Enviar el formulario a la API
-        console.log("Datos de email pagar reserva:", formData);
+        // console.log("Datos de email pagar reserva:", formData);
         const response = await Ctrl_email_pagar_reserva(formData);
         if (!response) {
           throw new Error('Error al enviar el formulario');
         }
         // Realizar cualquier otra acción después de enviar el formulario
-        setSuccessMessage("¡El correo se ha enviado con éxitoo!");
+        setSuccessMessage("¡El correo se ha enviado con éxito!");
         setErrorMessage("");
         // setModalOpen(false);
         setRutCliente("");
@@ -159,10 +160,11 @@ const Page = (props) => {
         setNombreProyecto("");
         setNombreEjecutiva("");
         setLote("");
-        console.log(linkGetnet);
-        router.push(linkGetnet);
+        console.log("linkGetnet en Enviar", linkGetnet);
+        if (linkGetnet)
+          window.open(linkGetnet, '_blank')
       } catch (error) {
-        console.error('Error al enviar el formulario:', error.message);
+        // console.error('Error al enviar el formulario:', error.message);
         setErrorMessage("Ha ocurrido un error al enviar el formulario");
         setSuccessMessage("");
       }
@@ -208,59 +210,7 @@ const Page = (props) => {
     setRut(nuevoRut);
   };
 
-  // Función para manejar el cambio en la selección del contacto
-  const handleContactoChange = (e) => {
-    const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
-    setComoTeEnteraste(selectedValues);
-  };
 
-
-  const handleSelectChangeAtributos = (event) => {
-    const value = Array.from(event.target.selectedOptions, option => option.value);
-
-    // Obtener los nombres de los NombresAtributos seleccionados
-    const selectedValuesAtributos = optionsAtributosImportantes
-      .filter((atributo) => value.includes(atributo.nombre))
-      .map((atributo) => atributo.nombre);
-
-    // Actualizar el estado de los NombresAtributos seleccionados
-    setAtributosImportantes(selectedValuesAtributos);
-
-    const selectedValuesAtributosIds = optionsAtributosImportantes
-      .filter((atributo) => value.includes(atributo.nombre))
-      .map((atributo) => (atributo.nombre === "OTRO" ? "OTRO" : atributo.cod_atributo));
-
-    // Actualizar el estado de los atributos seleccionados
-    setAtributos(selectedValuesAtributosIds);
-
-    // Verificar si se ha seleccionado "OTRO" y ajustar el estado en consecuencia
-    if (selectedValuesAtributos.includes("OTRO")) {
-      setOtrosAtributos(''); // Restablece el estado de otrosAtributos si "OTRO" está seleccionado
-      setIsSelectDisabledOtrosAtributos(false); // Asegura que el select no esté deshabilitado
-    } else {
-      setIsSelectDisabledOtrosAtributos(false); // Permite que el select esté habilitado si "OTRO" no está seleccionado
-    }
-  };
-
-  const handleOtrosAtributosChange = (e) => {
-    const value = e.target.value;
-    setOtrosAtributos(value);
-    if (value.trim() !== '') {
-      setIsSelectDisabledOtrosAtributos(true); // Deshabilita el select si el textarea contiene texto
-    } else {
-      setIsSelectDisabledOtrosAtributos(false); // Habilita el select si el textarea está vacío
-    }
-  };
-
-  const handleOtrosMotivosChange = (e) => {
-    const value = e.target.value;
-    setOtroMotivoCompra(value);
-    if (value.trim() !== '') {
-      setIsSelectDisabledMotivoCompra(true); // Deshabilita el select si el textarea contiene texto
-    } else {
-      setIsSelectDisabledMotivoCompra(false); // Habilita el select si el textarea está vacío
-    }
-  };
 
   // Función para validar el formulario
   const validateForm = (data) => {
@@ -298,76 +248,6 @@ const Page = (props) => {
   };
 
 
-  //VALIDAR FORMULARIO POR SECCION:
-
-
-  // Función para validar los campos del formulario
-  const validarCampos = (seccion) => {
-
-    const errors = {}; // Objeto para almacenar los errores
-
-    // Realiza la validación según la sección del formulario
-    switch (seccion) {
-      case 1:
-        // Realiza todas las validaciones necesarias aquí
-        if (!nombre.trim()) {
-          errors.nombre = 'El nombre es requerido';
-        }
-        if (!rut_cliente.trim()) {
-          errors.rut_cliente = 'El RUT es requerido';
-        } else if (!validarRut(rut_cliente)) {
-          errors.rut_cliente = 'El RUT ingresado es inváaaaalido';
-        }
-        if (!email.trim()) {
-          errors.email = 'El correo electrónico es requerido';
-        } else if (!isValidEmail(email)) {
-          errors.email = 'El correo electrónico es inválido';
-        }
-        if (!telefono.trim()) {
-          errors.telefono = 'El teléfono es requerido';
-        } else if (!/^[0-9]*$/.test(telefono.trim())) {
-          errors.telefono = 'El teléfono solo puede contener números';
-        }
-        if (!ciudad.trim()) {
-          errors.ciudad = 'La ciudad es requerida';
-        }
-        // Repite este proceso para todos los campos del formulario
-
-        // Actualiza el estado de los errores
-
-        // Si no hay errores, realiza la acción deseada (en este caso, avanzar a la siguiente sección)
-        break;
-      case 2:
-        // Realiza todas las validaciones necesarias aquí
-        if (typeof plazo === 'undefined' || !plazo.trim()) {
-          errors.plazo = 'Plazo de crédito es requerido';
-        }
-      case 3:
-        if (typeof edad === 'undefined' || !edad.trim()) {
-          errors.edad = 'Edad es requerida';
-        }
-        if (typeof estado_civil === 'undefined' || !estado_civil.trim()) {
-          errors.estado_civil = 'Estado civil es requerido';
-        }
-        if (typeof genero === 'undefined' || !genero.trim()) {
-          errors.genero = 'Género es requerido';
-        }
-        if (typeof hijos === 'undefined' || !hijos.trim()) {
-          errors.hijos = 'Campo requerido';
-        }
-        if (!NombresAtributos || NombresAtributos.length === 0) {
-          errors.NombresAtributos = 'Campo requerido';
-        }
-        if (!NombresAtributos || NombresAtributos.length > 3) {
-          errors.NombresAtributos = 'Por favor solo seleccione hasta 3 NombresAtributos';
-        }
-        break;
-      default:
-        break;
-    }
-
-    return errors;
-  };
 
 
   return (
@@ -400,33 +280,49 @@ const Page = (props) => {
                     <span className="font-medium">¡ERROR!</span> {errorMessage}
                   </div>
                 )}
-                <label htmlFor="codigoWebpay" className="mb-2 flex justify-start">
-                  {/* Código Webpay: ("En caso de no contar con codigo webpay, contactar ejecutiva") */}
-                </label>
-                <div className="relative">
-                  <input
-                    type={showCodigoWebpay ? 'text' : 'password'}
-                    id="codigoWebpay"
-                    name="codigoWebpay"
-                    value={codigoWebpay}
-                    onChange={(e) => setCodigoWebpay(e.target.value)}
-                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-8 flex items-center pr-3 cursor-pointer"
-                    onClick={handleLupaClick} // Quita los paréntesis ()
-                  >
-                    🔍
-                  </button>
-                  <span
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                    onClick={() => setShowCodigoWebpay(!showCodigoWebpay)}
-                  >
-                    {showCodigoWebpay ? '👁️' : '👁️‍🗨️'}
-                  </span>
+                <div className="flex justify-center items-center h-full">
+                  <div className="w-1/2">
+                    <label htmlFor="CodReserva" className="mb-2 flex justify-start">
+                      Codigo para pagar reserva:
+                    </label>
+                    <div className="relative flex items-center">
+                      <input
+                        type={showCodigoWebpay ? 'text' : 'password'}
+                        id="codigoWebpay"
+                        name="codigoWebpay"
+                        value={codigoWebpay}
+                        onChange={(e) => setCodigoWebpay(e.target.value)}
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        disabled={habilitarCampos}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-8 flex items-center pr-3 cursor-pointer"
+                        onClick={handleLupaClick}
+                      >
+                        <Image
+                          src="/iconos/pagarReserva/ICONOS WEB_Lupa.png"
+                          width={20} // Ancho del ícono en píxeles
+                          height={20} // Altura del ícono en píxeles
+                          alt="Icono de lupa"
+                        />
+                      </button>
+                      <span
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                        onClick={() => setShowCodigoWebpay(!showCodigoWebpay)}
+                      >
+                        <Image
+                          src={showCodigoWebpay ? '/iconos/pagarReserva/ojo_abierto.png' : '/iconos/pagarReserva/ojo_cerrado.png'}
+                          width={20} // Ancho del ícono en píxeles
+                          height={20} // Altura del ícono en píxeles
+                          alt={showCodigoWebpay ? 'Ojo abierto' : 'Ojo cerrado'}
+                        />
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
               </div>
               <div className="mb-8 mt-8 text-center">
                 <h1 className="text-lg font-bold">Pagar Reserva</h1>
@@ -454,13 +350,11 @@ const Page = (props) => {
                     id="rut_cliente"
                     name="rut_cliente"
                     value={rut_cliente}
-                    onChange={(e) => setRutCliente(e.target.value)}
+                    onChange={handleInputChange(setRutCliente)}
                     className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    // disabled={!habilitarCampos}
                     required
                   />
                   {errors.rut_cliente && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.rut_cliente}</span>}
-
                 </div>
                 <div className="mb-4">
                   <label htmlFor="ciudad" className="mb-2 flex justify-start">
@@ -471,9 +365,8 @@ const Page = (props) => {
                     id="ciudad"
                     name="ciudad"
                     value={ciudad}
-                    onChange={(e) => setCiudad(e.target.value)}
+                    onChange={handleInputChange(setCiudad)}
                     className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    // disabled={!habilitarCampos}
                     required
                   />
                 </div>
@@ -486,20 +379,19 @@ const Page = (props) => {
                     id="telefono"
                     name="telefono"
                     value={telefono}
-                    onChange={(e) => setTelefono(e.target.value)}
+                    onChange={handleInputChange(setTelefono)}
                     className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    // disabled={!habilitarCampos}
                     required
                   />
                   {errors.telefono && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.telefono}</span>}
                 </div>
               </div>
               <h1 className="text-l flex justify-start py-4 font-bold">
-                2. Datos del proyecto
+                2. Datos de la Ejecutiva
               </h1>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div className="mb-4">
-                  <label htmlFor="rut_cliente" className="mb-2 flex justify-start">
+                  <label htmlFor="nombreProyecto" className="mb-2 flex justify-start">
                     Nombre del proyecto
                   </label>
                   <input
@@ -507,7 +399,7 @@ const Page = (props) => {
                     id="nombreProyecto"
                     name="nombreProyecto"
                     value={nombreProyecto}
-                    onChange={(e) => setRutCliente(e.target.value)}
+                    onChange={handleInputChange(setNombreProyecto)}
                     className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                     disabled
                     required
@@ -521,9 +413,8 @@ const Page = (props) => {
                     id="nombreEjecutiva"
                     name="nombreEjecutiva"
                     value={nombreEjecutiva}
-                    onChange={(e) => setNombreEjecutiva(e.target.value)}
+                    onChange={handleInputChange(setNombreEjecutiva)}
                     className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    // disabled={!habilitarCampos}
                     required
                   >
                     <option value="" disabled>Seleccione una ejecutiva</option>
@@ -543,17 +434,23 @@ const Page = (props) => {
                     id="lote"
                     name="lote"
                     value={lote}
-                    onChange={(e) => setLote(e.target.value)}
+                    onChange={handleInputChange(setLote)}
                     className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    // disabled={!habilitarCampos}
                     required
                   />
                 </div>
               </div>
+
+              <div className="flex justify-center">
+                <ReCAPTCHA
+                  sitekey={captcha_key}
+                  onChange={handleCaptchaChange}
+                  className="mx-auto mt-4"
+                /></div>
               <div className="text-center">
                 <button
                   type="submit"
-                  className={`focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white focus:outline-none ${habilitarCampos ? 'hover:bg-gray-400' : 'cursor-not-allowed opacity-50'}`}
+                  className={`focus:shadow-outline rounded bg-rojoMalpo px-4 py-2 text-white focus:outline-none ${habilitarCampos ? 'hover:bg-gray-400 mt-4' : 'cursor-not-allowed opacity-50 mt-4'}`}
                   disabled={!habilitarCampos}
                 >
                   Enviar
