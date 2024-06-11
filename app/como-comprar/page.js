@@ -47,9 +47,9 @@ const Page = () => {
       />
       <div className="flex flex-col justify-center pb-6 md:flex-row">
         <NavComoComprar activo="1" />
-        <div className="mr-auto flex w-full flex-col md:w-5/6">
-          <div className="w-11/12">
-            <div className="pb-6 pt-6">
+        <div className="mr-auto flex flex-col md:w-5/6">
+          <div className="pb-3 pt-6">
+            <div className="w-11/12">
               <h1 className="ml-4 pb-8 text-3xl">
                 Cómo comprar tu casa o departamento
               </h1>
@@ -73,10 +73,15 @@ const Page = () => {
               />
             </div>
 
-            <div className="pb-6 pt-6">
-              <h1 className="ml-4 pb-8 text-xl">
-                ¿Dudas respecto del proceso? contacta a nuestra ejecutiva
-              </h1>
+            <div className="pb-2 pt-2">
+              <div className="w-11/12">
+                <h1 className="ml-4 pb-8 text-xl">
+                  ¿Dudas respecto del proceso? contacta a nuestra ejecutiva
+                </h1>
+              </div>
+            </div>
+
+            <div className="pb-2 pt-2">
               <div className="mx-auto ml-0 flex justify-center md:ml-4 md:justify-start">
                 <button
                   onClick={handleModalToggle}

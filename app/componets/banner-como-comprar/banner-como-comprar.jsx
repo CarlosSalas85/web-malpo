@@ -12,7 +12,7 @@ const Banner = () => {
             <a href="#">
               <div className="fondo-malpo-gris flex w-full items-center justify-center rounded-lg pb-6 pt-6 text-white sm:pb-4 sm:pt-4">
                 {/* Contenido de la tarjeta */}
-                <span className="ml-6 text-4xl font-normal hover:text-gray-400 sm:text-2xl md:ml-0 md:text-center">
+                <span className="ml-6 text-xl font-normal hover:text-gray-400 sm:text-2xl md:ml-0 md:text-center xl:text-4xl">
                   Con Subsidio Habitacional
                 </span>
                 {/* Icono */}
@@ -31,7 +31,7 @@ const Banner = () => {
               <div className="fondo-malpo-gris flex w-full items-center justify-center rounded-lg pb-6 pt-6 text-white sm:pb-4 sm:pt-4">
                 {/* Contenido de la tarjeta */}
 
-                <span className="ml-6 text-4xl font-normal hover:text-gray-400 sm:text-2xl md:ml-0 md:text-center">
+                <span className="ml-6 text-xl xl:text-4xl font-normal hover:text-gray-400 sm:text-2xl md:ml-0 md:text-center">
                   Con Crédito Hipotecario
                 </span>
                 {/* Icono */}

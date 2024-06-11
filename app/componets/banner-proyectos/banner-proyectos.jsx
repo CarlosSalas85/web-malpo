@@ -15,7 +15,7 @@ const CustomButton = (props) => {
   return (
     <a
       href={`/proyectos/${result}`}
-      className="mb-2 mr-2 w-full rounded-lg border border-white bg-transparent px-4 py-2 text-white hover:border-gray-400 hover:text-gray-400"
+      className="flex justify-center items-center text-center mx-1 px-2 py-2 my-1 w-full rounded-lg border border-white bg-transparent text-white hover:border-gray-400 hover:text-gray-400"
     >
       {props.texto}
     </a>
@@ -32,10 +32,7 @@ const Banner = (props) => {
         <div className="flex flex-wrap sm:justify-center">
           {props.datos &&
             props.datos.map((elemento, index) => (
-              <div
-                key={index}
-                className="flex w-1/3 sm:w-1/6 sm:justify-center lg:w-auto"
-              >
+              <div key={index} className="flex w-1/3 sm:w-1/6 lg:w-auto">
                 <CustomButton
                   texto={elemento.nombre}
                   filtro={props.filtro}

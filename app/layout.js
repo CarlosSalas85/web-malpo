@@ -16,6 +16,12 @@ export default function RootLayout({ children }) {
         <head>
           <title>{metadata.title}</title>
           <meta name="description" content={metadata.description} />
+          <link
+            rel="icon"
+            href="/favicon.ico"
+            type="image/x-icon"
+            sizes="192x192"
+          ></link>
         </head>
         <body className="lato-regular">
           <Navbar />

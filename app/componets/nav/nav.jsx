@@ -48,11 +48,13 @@ const Navbar = () => {
             {/* Agregamos el texto "Menú" */}
           </button>
 
-          <img
-            src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
-            className="logo-malpo-blanco md:hidden" // Ocultamos el logo en dispositivos mayores a mobile
-            alt="Logo malpo blanco"
-          />
+          <a href="/">
+            <img
+              src="https://c.animaapp.com/g9H7zkhE/img/logo-malpo---blanco.svg"
+              className="logo-malpo-blanco md:hidden" // Ocultamos el logo en dispositivos mayores a mobile
+              alt="Logo malpo blanco"
+            />
+          </a>
         </div>
 
         <div
