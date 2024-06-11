@@ -34,17 +34,17 @@ const Page = (props) => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   var captcha_key = process.env.NEXT_PUBLIC_SMTP_API_CAPTCHA_CONTACTO_KEY;
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   const [codigoWebpay, setCodigoWebpay] = useState(null);
   const [showCodigoWebpay, setShowCodigoWebpay] = useState(false);
-  const [rut_cliente, setRutCliente] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [ciudad, setCiudad] = useState('');
-  const [nombreProyecto, setNombreProyecto] = useState('');
+  const [rut_cliente, setRutCliente] = useState(null);
+  const [telefono, setTelefono] = useState(null);
+  const [ciudad, setCiudad] = useState(null);
+  const [nombreProyecto, setNombreProyecto] = useState(null);
   const [ejecutivas, setEjecutivas] = useState([]);
-  const [nombreEjecutiva, setNombreEjecutiva] = useState('');
-  const [lote, setLote] = useState('');
+  const [nombreEjecutiva, setNombreEjecutiva] = useState(null);
+  const [lote, setLote] = useState(null);
   const [linkGetnet, setLinkGetnet] = useState(null);
   const [habilitarCampos, setHabilitarCampos] = useState(false);
   const [errors, setErrors] = useState({});
@@ -54,12 +54,16 @@ const Page = (props) => {
     setModalOpen(!modalOpen);
     if (modalOpen === true) {
       setSuccessMessage(null);
+      setCodigoWebpay(null);
+      setShowCodigoWebpay(false);
+      setHabilitarCampos(false);
       setLinkGetnet(null);
       setRutCliente(null);
       setCiudad(null);
       setTelefono(null);
       setNombreProyecto(null);
       setNombreEjecutiva(null);
+      setEjecutivas([]);
       setLote(null);
       setErrorMessage(null);
     }
@@ -84,19 +88,21 @@ const Page = (props) => {
       // Enviar el formulario a la API
       const response = await Ctrl_codigo_web_pay(codigoWebpay);
       console.log(response);
-      if (!response.datos) {
-        throw new Error('Error con el codigo de Reserva');
-        setErrorMessage("Ha ocurrido un con el código para realizar el pago de la reserva");
+      if (response.registros===0) {
+        // throw new Error('Error con el codigo de Reserva');
+        setErrorMessage("Ha ocurrido un  error con el código de reserva, contáctese con la ejecutiva");
+        return;
       } else {
+        console.log("response",response);
         setHabilitarCampos(true);
         setEjecutivas(response?.datos?.ejecutivas);
+        setNombreEjecutiva(response?.datos?.ejecutivas[0].usuarioNombre);
         setNombreProyecto(response?.datos?.nombreWebProyecto);
         setLinkGetnet(response?.datos?.urlReservaProyecto);
-        console.log(habilitarCampos,ejecutivas,nombreProyecto,linkGetnet);
-        if (linkGetnet === null) {
+        console.log(habilitarCampos,ejecutivas,nombreProyecto,linkGetnet,response?.datos.urlReservaProyecto);
+        if (response?.datos?.urlReservaProyecto==null || response?.datos?.urlReservaProyecto=='' || response?.datos?.urlReservaProyecto==undefined ) {
           setErrorMessage("Este formulario no tiene link de Getnet asociado");
-          setEjecutivas(null);
-          setNombreProyecto(null);
+          setLinkGetnet(null);
           setHabilitarCampos(false);
         }
       }
@@ -146,14 +152,21 @@ const Page = (props) => {
         }
         // Realizar cualquier otra acción después de enviar el formulario
         setSuccessMessage("¡El correo se ha enviado con éxito!");
-        setErrorMessage("");
+        setErrorMessage(null);
         // setModalOpen(false);
-        setRutCliente("");
-        setCiudad("");
-        setTelefono("");
-        setNombreProyecto("");
-        setNombreEjecutiva("");
-        setLote("");
+        // setRutCliente(null);
+        // setCiudad(null);
+        // setTelefono(null);
+        // setNombreProyecto(null);
+        // setNombreEjecutiva(null);
+        // setLote(null);
+        if (modalOpen === true) {
+          setErrors({});
+          setShowCodigoWebpay(false);
+          setCaptchaToken(null);
+          setHabilitarCampos(true);
+          setErrorMessage(null);
+        }
         if (linkGetnet) {
           window.open(linkGetnet, '_blank')
         }
@@ -225,6 +238,7 @@ const Page = (props) => {
     if (!data.nombreProyecto.trim()) {
       errors.nombreProyecto = 'El nombre del proyecto es requerido';
     }
+    console.log("verificando data,data.nombreEjecutiva",data,data.nombreEjecutiva);
     if (!data.nombreEjecutiva.trim()) {
       errors.nombreEjecutiva = 'El nombre de la ejecutiva es requerida';
     }
