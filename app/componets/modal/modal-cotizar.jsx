@@ -399,11 +399,9 @@ const Page = (props) => {
         otroQuienesHabitaran
       };
       
-      // console.log("formData",formData);
       try {
         // Enviar el formulario a la API
          const response = await Ctrl_cotizador(formData);
-        //  console.log("response,!response.ok",response,!response.ok);
         if (!response.datos) {  
           setErrorMessage("Código del proyecto no ha sido ingresado en el CRM");
         //  throw new Error('Error al enviar el formulario');

@@ -173,9 +173,7 @@ const Formulario = () => {
       }
     } else if (currentStep === 2) {
       if (Object.keys(stepErrors).length === 0) {
-        /* console.log("Formulario enviado:", formData); */
         const response = await Ctrl_curriculum(formData);
-        console.log(response);
       } else {
         setErrors(stepErrors);
       }

@@ -1,7 +1,6 @@
 export function Ctrl_curriculum(formData) {
   const apiKey = process.env.NEXT_PUBLIC_SMTP_API_KEY;
   const username = process.env.NEXT_PUBLIC_SMTP_API_USERNAME;
-  console.log("EL VALOR DE username es:", username, formData);
   const password = process.env.NEXT_PUBLIC_SMTP_API_PASSWORD;
   const url = "http://localhost/api_webmalpo/postulante/insertar_postulante";
   const authHeader =
@@ -22,11 +21,10 @@ export function Ctrl_curriculum(formData) {
       return response.json();
     })
     .then((data) => {
-      console.log("Formulario enviado con éxito:", data);
       // return  /* message: */ 'Formulario de de denuncias enviado con éxito' ;
     })
     .catch((error) => {
-      console.error("Error al enviar el formulario:", error.message);
+      // console.error("Error al enviar el formulario:", error.message);
       /* throw new Error("Error al enviar el formulario"); */
     });
 }

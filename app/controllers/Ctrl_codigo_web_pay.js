@@ -2,7 +2,6 @@ export function Ctrl_codigo_web_pay(codigoWebpay) {
     return new Promise((resolve, reject) => {
     const apiKey = process.env.NEXT_PUBLIC_SMTP_API_KEY;
     const username = process.env.NEXT_PUBLIC_SMTP_API_USERNAME;
-    // console.log("EL VALOR DE username es:",username,formData);
     const password = process.env.NEXT_PUBLIC_SMTP_API_PASSWORD;
     const url = process.env.NEXT_PUBLIC_API_URL + `proyectos/webpay/${codigoWebpay}`;
     const authHeader = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');

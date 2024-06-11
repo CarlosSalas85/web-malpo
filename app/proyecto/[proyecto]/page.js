@@ -35,11 +35,8 @@ const UrlBanner = (props) => {
   );
 };
 
-const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
-  const filtroDecodificado = proyecto ? decodeURIComponent(proyecto) : "";
-  const nombre = filtroDecodificado;
+const Proyecto = async ({searchParams: { val } }) => {
   const idProyecto = val;
-  // const [proyectoData, setProyectoData] = useState(null);
   let proyectoData = await Ctrl_proyectos(idProyecto);
   const modelosData = proyectoData?.datos?.modelos;
   const idRegion = proyectoData?.datos?.proyecto?.idRegion;
@@ -141,7 +138,7 @@ const Proyecto = async ({ params: { proyecto }, searchParams: { val } }) => {
           </div>
         )}
       </div>
-      <BannerAccesos />
+      <BannerAccesos url={urlEficienciaEnergetica}/>
       <BannerRegiones />
     </>
   );

@@ -87,19 +87,16 @@ const Page = (props) => {
     try {
       // Enviar el formulario a la API
       const response = await Ctrl_codigo_web_pay(codigoWebpay);
-      console.log(response);
       if (response.registros===0) {
         // throw new Error('Error con el codigo de Reserva');
         setErrorMessage("Ha ocurrido un  error con el código de reserva, contáctese con la ejecutiva");
         return;
       } else {
-        console.log("response",response);
         setHabilitarCampos(true);
         setEjecutivas(response?.datos?.ejecutivas);
         setNombreEjecutiva(response?.datos?.ejecutivas[0].usuarioNombre);
         setNombreProyecto(response?.datos?.nombreWebProyecto);
         setLinkGetnet(response?.datos?.urlReservaProyecto);
-        console.log(habilitarCampos,ejecutivas,nombreProyecto,linkGetnet,response?.datos.urlReservaProyecto);
         if (response?.datos?.urlReservaProyecto==null || response?.datos?.urlReservaProyecto=='' || response?.datos?.urlReservaProyecto==undefined ) {
           setErrorMessage("Este formulario no tiene link de Getnet asociado");
           setLinkGetnet(null);
@@ -238,7 +235,6 @@ const Page = (props) => {
     if (!data.nombreProyecto.trim()) {
       errors.nombreProyecto = 'El nombre del proyecto es requerido';
     }
-    console.log("verificando data,data.nombreEjecutiva",data,data.nombreEjecutiva);
     if (!data.nombreEjecutiva.trim()) {
       errors.nombreEjecutiva = 'El nombre de la ejecutiva es requerida';
     }
