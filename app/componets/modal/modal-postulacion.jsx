@@ -232,7 +232,7 @@ const Formulario = () => {
               </div>
               <div className="mb-4">
                 <label htmlFor="name" className="mb-2 flex justify-start">
-                  email:
+                  Email:
                 </label>
                 <input
                   type="email"

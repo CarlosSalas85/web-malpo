@@ -20,7 +20,7 @@ const Modal = ({ onClose }) => {
           />
         </button>
         <div className="mt-4">
-          <ModalPostulacion titulo="Formulario de Denuncia" />
+          <ModalPostulacion />
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@ const page = () => {
         </h1>
         <div className="mx-auto mt-8 flex w-full flex-col justify-center md:flex-row">
           <div className="mt-4 w-full px-4 md:mt-0 md:w-2/3 xl:w-2/5">
-            <a
+            <button
               onClick={handleModalToggle}
               className="flex h-32 items-center justify-between rounded-xl border bg-grisMalpo px-2 text-white shadow-xl"
             >
@@ -70,7 +70,7 @@ const page = () => {
                 alt="icono"
                 src="https://c.animaapp.com/uUjeA2wJ/img/google-forms.svg"
               />
-            </a>
+            </button>
           </div>
           <div className="mt-4 w-full px-4 md:mt-0 md:w-2/3 xl:w-2/5">
             <a
@@ -92,7 +92,7 @@ const page = () => {
         </div>
       </div>
       {/* modal */}
-      {/* {modalOpen && <Modal onClose={handleModalToggle}></Modal>} */}
+      {modalOpen && <Modal onClose={handleModalToggle}></Modal>}
       {/* modal */}
     </>
   );

@@ -1,23 +1,12 @@
 import "./banner-proyectos.css";
 
-const CustomButton = (props) => {
-  let result;
-  switch (props.filtro) {
-    case "ciudad":
-      result = `0-${props.id}`;
-      break;
-    case "region":
-      result = `${props.id}-0`;
-      break;
-    default:
-      result = "";
-  }
+const CustomButton = ({ texto, url }) => {
   return (
     <a
-      href={`/proyectos/${result}`}
-      className="flex justify-center items-center text-center mx-1 px-2 py-2 my-1 w-full rounded-lg border border-white bg-transparent text-white hover:border-gray-400 hover:text-gray-400"
+      href={url}
+      className="mx-1 my-1 flex w-full items-center justify-center rounded-lg border border-white bg-transparent px-2 py-2 text-center text-white hover:border-gray-400 hover:text-gray-400"
     >
-      {props.texto}
+      {texto}
     </a>
   );
 };
@@ -33,11 +22,7 @@ const Banner = (props) => {
           {props.datos &&
             props.datos.map((elemento, index) => (
               <div key={index} className="flex w-1/3 sm:w-1/6 lg:w-auto">
-                <CustomButton
-                  texto={elemento.nombre}
-                  filtro={props.filtro}
-                  id={elemento.id}
-                />
+                <CustomButton texto={elemento.nombre} url={elemento.url} />
               </div>
             ))}
         </div>
@@ -47,7 +32,3 @@ const Banner = (props) => {
 };
 
 export default Banner;
-
-
-
-

@@ -21,14 +21,14 @@ const Modal = ({ onClose }) => {
           />
         </button>
         <div className="mt-4">
-          <ModalCorreos titulo="Formulario de Contacto" asunto="Contacto"/>
+          <ModalCorreos titulo="Formulario de Contacto" asunto="Contacto" />
         </div>
       </div>
     </div>
   );
 };
 
-const Footer = ({redes}) => {
+const Footer = ({ redes }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -80,16 +80,21 @@ const Footer = ({redes}) => {
                 </p>
               </div>
               <div className="mt-10 flex items-center text-left sm:mt-0 sm:pl-12">
-            {redes.datos.map((redSocial) => (
-              <a key={redSocial.idRrss} href={redSocial.urlRrss} target="_blank" className="mr-2 hover:text-gray-400">
-                <img
-                  className="img-rrss mr-2"
-                  alt={`Icon ${redSocial.nombreRrss}`}
-                  src={redSocial.logoRrss}
-                />
-              </a>
-               ))}
-            </div>
+                {redes.datos.map((redSocial) => (
+                  <a
+                    key={redSocial.idRrss}
+                    href={redSocial.urlRrss}
+                    target="_blank"
+                    className="mr-2 hover:text-gray-400"
+                  >
+                    <img
+                      className="img-rrss mr-2"
+                      alt={`Icon ${redSocial.nombreRrss}`}
+                      src={redSocial.logoRrss}
+                    />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
