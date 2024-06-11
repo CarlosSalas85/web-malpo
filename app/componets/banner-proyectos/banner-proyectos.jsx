@@ -32,7 +32,7 @@ const Banner = (props) => {
         <div className="flex flex-wrap sm:justify-center">
           {props.datos &&
             props.datos.map((elemento, index) => (
-              <div key={index} className="flex w-1/3 sm:w-1/6 lg:w-auto">
+              <div key={index} className="flex w-1/3 lg:w-auto">
                 <CustomButton
                   texto={elemento.nombre}
                   filtro={props.filtro}
