@@ -6,9 +6,9 @@ import Proyectos from "../../../componets/proyectos/proyectos";
 export default async function Page({ params }) {
   const parametros = params.parametros;
   const filtroUrl = {
-    regionSelecionada: ((parametros) ? parametros[0] ? parametros[0] : 0 : 0),
-    comunaSelecionada: ((parametros) ? parametros[1] ? parametros[1] : 0 : 0)
-  }
+    regionSelecionada: parametros ? (parametros[0] ? parametros[0] : 0) : 0,
+    comunaSelecionada: parametros ? (parametros[1] ? parametros[1] : 0) : 0,
+  };
 
   const data = await Ctrl_filtros();
   const filtros = data.datos;
@@ -22,39 +22,37 @@ export default async function Page({ params }) {
     ciudadId: 0,
   };
 
-
   const data2 = await Ctrl_aplicar_filtros(ids);
   const proyectosIniciales = data2.datos;
 
   // Mapeo de los filtros en arrays separados
   const contenidoFiltros = {
-    tiposProyecto: filtros.tiposProyecto.map(tipo => ({
+    tiposProyecto: filtros.tiposProyecto.map((tipo) => ({
       id: tipo.idTipo,
-      nombre: tipo.nombreTipo
+      nombre: tipo.nombreTipo,
     })),
-    tiposSubsidio: filtros.tiposSubsidio.map(subsidio => ({
+    tiposSubsidio: filtros.tiposSubsidio.map((subsidio) => ({
       id: subsidio.idSubsidio,
-      nombre: subsidio.nombreSubsidio
+      nombre: subsidio.nombreSubsidio,
     })),
-    dormitorios: filtros.dormitorios.map(dormitorio => ({
+    dormitorios: filtros.dormitorios.map((dormitorio) => ({
       id: dormitorio.idDormitorios,
-      cantidad: dormitorio.cantidadDormitorios
+      cantidad: dormitorio.cantidadDormitorios,
     })),
-    banos: filtros.banos.map(bano => ({
+    banos: filtros.banos.map((bano) => ({
       id: bano.idBanos,
-      cantidad: bano.cantidadBanos
+      cantidad: bano.cantidadBanos,
     })),
-    etapasProyecto: filtros.etapasProyecto.map(etapa => ({
+    etapasProyecto: filtros.etapasProyecto.map((etapa) => ({
       id: etapa.idEtapa,
-      nombre: etapa.nombreEtapa
+      nombre: etapa.nombreEtapa,
     })),
-    ciudadesProyecto: filtros.ciudadesProyecto.map(ciudad => ({
+    ciudadesProyecto: filtros.ciudadesProyecto.map((ciudad) => ({
       id: ciudad.idComuna,
       cantidadfiltros: ciudad.cantidadfiltros,
-      nombre: ciudad.comunaNombre
+      nombre: ciudad.comunaNombre,
     })),
   };
-
 
   return (
     <>
@@ -69,7 +67,14 @@ export default async function Page({ params }) {
         </div>
 
         <div className="flex flex-col md:flex-row">
-          <Proyectos filtros={contenidoFiltros} filtroUrl={filtroUrl} proyectos={proyectosIniciales} inversion="1" pagina="invertir/proyectos"  paginaDetalle="invertir/proyecto" />
+          <Proyectos
+            filtros={contenidoFiltros}
+            filtroUrl={filtroUrl}
+            proyectos={proyectosIniciales}
+            inversion="1"
+            pagina="invertir/proyectos"
+            paginaDetalle="invertir/proyecto"
+          />
         </div>
         <div className="mx-auto mb-4 mt-10 w-11/12 md:w-10/12">
           <h1 className="mb-2 text-3xl sm:text-center">
@@ -90,6 +95,4 @@ export default async function Page({ params }) {
       </div>
     </>
   );
-};
-
-
+}

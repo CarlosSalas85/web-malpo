@@ -56,8 +56,8 @@ const List = (props) => {
 
   return (
     <>
-      <h1 className="mb-4 ml-4 mt-4 text-xl font-semibold sm:text-center">
-        Título UF {precioUfFormateado}
+      <h1 className="mb-4 ml-4 mt-4 text-xl sm:text-center">
+        Desde <span className="font-semibold">{precioUfFormateado}</span> UF 
       </h1>
       <div className="mx-auto flex w-2/3 flex-wrap md:w-11/12 lg:w-3/5 xl:w-2/5">
         <div className="mb-4 flex w-2/6 justify-end md:w-1/12">
@@ -78,7 +78,7 @@ const List = (props) => {
           />
         </div>
         <div className="mb-4 flex w-4/6 items-center justify-start md:w-5/12">
-          <span className="text-xl">{mt2Construidos} Construidos</span>
+          <span className="text-xl">{mt2Construidos} Mt2 Construidos</span>
         </div>
         <div className="mb-4 flex w-2/6 justify-end md:w-1/12">
           <img

@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const Modal = ({ onClose, children }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
       <div className="bg-gray-800 bg-opacity-75 fixed inset-0"></div>
       <div className="fixed inset-0 flex items-center justify-center">
         <div className="w-full max-w-md">

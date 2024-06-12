@@ -1,35 +1,35 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { useEffect, useState } from "react";
 import CustomCards from "../../componets/card-proyecto/card-proyecto-uno";
 
 export default function List(props) {
-
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 4;
 
-  useEffect(() =>{
-    setCurrentPage(1)
-  },[props])
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [props]);
 
   if (!props.proyectos || props.proyectos.length === 0) {
     return (
       <div className="flex w-full flex-wrap md:ml-4 md:mr-20 md:w-3/5">
         <p className="text-3xl font-semibold text-rojoMalpo">
-        No hay proyectos que coincidan con la búsqueda
-          </p>        
-      </div>);
+          No hay proyectos que coincidan con la búsqueda
+        </p>
+      </div>
+    );
   }
 
   //PAGINACION
-  
+
   const totalPages = Math.ceil(props.proyectos.length / itemsPerPage);
   const handleClickPrev = () => {
     if (currentPage > 1) {
       setIsLoading(true);
       setTimeout(() => {
-        setCurrentPage(prevPage => prevPage - 1);
+        setCurrentPage((prevPage) => prevPage - 1);
         setIsLoading(false);
       }, 500); // Simula una carga de 500ms
     }
@@ -38,9 +38,9 @@ export default function List(props) {
     if (currentPage < totalPages) {
       setIsLoading(true);
       setTimeout(() => {
-        setCurrentPage(prevPage => prevPage + 1);
+        setCurrentPage((prevPage) => prevPage + 1);
         setIsLoading(false);
-      }, 100); 
+      }, 100);
     }
   };
   const handleClickPage = (page) => {
@@ -49,22 +49,23 @@ export default function List(props) {
       setTimeout(() => {
         setCurrentPage(page);
         setIsLoading(false);
-      }, 100); 
+      }, 100);
     }
   };
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const selectedProjects = props.proyectos.slice(startIndex, startIndex + itemsPerPage);
-
+  const selectedProjects = props.proyectos.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   const replaceSpaces = (str) => {
-    return encodeURIComponent(str.replace(/\s/g, '-'));
+    return encodeURIComponent(str.replace(/\s/g, "-"));
   };
 
-  
   return (
     <div className="flex w-full flex-wrap md:ml-4 md:mr-20 md:w-3/5">
       {isLoading ? (
-        <div className="w-full flex justify-center items-center h-64">
+        <div className="flex h-64 w-full items-center justify-center">
           <p className="text-lg font-semibold">Cargando...</p>
         </div>
       ) : (
@@ -90,7 +91,7 @@ export default function List(props) {
         ))
       )}
 
-      <div className="mb-4 h-10 flex w-full justify-center">
+      <div className="mb-4 flex h-10 w-full justify-center">
         <button
           className="mr-2 flex items-center justify-center rounded border border-gray-400 px-4 py-2 text-black hover:bg-gray-400"
           onClick={handleClickPrev}
@@ -105,7 +106,7 @@ export default function List(props) {
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
-            className={`mr-2 flex items-center justify-center rounded border px-4 py-2 ${currentPage === index + 1 ? 'border-transparent bg-rojoMalpo text-white' : 'border-gray-400 text-black hover:bg-gray-400'}`}
+            className={`mr-2 flex items-center justify-center rounded border px-4 py-2 ${currentPage === index + 1 ? "border-transparent bg-rojoMalpo text-white" : "border-gray-400 text-black hover:bg-gray-400"}`}
             onClick={() => handleClickPage(index + 1)}
             disabled={isLoading}
           >
@@ -126,6 +127,4 @@ export default function List(props) {
       </div>
     </div>
   );
-};
-
-
+}

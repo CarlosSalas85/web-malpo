@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 
@@ -38,7 +38,6 @@ const Banner = (props) => {
 
       <div className="flex items-center justify-center">
         <div className="flex w-5/6 items-center justify-center bg-gray-50">
-
           <Image
             src={imagenLoteo}
             alt="Descripción de la imagen"
@@ -46,36 +45,35 @@ const Banner = (props) => {
             height={500}
             onClick={handleModalToggle} // Abrir modal al hacer clic en la imagen
           />
-    
         </div>
       </div>
 
       {modalOpen && (
-  <Modal onClose={handleModalToggle}>
-  <div className="pb-6 pt-6">
-    <h1 className="ml-4 text-3xl sm:text-center">Loteo</h1>
-    <div className="relative flex items-center justify-center">
-      <picture>
-        {/* Imagen de fondo para dispositivos pequeños */}
-        <source srcSet={props.imagenLoteo} media="(max-width: 640px)" />
-        {/* Imagen de fondo para dispositivos grandes */}
-        <source srcSet={props.imagenLoteoZoom} media="(min-width: 641px)" />
-        {/* Imagen de fondo por defecto */}
-        <img
-          className="block max-h-[400px] w-full object-cover"
-          src="/imagenNoDisponible/no_disponible.webp" // Ruta de la imagen de fondo por defecto para navegadores que no admiten <picture>
-          alt="Loteo"
-        />
-      </picture>
-    </div>
-  </div>
-</Modal>
-
-)}
+        <Modal onClose={handleModalToggle}>
+          <div className="pb-6 pt-6">
+            <h1 className="ml-4 text-3xl sm:text-center">Loteo</h1>
+            <div className="relative flex items-center justify-center">
+              <picture>
+                {/* Imagen de fondo para dispositivos pequeños */}
+                <source srcSet={props.imagenLoteo} media="(max-width: 640px)" />
+                {/* Imagen de fondo para dispositivos grandes */}
+                <source
+                  srcSet={props.imagenLoteoZoom}
+                  media="(min-width: 641px)"
+                />
+                {/* Imagen de fondo por defecto */}
+                <img
+                  className="block h-full w-full object-cover"
+                  src="/imagenNoDisponible/no_disponible.webp" // Ruta de la imagen de fondo por defecto para navegadores que no admiten <picture>
+                  alt="Loteo"
+                />
+              </picture>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
 
 export default Banner;
-
-
